@@ -10,5 +10,6 @@ public interface JogoVelhaModel extends Model {
     
     void setVelocity(int novoValor);
     void play(Object[] args);
+    void setPosicaoClicada(String posicao);
     
 }

@@ -10,6 +10,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.CharBuffer;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,8 +24,6 @@ import javax.swing.JPanel;
  */
 public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
 
-    
-    
     //o controller
     private Controller controller;
 
@@ -39,6 +39,8 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     private JButton nove;
     private JButton clear;
     
+    private int posicaoClicada;
+
     //a comunicacao com usuario
     private JButton mensagem = new JButton("Computador versus Computador");
 
@@ -55,7 +57,7 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     private final Color background = Color.WHITE;
 
     private Color corOndeVencer = Color.RED;
-    
+
     private Color corNormal = Color.BLACK;
 
     private Font fontOndeVencer = new Font("Ubuntu", Font.BOLD, 80);
@@ -78,14 +80,12 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
 
             try {
 
-                //System.out.println("posicao " + ((JButton) e.getSource()).getName());
-                //((JButton) e.getSource()).setForeground(Color.RED);
-                //int posicao = Integer.parseInt((((JButton) e.getSource()).getName()));
-                //if(posicao%2 == 0) set("0",posicao); else set("X", posicao);
-                String[] args = new String[1];
-                args[0] = "posicao " + ((JButton) e.getSource()).getName();
+                Object[] args = new Object[1];
+                args[0] = ((JButton) e.getSource()).getName();
 
-                controller.updateModel(null, args);
+                controller.updateModel("setPosicaoClicada", args);
+                
+                this.posicaoClicada = Integer.parseInt(((JButton) e.getSource()).getName());
 
             } catch (Exception ex) {
                 System.err.println("Algo excepcional ocorreu em TecladoManualUI.actionListener " + ex.getLocalizedMessage());
@@ -184,8 +184,7 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
         nove.setBackground(botaoBackground);
         nove.addActionListener(posicaoClicada);
         add(nove, gridConstraints);
-        
-       
+
 //        gridConstraints.gridx = 6;
 //        gridConstraints.gridy = 8;
 //        clear = new JButton("C");
@@ -274,7 +273,6 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     public JButton getMensagem() {
         return mensagem;
     }
-    
 
     public JButton getClearButton() {
         return clear;
@@ -333,6 +331,34 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     }
 
     @Override
+    public void desabilitarBotoes() {
+        um.setEnabled(false);
+        dois.setEnabled(false);
+        tres.setEnabled(false);
+        quatro.setEnabled(false);
+        cinco.setEnabled(false);
+        seis.setEnabled(false);
+        sete.setEnabled(false);
+        oito.setEnabled(false);
+        nove.setEnabled(false);
+    }
+    
+        @Override
+    public void habilitarBotoes() {
+        um.setEnabled(true);
+        dois.setEnabled(true);
+        tres.setEnabled(true);
+        quatro.setEnabled(true);
+        cinco.setEnabled(true);
+        seis.setEnabled(true);
+        sete.setEnabled(true);
+        oito.setEnabled(true);
+        nove.setEnabled(true);
+    }
+    
+    
+
+    @Override
     public void reconfigurar() {
 
         String value = "";
@@ -372,5 +398,9 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     public void setMensagem(String mensagem) {
         this.mensagem.setText(mensagem);
     }
+
+
+
+
 
 }

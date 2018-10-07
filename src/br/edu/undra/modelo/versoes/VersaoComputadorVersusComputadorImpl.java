@@ -1,6 +1,7 @@
 package br.edu.undra.modelo.versoes;
 
 import br.edu.undra.modelo.JogoDaVelha;
+import br.edu.undra.modelo.jogo.Jogador;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +16,11 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
     @Override
     public void jogar(JogoDaVelha jogo) {
         
+        Jogador jogador = jogo.getProximoAJogar();
+        
         jogo.getProximoAJogar().joga();
+        
+        jogo.updateView(jogador);
 
         try {
             Thread.sleep(500);

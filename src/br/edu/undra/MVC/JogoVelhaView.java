@@ -12,4 +12,6 @@ public interface JogoVelhaView extends View{
     void marcarOndeVenceu(List<Object> posicoes);
     void reconfigurar();
     void setMensagem(String mensagem);
+    void desabilitarBotoes();
+    void habilitarBotoes();
 }

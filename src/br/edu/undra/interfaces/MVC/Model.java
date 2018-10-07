@@ -10,6 +10,7 @@ import java.util.Collection;
 public interface Model {
     
     void setController(Controller controller);
+    Controller getController();
     Collection<Method> getMethods();
     
 }

@@ -8,7 +8,10 @@ import br.edu.undra.modelo.jogo.Jogo;
 import br.edu.undra.modelo.jogo.Tabuleiro;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.modelo.versoes.VersaoComputadorVersusComputadorImpl;
+import br.edu.undra.modelo.versoes.VersaoHumanoVersusComputadorImpl;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.CharBuffer;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +30,7 @@ import java.util.logging.Logger;
  * @author alexandre
  * @param <T>
  */
-public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaModel {
+public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaModel, Readable {
 
     private JogoVelhaController controller;
 
@@ -41,6 +44,8 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     private Set<T> ultimosAJogar = new HashSet<>();
 
     private AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha;
+    
+    private String posicaoClicada="0";
 
     public JogoDaVelha(String nome) {
 
@@ -57,7 +62,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         setUpJogadores();
 
-        setAbstracaoVersaoJogoVelha(new VersaoComputadorVersusComputadorImpl());
+        abstracaoVersaoJogoVelha = new VersaoHumanoVersusComputadorImpl();
     }
 
     public JogoDaVelha(String nome, List<T> jogadores, Tabuleiro tabuleiro) {
@@ -402,36 +407,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         while (!terminou()) {
 
-            Jogador jogador = getProximoAJogar();
-
             getAbstracaoVersaoJogoVelha().jogar(this);
-
-            args2[0] = (jogador.getNome() + " jogou.").toUpperCase();
-            controller.updateView("setMensagem", args2);
-
-            for (int posicao = 1; posicao <= getTabuleiro().getDimensao() * getTabuleiro().getDimensao(); posicao++) {
-
-                args[0] = getTabuleiro().get(posicao);
-                args[1] = posicao;
-
-                controller.updateView("set", args);
-
-            }
-
-            try {
-                Thread.sleep(800);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            args2[0] = ("-------------------------").toUpperCase();
-            controller.updateView("setMensagem", args2);
-            
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
         }
 
@@ -472,6 +448,40 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         reiniciar();
 
+    }
+
+    public void updateView(Jogador jogador) {
+
+        Object[] args = new Object[2];
+
+        Object[] args2 = new Object[1];
+
+        args2[0] = (jogador.getNome() + " jogou.").toUpperCase();
+        controller.updateView("setMensagem", args2);
+
+        for (int posicao = 1; posicao <= getTabuleiro().getDimensao() * getTabuleiro().getDimensao(); posicao++) {
+
+            args[0] = getTabuleiro().get(posicao);
+            args[1] = posicao;
+
+            controller.updateView("set", args);
+
+        }
+
+        try {
+            Thread.sleep(800);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        args2[0] = ("-------------------------").toUpperCase();
+        controller.updateView("setMensagem", args2);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -572,6 +582,11 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     }
 
     @Override
+    public Controller getController() {
+        return controller;
+    }
+
+    @Override
     public void setController(Controller controller) {
         this.controller = (JogoVelhaController) controller;
     }
@@ -579,6 +594,21 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     @Override
     public Collection<Method> getMethods() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int read(CharBuffer cb) throws IOException {
+        cb.put(getPosicaoClicada());
+        return cb.length();
+    }
+
+    public  String getPosicaoClicada() {
+        return posicaoClicada;
+    }
+
+    @Override
+    public void setPosicaoClicada(String posicao) {
+        this.posicaoClicada = posicao;
     }
 
 }
