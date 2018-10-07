@@ -386,6 +386,12 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         controller.updateView("setMensagem", args);
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         getJogador1().setPrimeiroAJogar(true);
 
         getAbstracaoVersaoJogoVelha().SetUp(this);
@@ -412,6 +418,21 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
             }
 
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            args2[0] = ("-------------------------").toUpperCase();
+            controller.updateView("setMensagem", args2);
+            
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
         System.err.println("\t" + ">>>>>>>>>>> FIM DE JOGO <<<<<<<<<<");
@@ -424,7 +445,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
             controller.updateView("marcarOndeVenceu", args);
 
-            args2[0] = (getJogador1().getNome() + " VENCEU "+ getOndeVenceu()).toUpperCase();
+            args2[0] = (getJogador1().getNome() + " VENCEU " + getOndeVenceu()).toUpperCase();
             controller.updateView("setMensagem", args2);
 
         } else if (getJogador2().venceu()) {
@@ -506,7 +527,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
                     args[0] = getTabuleiro().get(i);
                     args[1] = i;
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(50);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
                     }
