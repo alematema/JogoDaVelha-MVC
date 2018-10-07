@@ -455,20 +455,9 @@ public class Tabuleiro {
     }
 
     /**
-     * Recupera posiçoes LIVRES do tabuleiro, retornando uma lista de
-     * String.<br>
-     * Cada String está no formato linha,coluna,posicao.<br>
-     * Por exemplo, a lista conterá strings da forma 2,1,6
-     * <br>onde o primeiro valor, 2, corresponde à linha;
-     * <br>o segundo valor, 1, corresponde à coluna;
-     * <br>o terceiro valor, 6, corresponde ao equivalente posicao de linha e
-     * coluna, para dimensão desse tabuleiro.
-     * <br>Então, num tabuleiro 5X5, a string 2,1,6 informa que está LIVRE a
-     * posição 6 do tabuleiro, ou equivalentemente,
-     * <br>que está LIVRE a posição da linha 2 e coluna 1.
+     * Recupera posiçoes correspondentes aos valores passados no argumento.<br>
      *
-     *
-     * @return Lista das posições desocupadas do tabuleiro.<br>
+     * @return Lista das posições correspondentes aos valores passados.<br>
      */
     public List<Object> getPosicoesDestesValores(List<Object> valores) {
 
