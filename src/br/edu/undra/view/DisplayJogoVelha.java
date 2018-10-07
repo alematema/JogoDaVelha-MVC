@@ -43,10 +43,10 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     private JButton mensagem = new JButton("Computador versus Computador");
 
     //dimensao do botao
-    private final Dimension dimensaoBotao = new Dimension(90, 90);
+    private final Dimension dimensaoBotao = new Dimension(100, 100);
 
     //a fonte do teclado
-    private final Font font = new Font("Ubuntu", Font.BOLD, 40);
+    private final Font font = new Font("Ubuntu", Font.BOLD, 50);
 
     //a dimensao do teclado
     private final Dimension dimension = new Dimension(500, 500);
@@ -58,7 +58,7 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     
     private Color corNormal = Color.BLACK;
 
-    private Font fontOndeVencer = new Font("Ubuntu", Font.BOLD, 50);
+    private Font fontOndeVencer = new Font("Ubuntu", Font.BOLD, 80);
 
     //a cor de fundo dos botoes
     private final Color botaoBackground = Color.WHITE;
