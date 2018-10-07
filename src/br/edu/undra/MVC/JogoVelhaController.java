@@ -70,6 +70,16 @@ public class JogoVelhaController implements Controller {
         } catch (IllegalArgumentException ex) {
         } catch (InvocationTargetException ex) {
         }
+        
+        try {
+            Class<?>[] paramTypes = {String.class};
+            view.getClass().getMethod(methodName, paramTypes).invoke(view, args[0]);
+        } catch (NoSuchMethodException ex) {
+        } catch (SecurityException ex) {
+        } catch (IllegalAccessException ex) {
+        } catch (IllegalArgumentException ex) {
+        } catch (InvocationTargetException ex) {
+        }
 
         return updated;
     }

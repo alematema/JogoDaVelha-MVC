@@ -85,8 +85,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         setUpJogadores();
     }
 
-
-
     @Override
     public void setUpJogadores() {
         for (JogadorJogoDaVelha jogador : (List<JogadorJogoDaVelha>) getJogadores()) {
@@ -382,15 +380,28 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         System.err.println(getAbstracaoVersaoJogoVelha().getVersao());
 
+        Object[] args = new Object[1];
+
+        args[0] = getAbstracaoVersaoJogoVelha().getVersao().toUpperCase();
+
+        controller.updateView("setMensagem", args);
+
         getJogador1().setPrimeiroAJogar(true);
 
         getAbstracaoVersaoJogoVelha().SetUp(this);
 
-        Object[] args = new Object[2];
+        args = new Object[2];
+
+        Object[] args2 = new Object[1];
 
         while (!terminou()) {
 
+            Jogador jogador = getProximoAJogar();
+
             getAbstracaoVersaoJogoVelha().jogar(this);
+
+            args2[0] = (jogador.getNome() + " jogou.").toUpperCase();
+            controller.updateView("setMensagem", args2);
 
             for (int posicao = 1; posicao <= getTabuleiro().getDimensao() * getTabuleiro().getDimensao(); posicao++) {
 
@@ -413,6 +424,9 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
             controller.updateView("marcarOndeVenceu", args);
 
+            args2[0] = (getJogador1().getNome() + " VENCEU "+ getOndeVenceu()).toUpperCase();
+            controller.updateView("setMensagem", args2);
+
         } else if (getJogador2().venceu()) {
             System.err.println(getJogador2().getNome() + " venceu em " + getOndeVenceu());
 
@@ -420,24 +434,41 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
             controller.updateView("marcarOndeVenceu", args);
 
+            args2[0] = (getJogador2().getNome() + " VENCEU " + getOndeVenceu()).toUpperCase();
+            controller.updateView("setMensagem", args2);
+
         } else {
             System.err.println(" EMPATOU ");
+            args2[0] = " >>>>>>>>>>>>>> EMPATOU <<<<<<<<<<<<<<<";
+            controller.updateView("setMensagem", args2);
         }
-        
+
+        try {
+            Thread.sleep(2500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         reiniciar();
 
     }
 
-        @Override
+    @Override
     public void reiniciar() {
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                
-                System.out.println("REINICIANDO O JOGO... " + new Date());
+
+                Object[] args = new Object[1];
+
+                args[0] = "REINICIANDO O JOGO... " + new Date();
+                //System.out.println("REINICIANDO O JOGO... " + new Date());
+
+                controller.updateView("setMensagem", args);
+
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -446,10 +477,28 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
                 ultimosAJogar = new HashSet<>();
 
                 jogador1.reconfigurar();
+
+                args[0] = jogador1.getNome() + " reconficurado";
+                controller.updateView("setMensagem", args);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 jogador2.reconfigurar();
+                args[0] = jogador2.getNome() + " reconficurado";
+                controller.updateView("setMensagem", args);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 jogador1.setPrimeiroAJogar(true);
-                
-                Object[] args = new Object[2];
+
+                args = new Object[3];
+
+                Object[] args2 = new Object[1];
 
                 for (int i = 1; i <= getTabuleiro().getDimensao() * getTabuleiro().getDimensao(); i++) {
 
@@ -457,22 +506,25 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
                     args[0] = getTabuleiro().get(i);
                     args[1] = i;
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     controller.updateView("set", args);
+                    args2[0] = ("setting " + args[0] + " at " + args[1]).toUpperCase();
+                    controller.updateView("setMensagem", args2);
+
                 }
-                
+
                 controller.updateView("reconfigurar", null);
-                
+
                 iniciar();
-                
+
             }
         }).start();
 
     }
-    
+
     @Override
     public boolean terminou() {
         return jogador1.venceu() || jogador2.venceu() || getTabuleiro().getPosicoesLivres().isEmpty();

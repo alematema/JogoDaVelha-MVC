@@ -2,6 +2,8 @@ package br.edu.undra.view;
 
 import br.edu.undra.interfaces.MVC.View;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
@@ -14,22 +16,27 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * O window do jogo da velha.
+ *
  * @author alexandre
  */
-public class JogoVelhaWindow extends JFrame{
-    
+public class JogoVelhaWindow extends JFrame {
+
+     //a comunicacao com usuario
+    private JButton mensagem;
+
     static public AtomicInteger numeroDeInstancias = new AtomicInteger(0);
-    
+
     private DisplayJogoVelha view;
     private int x;
     private int y;
     private int numeroDaInstancia;
-    
+
     public static void main(String[] args) {
         new JogoVelhaWindow().configureAndShow();
     }
@@ -42,26 +49,26 @@ public class JogoVelhaWindow extends JFrame{
         this();
         this.view = (DisplayJogoVelha) view;
     }
-    
+
     public void configureAndShow() {
 
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("GTK+".equals(info.getName())) {
-                    try {
-                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InstantiationException ex) {
-                        Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IllegalAccessException ex) {
-                        Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (UnsupportedLookAndFeelException ex) {
-                        Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    break;
+            if ("GTK+".equals(info.getName())) {
+                try {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InstantiationException ex) {
+                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IllegalAccessException ex) {
+                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                break;
             }
-        
+        }
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent evt) {
@@ -80,10 +87,8 @@ public class JogoVelhaWindow extends JFrame{
 
         //sets frame's size to 1/4 screen area
         //setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2));
-
         //centralizes the frame
-       // setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth()) / 2, (Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2, getWidth(), getHeight());
-
+        // setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth()) / 2, (Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2, getWidth(), getHeight());
         setUndecorated(false);
 
         addMouseListener(new MouseAdapter() {//moves the frame to mouse released positions
@@ -117,16 +122,28 @@ public class JogoVelhaWindow extends JFrame{
     }
 
     private void placeComponentsAtFrame() {
-        
+
         getContentPane().setLayout(new GridBagLayout());
-        GridBagConstraints gridConstraints;
-        getContentPane().add(view);
+        GridBagConstraints gridConstraints = new GridBagConstraints();
+        gridConstraints.gridx = 0;
+        gridConstraints.gridy = 0;
+        getContentPane().add(view, gridConstraints);
+       
+
+        gridConstraints.gridx = 0;
+        gridConstraints.gridy = 2;
+
+        mensagem = view.getMensagem();
         
+        mensagem.setFont(new Font("Ubuntu", Font.BOLD, 11));
+        mensagem.setPreferredSize(new Dimension((int)view.getPreferredSize().getWidth(),(int)view.getPreferredSize().getHeight()/8));
+
+        getContentPane().add(mensagem,gridConstraints);
+
     }
 
     private void exitForm(WindowEvent evt) {
         System.exit(JFrame.NORMAL);
     }
 
-    
 }

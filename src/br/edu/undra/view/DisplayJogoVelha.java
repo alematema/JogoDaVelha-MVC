@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -21,6 +22,9 @@ import javax.swing.JPanel;
  */
 public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
 
+    
+    
+    //o controller
     private Controller controller;
 
     //os botoes do jogo
@@ -34,6 +38,9 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     private JButton oito;
     private JButton nove;
     private JButton clear;
+    
+    //a comunicacao com usuario
+    private JButton mensagem = new JButton("Computador versus Computador");
 
     //dimensao do botao
     private final Dimension dimensaoBotao = new Dimension(90, 90);
@@ -177,7 +184,8 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
         nove.setBackground(botaoBackground);
         nove.addActionListener(posicaoClicada);
         add(nove, gridConstraints);
-
+        
+       
 //        gridConstraints.gridx = 6;
 //        gridConstraints.gridy = 8;
 //        clear = new JButton("C");
@@ -262,6 +270,11 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
         }
 
     }
+
+    public JButton getMensagem() {
+        return mensagem;
+    }
+    
 
     public JButton getClearButton() {
         return clear;
@@ -353,6 +366,11 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
         nove.setForeground(corNormal);
         nove.setFont(font);
 
+    }
+
+    @Override
+    public void setMensagem(String mensagem) {
+        this.mensagem.setText(mensagem);
     }
 
 }
