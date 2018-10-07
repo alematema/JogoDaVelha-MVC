@@ -38,7 +38,7 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     private JButton oito;
     private JButton nove;
     private JButton clear;
-    
+
     private int posicaoClicada;
 
     //a comunicacao com usuario
@@ -84,7 +84,7 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
                 args[0] = ((JButton) e.getSource()).getName();
 
                 controller.updateModel("setPosicaoClicada", args);
-                
+
                 this.posicaoClicada = Integer.parseInt(((JButton) e.getSource()).getName());
 
             } catch (Exception ex) {
@@ -284,6 +284,11 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     }
 
     @Override
+    public Controller getController() {
+        return this.controller;
+    }
+
+    @Override
     public void marcarOndeVenceu(List<Object> posicoes) {
         for (Object pos : posicoes) {
 
@@ -342,8 +347,8 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
         oito.setEnabled(false);
         nove.setEnabled(false);
     }
-    
-        @Override
+
+    @Override
     public void habilitarBotoes() {
         um.setEnabled(true);
         dois.setEnabled(true);
@@ -355,8 +360,6 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
         oito.setEnabled(true);
         nove.setEnabled(true);
     }
-    
-    
 
     @Override
     public void reconfigurar() {
@@ -398,9 +401,5 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     public void setMensagem(String mensagem) {
         this.mensagem.setText(mensagem);
     }
-
-
-
-
 
 }

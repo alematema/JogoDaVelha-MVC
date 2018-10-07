@@ -174,7 +174,7 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
         getJogo().getUltimosAJogar().add(this);
 
 //        System.out.println(getNome() + " jogou " + elemento + " na posicao " + linha + "," + coluna);
-        System.out.println(getNome() + " jogou");
+//        System.out.println(getNome() + " jogou");
 
         setJogou(true);
 

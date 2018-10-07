@@ -7,5 +7,6 @@ package br.edu.undra.interfaces.MVC;
 public interface View {
     
     void setController(Controller controller);
+    Controller getController();
     
 }

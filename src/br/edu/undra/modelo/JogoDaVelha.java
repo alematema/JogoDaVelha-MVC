@@ -63,7 +63,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         setUpJogadores();
 
-        abstracaoVersaoJogoVelha = new VersaoHumanoVersusHumanoImpl();
+        abstracaoVersaoJogoVelha = new VersaoHumanoVersusComputadorImpl();
     }
 
     public JogoDaVelha(String nome, List<T> jogadores, Tabuleiro tabuleiro) {
@@ -412,11 +412,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         }
 
-        System.err.println("\t" + ">>>>>>>>>>> FIM DE JOGO <<<<<<<<<<");
-
         if (getJogador1().venceu()) {
-
-            System.err.println(getJogador1().getNome() + " venceu em " + getOndeVenceu());
 
             args[0] = getPosicoesOndeVenceu();
 
@@ -426,7 +422,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
             controller.updateView("setMensagem", args2);
 
         } else if (getJogador2().venceu()) {
-            System.err.println(getJogador2().getNome() + " venceu em " + getOndeVenceu());
 
             args[0] = getPosicoesOndeVenceu();
 
@@ -436,9 +431,10 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
             controller.updateView("setMensagem", args2);
 
         } else {
-            System.err.println(" EMPATOU ");
+
             args2[0] = " >>>>>>>>>>>>>> EMPATOU <<<<<<<<<<<<<<<";
             controller.updateView("setMensagem", args2);
+
         }
 
         try {
@@ -566,10 +562,15 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         return abstracaoVersaoJogoVelha;
     }
 
+    /**
+     *
+     * @param abstracaoVersaoJogoVelha
+     */
+    @Override
     public void setAbstracaoVersaoJogoVelha(AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha) {
         this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
         abstracaoVersaoJogoVelha.SetUp(this);
-        System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
+        //System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
     }
 
     @Override
