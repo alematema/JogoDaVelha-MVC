@@ -22,8 +22,6 @@ public class App {
         new Thread(() -> {
             new App().start(args);
         }).start();
-        
-        
 
         
     }
@@ -31,11 +29,13 @@ public class App {
     public void start(String[]args){
         
         JogoDaVelha model = new JogoDaVelha("Jogo da Velha");
+        
         DisplayJogoVelha view = new DisplayJogoVelha();
         
         JogoVelhaController controller = new JogoVelhaController(model, view);
         
         new JogoVelhaWindow(view).configureAndShow();
+        
         model.iniciar();
         
     }

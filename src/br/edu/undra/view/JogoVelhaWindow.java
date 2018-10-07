@@ -1,9 +1,7 @@
 package br.edu.undra.view;
 
-import br.edu.undra.MVC.JogoVelhaView;
 import br.edu.undra.interfaces.MVC.View;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
@@ -13,28 +11,36 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- *
+ * O window do jogo da velha.
  * @author alexandre
  */
 public class JogoVelhaWindow extends JFrame{
     
+    static public AtomicInteger numeroDeInstancias = new AtomicInteger(0);
+    
     private DisplayJogoVelha view;
+    private int x;
+    private int y;
+    private int numeroDaInstancia;
     
     public static void main(String[] args) {
         new JogoVelhaWindow().configureAndShow();
     }
 
     public JogoVelhaWindow() throws HeadlessException {
+        this.numeroDaInstancia = numeroDeInstancias.addAndGet(1);
     }
 
     
     public JogoVelhaWindow(View view) {
+        this();
         this.view = (DisplayJogoVelha) view;
     }
     
@@ -67,17 +73,17 @@ public class JogoVelhaWindow extends JFrame{
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setTitle(getClass().getSimpleName() + " App");
+        setTitle(getClass().getSimpleName() + " " + this.numeroDaInstancia + " App");
 
         getContentPane().setBackground(new Color(192, 192, 255));
 
         setResizable(false);
 
         //sets frame's size to 1/4 screen area
-        setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2));
+        //setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2));
 
         //centralizes the frame
-        setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth()) / 2, (Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2, getWidth(), getHeight());
+       // setBounds((Toolkit.getDefaultToolkit().getScreenSize().width - getWidth()) / 2, (Toolkit.getDefaultToolkit().getScreenSize().height - getHeight()) / 2, getWidth(), getHeight());
 
         setUndecorated(false);
 
