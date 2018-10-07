@@ -38,7 +38,6 @@ public class JogoVelhaWindow extends JFrame{
         this.numeroDaInstancia = numeroDeInstancias.addAndGet(1);
     }
 
-    
     public JogoVelhaWindow(View view) {
         this();
         this.view = (DisplayJogoVelha) view;
