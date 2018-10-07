@@ -31,7 +31,7 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
 
     @Override
     public String getVersao() {
-        return "Versão Computador versus computador";
+        return "Jogo da Velha : Computador X computador";
     }
 
     @Override

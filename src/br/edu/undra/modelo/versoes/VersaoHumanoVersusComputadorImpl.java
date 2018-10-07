@@ -2,9 +2,6 @@ package br.edu.undra.modelo.versoes;
 
 import br.edu.undra.modelo.JogoDaVelha;
 import br.edu.undra.modelo.jogo.Jogador;
-import java.io.IOException;
-import java.nio.CharBuffer;
-import java.util.Scanner;
 
 /**
  * Uma implementação das versoes do jogo da velha. <br>
@@ -61,7 +58,7 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
 
     @Override
     public String getVersao() {
-        return "Versão Humano versus computador";
+        return "Jogo da Velha : Humano X computador";
     }
 
     @Override

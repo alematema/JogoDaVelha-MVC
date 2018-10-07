@@ -50,8 +50,8 @@ public class JogoVelhaWindow extends JFrame {
         this.view = (DisplayJogoVelha) view;
     }
 
-    public void configureAndShow() {
-
+    public void configureAndShow(String title){
+        setTitle(title);
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
             if ("GTK+".equals(info.getName())) {
                 try {
@@ -79,7 +79,7 @@ public class JogoVelhaWindow extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setTitle(getClass().getSimpleName() + " " + this.numeroDaInstancia + " App");
+        
 
         getContentPane().setBackground(new Color(192, 192, 255));
 
@@ -119,6 +119,10 @@ public class JogoVelhaWindow extends JFrame {
 
         setVisible(true);
 
+    }
+    
+    public void configureAndShow() {
+        configureAndShow(getClass().getSimpleName() + " " + this.numeroDaInstancia + " App");
     }
 
     private void placeComponentsAtFrame() {

@@ -34,7 +34,9 @@ public class App {
         
         JogoVelhaController controller = new JogoVelhaController(model, view);
         
-        new JogoVelhaWindow(view).configureAndShow();
+        String tituloJanela = model.getAbstracaoVersaoJogoVelha().getVersao();
+        
+        new JogoVelhaWindow(view).configureAndShow(tituloJanela);
         
         model.iniciar();
         

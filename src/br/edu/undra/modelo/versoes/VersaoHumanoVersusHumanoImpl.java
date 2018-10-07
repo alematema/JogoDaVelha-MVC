@@ -45,7 +45,7 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
 
     @Override
     public String getVersao() {
-        return "Versão Humano versus humano";
+        return "Jogo da Velha : Humano X humano";
     }
 
     @Override
