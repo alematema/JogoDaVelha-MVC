@@ -1,7 +1,7 @@
 package br.edu.undra.modelo.versoes;
 
 import br.edu.undra.modelo.JogoDaVelha;
-import java.util.Scanner;
+import br.edu.undra.modelo.jogo.Jogador;
 
 /**
  * Uma implementação das versoes do jogo da velha. <br>
@@ -11,22 +11,34 @@ import java.util.Scanner;
  */
 public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
 
-    Scanner s;
-
+    Object[] args = new Object[1];
+    
     @Override
     public void jogar(JogoDaVelha jogo) {
 
-        System.err.println("Vez de " + jogo.getProximoAJogar().getNome() + ". Digite uma posicao (1 a 9)");
+        Jogador jogador = jogo.getProximoAJogar();
+        
+        args[0] = ("Vez de "  + jogo.getProximoAJogar().getNome()+ " jogar.").toUpperCase();
 
-        int posicao = s.nextInt();
+        jogo.getController().updateView("setMensagem", args);
 
-        while (!jogo.getProximoAJogar().joga(posicao)) {
+        try {
 
-            System.err.println("\n" + posicao + " É POSIÇÃO INVÁLIDA! VÁLIDAS SÃO ENTRE 1 e 9 E DESOCUPADAS...");
-            System.out.println("\nSUA VEZ DE JOGAR... digite a posicao (1 a 9) ");
+            int posicao = Integer.parseInt(jogo.getPosicaoClicada());
 
-            posicao = s.nextInt();
+            while (!jogo.getProximoAJogar().joga(posicao)) {
 
+                Thread.sleep(300);
+
+                posicao = Integer.parseInt(jogo.getPosicaoClicada());
+
+            }
+
+            jogo.updateView(jogador);
+            jogo.setPosicaoClicada("0");
+
+        } catch (Exception e) {
+            System.out.println(e.getCause());;
         }
 
     }
@@ -39,10 +51,9 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
     @Override
     public void SetUp(JogoDaVelha jogo) {
 
-        jogo.getJogador1().setNome("Humano1");
-        jogo.getJogador2().setNome("Humano2");
+        jogo.getJogador1().setNome("Joao");
+        jogo.getJogador2().setNome("Kamila");
 
-        s = new Scanner(System.in);
     }
 
 }

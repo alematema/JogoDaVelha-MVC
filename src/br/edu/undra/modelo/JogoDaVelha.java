@@ -9,6 +9,7 @@ import br.edu.undra.modelo.jogo.Tabuleiro;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.modelo.versoes.VersaoComputadorVersusComputadorImpl;
 import br.edu.undra.modelo.versoes.VersaoHumanoVersusComputadorImpl;
+import br.edu.undra.modelo.versoes.VersaoHumanoVersusHumanoImpl;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.CharBuffer;
@@ -62,7 +63,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         setUpJogadores();
 
-        abstracaoVersaoJogoVelha = new VersaoHumanoVersusComputadorImpl();
+        abstracaoVersaoJogoVelha = new VersaoHumanoVersusHumanoImpl();
     }
 
     public JogoDaVelha(String nome, List<T> jogadores, Tabuleiro tabuleiro) {
