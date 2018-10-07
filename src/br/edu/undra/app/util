@@ -1,0 +1,46 @@
+for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+
+            if ("GTK+".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+
+            }
+}
+
+new javax.swing.ImageIcon(getClass().getResource("/imagens/off.24x12.png"));
+
+//DATE FORMATING
+String dateFormat = "HH:mm:ss";//"yyyy-MM-dd HH:mm:ss"
+SimpleDateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+
+
+int answer = JOptionPane.showConfirmDialog(null, " Would you like save stop reason for further analysis ? ", "Stop Reporting", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+//TREAD SLEEP COM PORCENTAGEM
+Thread.sleep((int) (50 * (int) 100 * (1.0 / velocidadeAbastecimento)));
+
+//FROM LONG TO HH:MM::SS
+private String HhMmSs(long tms) {
+        int h;
+        int m;
+        int s;
+        double t;
+        t = tms / 1000.0;
+        // Break time down into hours, minutes, and seconds
+        h = (int) (t / 3600);
+        m = (int) ((t - h * 3600) / 60);
+        s = (int) (t - h * 3600 - m * 60);
+        // Format time as string
+        return new DecimalFormat("00").format(h) + ":" + new DecimalFormat("00").format(m) + ":" + new DecimalFormat("00").format(s);
+    }
+//IMAGE RESIZING SWING JAVA
+ImageIcon icon = new ImageIcon(getClass().getResource(UrlToPngFile));
+Image scaleImage = icon.getImage().getScaledInstance(28, 28,Image.SCALE_DEFAULT);
+
+
+//ICON + FROM RESOURCE
+ImageIcon wifiIcon = new javax.swing.ImageIcon(getClass().getResource("/imagens/wifi.gif"));
+
+
+//conta de 0.01 até 1.00, se i variar de 0 a 100;
+Float.parseFloat(i / 100 + "." + i % 100)

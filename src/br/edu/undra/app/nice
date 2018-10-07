@@ -1,0 +1,4 @@
+nice color
+    Color lightBlue = new Color(192, 192, 255);
+nice font
+    new Font("Comic Sans MS", Font.PLAIN, 48)
