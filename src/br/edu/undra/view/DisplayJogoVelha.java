@@ -2,6 +2,7 @@ package br.edu.undra.view;
 
 import br.edu.undra.MVC.JogoVelhaView;
 import br.edu.undra.interfaces.MVC.Controller;
+import br.edu.undra.modelo.JogoDaVelha;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -35,10 +36,10 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     private JButton clear;
 
     //dimensao do botao
-    private final Dimension dimensaoBotao = new Dimension(80, 80);
+    private final Dimension dimensaoBotao = new Dimension(90, 90);
 
     //a fonte do teclado
-    private final Font font = new Font("Ubuntu", Font.BOLD, 50);
+    private final Font font = new Font("Ubuntu", Font.BOLD, 40);
 
     //a dimensao do teclado
     private final Dimension dimension = new Dimension(500, 500);
@@ -47,8 +48,10 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     private final Color background = Color.WHITE;
 
     private Color corOndeVencer = Color.RED;
+    
+    private Color corNormal = Color.BLACK;
 
-    private Font fontOndeVencer = new Font("Ubuntu", Font.BOLD, 60);
+    private Font fontOndeVencer = new Font("Ubuntu", Font.BOLD, 50);
 
     //a cor de fundo dos botoes
     private final Color botaoBackground = Color.WHITE;
@@ -314,6 +317,42 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
             }
 
         }
+    }
+
+    @Override
+    public void reconfigurar() {
+
+        String value = "";
+
+        um.setText(value);
+        dois.setText(value);
+        tres.setText(value);
+        quatro.setText(value);
+        cinco.setText(value);
+        seis.setText(value);
+        sete.setText(value);
+        oito.setText(value);
+        nove.setText(value);
+
+        um.setForeground(corNormal);
+        um.setFont(font);
+        dois.setForeground(corNormal);
+        dois.setFont(font);
+        tres.setForeground(corNormal);
+        tres.setFont(font);
+        quatro.setForeground(corNormal);
+        quatro.setFont(font);
+        cinco.setForeground(corNormal);
+        cinco.setFont(font);
+        seis.setForeground(corNormal);
+        seis.setFont(font);
+        sete.setForeground(corNormal);
+        sete.setFont(font);
+        oito.setForeground(corNormal);
+        oito.setFont(font);
+        nove.setForeground(corNormal);
+        nove.setFont(font);
+
     }
 
 }

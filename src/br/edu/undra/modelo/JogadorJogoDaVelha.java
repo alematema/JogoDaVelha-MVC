@@ -115,6 +115,14 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
         elemento = elementoAposJogar;
 
     }
+    
+    @Override
+    public void reconfigurar() {
+        atual = 2;
+        elemento = 0;
+        ultimoEstadoAposJogar=null;
+        bolaOuX = "O";
+    }
 
     @Override
     public JogoDaVelha getJogo() {
@@ -141,7 +149,6 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
         getJogo().getUltimosAJogar().add(this);
 
 //        System.out.println(getNome() + " jogou");
-
         setJogou(true);
 
         ultimoEstadoAposJogar = atual + "," + elemento;
@@ -202,5 +209,7 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
         return joga(posicao);
 
     }
+
+    
 
 }

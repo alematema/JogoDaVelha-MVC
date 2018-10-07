@@ -16,7 +16,7 @@ public abstract class Jogador<T extends Jogo> {
     private boolean primeiroAJogar = false;
     private boolean jogou = false;
     private String proximaJogada;
-    private List<String> jogadas = new ArrayList<>();
+    private final List<String> jogadas = new ArrayList<>();
 
     private T jogo;
 
@@ -47,6 +47,8 @@ public abstract class Jogador<T extends Jogo> {
     abstract public boolean jogaNaPosicao(int elemento, int posicao);
 
     abstract public void desfazerUltimaJogada();
+    
+    abstract public void reconfigurar();
 
     public boolean isPrimeiroAJogar() {
         return primeiroAJogar;

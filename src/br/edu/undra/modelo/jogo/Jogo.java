@@ -42,7 +42,8 @@ public abstract class Jogo<T extends Jogador> {
     public abstract JogadorJogoDaVelha getProximoAJogar();
     public abstract void iniciar();
     public abstract boolean terminou();
-
+    public abstract void reiniciar();
+    
     public String getNome() {
         return nome;
     }

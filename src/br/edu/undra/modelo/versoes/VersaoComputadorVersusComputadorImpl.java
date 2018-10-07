@@ -18,7 +18,7 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         jogo.getProximoAJogar().joga();
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(VersaoComputadorVersusComputadorImpl.class.getName()).log(Level.SEVERE, null, ex);
         }

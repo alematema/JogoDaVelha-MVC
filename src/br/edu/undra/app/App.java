@@ -16,12 +16,12 @@ public class App {
         new Thread(() -> {
             new App().start(args);
         }).start();
-        new Thread(() -> {
-            new App().start(args);
-        }).start();
-        new Thread(() -> {
-            new App().start(args);
-        }).start();
+//        new Thread(() -> {
+//            new App().start(args);
+//        }).start();
+//        new Thread(() -> {
+//            new App().start(args);
+//        }).start();
 
         
     }
