@@ -402,15 +402,15 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         getAbstracaoVersaoJogoVelha().SetUp(this);
 
-        args = new Object[2];
-
-        Object[] args2 = new Object[1];
-
         while (!terminou()) {
 
             getAbstracaoVersaoJogoVelha().jogar(this);
 
         }
+        
+        args = new Object[2];
+
+        Object[] args2 = new Object[1];
 
         if (getJogador1().venceu()) {
 
@@ -491,7 +491,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
                 Object[] args = new Object[1];
 
                 args[0] = "REINICIANDO O JOGO... " + new Date();
-                //System.out.println("REINICIANDO O JOGO... " + new Date());
 
                 controller.updateView("setMensagem", args);
 
@@ -508,14 +507,17 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
                 args[0] = jogador1.getNome() + " reconficurado";
                 controller.updateView("setMensagem", args);
+                
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 jogador2.reconfigurar();
                 args[0] = jogador2.getNome() + " reconficurado";
                 controller.updateView("setMensagem", args);
+                
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
