@@ -418,8 +418,8 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
             controller.updateView("marcarOndeVenceu", args);
 
-            args2[0] = (getJogador1().getNome() + " VENCEU " + getOndeVenceu()).toUpperCase();
-            controller.updateView("setMensagem", args2);
+            args2[0] = (getJogador1().getNome() + " VENCEU na " + getOndeVenceu()).toUpperCase();
+            
 
         } else if (getJogador2().venceu()) {
 
@@ -427,15 +427,15 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
             controller.updateView("marcarOndeVenceu", args);
 
-            args2[0] = (getJogador2().getNome() + " VENCEU " + getOndeVenceu()).toUpperCase();
-            controller.updateView("setMensagem", args2);
+            args2[0] = (getJogador2().getNome() + " VENCEU na " + getOndeVenceu()).toUpperCase();
 
         } else {
 
             args2[0] = " >>>>>>>>>>>>>> EMPATOU <<<<<<<<<<<<<<<";
-            controller.updateView("setMensagem", args2);
 
         }
+        
+        controller.updateView("setMensagem", args2);
 
         try {
             Thread.sleep(2500);
@@ -461,7 +461,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         Object[] args2 = new Object[1];
 
-        args2[0] = (jogador.getNome() + " jogou.").toUpperCase();
+        args2[0] = (jogador.getNome() + " jogou").toUpperCase();
         controller.updateView("setMensagem", args2);
 
         for (int posicao = 1; posicao <= getTabuleiro().getDimensao() * getTabuleiro().getDimensao(); posicao++) {
