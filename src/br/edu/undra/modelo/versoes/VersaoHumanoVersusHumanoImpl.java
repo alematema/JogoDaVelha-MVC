@@ -2,6 +2,7 @@ package br.edu.undra.modelo.versoes;
 
 import br.edu.undra.modelo.JogoDaVelha;
 import br.edu.undra.modelo.jogo.Jogador;
+import br.undra.calculadorproximajogada.CalculadorProximaJogadaIA;
 
 /**
  * Uma implementação das versoes do jogo da velha. <br>
@@ -70,6 +71,11 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
 
     @Override
     public void setVelocity(int newValeu) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

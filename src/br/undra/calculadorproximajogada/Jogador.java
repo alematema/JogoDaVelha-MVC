@@ -7,10 +7,9 @@ import java.util.Map;
 import java.util.Random;
 
 //import com.rits.cloning.Cloner;
-
 public class Jogador {
 
-    private JogoDaVelha jogoDaVelha;
+    private JogoDaVelhaWrapped jogoDaVelha;
     private int proxima;
     private int anterior;
     private JogadorComecaOJogo jogadorComecaOJogo;
@@ -24,8 +23,9 @@ public class Jogador {
     private Map<Integer, Double> probabilidades = new HashMap<>();
     private boolean isPrimeiraJogada = Boolean.TRUE;
     private Analisador analisador;
-    private List<JogoDaVelha> espaco = new ArrayList<>();
+    private List<JogoDaVelhaWrapped> espaco = new ArrayList<>();
     private Boolean verbose = Boolean.FALSE;
+    private CalculadorProximaJogadaIA calculadorProximaJogada;
 
     /**
      * @return the posicoesLivres
@@ -50,23 +50,28 @@ public class Jogador {
     /**
      * @return the espaco
      */
-    public List<JogoDaVelha> getEspaco() {
+    public List<JogoDaVelhaWrapped> getEspaco() {
         return espaco;
     }
 
     /**
      * @param espaco the espaco to set
      */
-    public void setEspaco(List<JogoDaVelha> espaco) {
+    public void setEspaco(List<JogoDaVelhaWrapped> espaco) {
         this.espaco = espaco;
     }
 
-    public Jogador(JogoDaVelha jogoDaVelha, JogadorComecaOJogo comecaOJogo, Analisador analisador) {
+    public Jogador(JogoDaVelhaWrapped jogoDaVelha, JogadorComecaOJogo comecaOJogo, Analisador analisador) {
         this(jogoDaVelha, comecaOJogo);
         this.analisador = analisador;
     }
 
-    public Jogador(JogoDaVelha jogoDaVelha, JogadorComecaOJogo comecaOJogo) {
+    public Jogador(JogoDaVelhaWrapped jogoDaVelha, JogadorComecaOJogo comecaOJogo, Analisador analisador, CalculadorProximaJogadaIA calculadorProximaJogada) {
+        this(jogoDaVelha, comecaOJogo, analisador);
+        this.calculadorProximaJogada = calculadorProximaJogada;
+    }
+
+    public Jogador(JogoDaVelhaWrapped jogoDaVelha, JogadorComecaOJogo comecaOJogo) {
 
         this.jogoDaVelha = jogoDaVelha;
 
@@ -101,14 +106,14 @@ public class Jogador {
     /**
      * @return the jogoDaVelha
      */
-    public JogoDaVelha getJogoDaVelha() {
+    public JogoDaVelhaWrapped getJogoDaVelha() {
         return jogoDaVelha;
     }
 
     /**
      * Setter para logica de clone em Analisador
      */
-    public void getJogoDaVelha(JogoDaVelha jogoDaVelha) {
+    public void getJogoDaVelha(JogoDaVelhaWrapped jogoDaVelha) {
         this.jogoDaVelha = jogoDaVelha;
     }
 
@@ -189,6 +194,9 @@ public class Jogador {
             if (verbose) {
                 System.out.print("\tPOSICOES LIVRES ");
                 this.posicoesLivres.forEach(p -> System.out.print((p + 1) + ","));
+                String posicoesLivres = "";
+
+                calculadorProximaJogada.setMensagemConfigurador("POSICOES LIVRES ");
                 System.out.println("");
                 System.out.println("");
             }
@@ -198,8 +206,10 @@ public class Jogador {
 
             if (verbose) {
                 System.out.print("\tPOSICOES EM QUE PERDERIA SE JOGASSE ");
+                calculadorProximaJogada.setMensagemConfigurador("POSICOES EM QUE PERDERIA SE JOGASSE ");
                 if (this.posicoesEmQuePerde.isEmpty()) {
                     System.out.print(": NENHUMA");
+                    calculadorProximaJogada.setMensagemConfigurador(": NENHUMA ");
                 } else {
                     this.posicoesEmQuePerde.forEach(p -> System.out.print((p + 1) + ","));
                 }
@@ -225,6 +235,7 @@ public class Jogador {
                     System.out.print("\tCALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " )");
                     System.out.println("");
                     System.out.println("");
+                    calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
                 }
 
                 for (int i = 0; i < this.posicoesLivres.size(); i++) {
@@ -237,6 +248,10 @@ public class Jogador {
 
                         double proba = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(this.posicoesLivres.get(i)).doJogo(getJogoDaVelha()).getProbabilidadeDeVencer();
                         if (verbose) {
+                            calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
+
+                            String probaDeGanharEmI = "PROBABILIDADE  " + (100 * proba) + " DE GANHAR, JOGANDO NA POSIÇAO " + (this.posicoesLivres.get(i) + 1);
+                            calculadorProximaJogada.setMensagemConfigurador(probaDeGanharEmI);
                             System.out.printf("\tPROBABILIDADE  %.2f  DE GANHAR, JOGANDO NA POSIÇAO %d \n", 100 * proba, this.posicoesLivres.get(i) + 1);
                         }
 
@@ -256,6 +271,12 @@ public class Jogador {
             System.out.println("\n\n\tMELHOR POSICAO  " + (melhorPosicao + 1));
             System.out.printf("\tMAIOR PROBABILIDADE %.2f \n", 100 * maiorProbabilidade);
             System.out.println("\n\n--------------------------------------------------------");
+
+            calculadorProximaJogada.setMensagemConfigurador("MELHOR POSICAO  " +  (melhorPosicao + 1));
+
+            String probaDeGanharEmI = "MAIOR PROBABILIDADE  " + (100 * maiorProbabilidade);
+            calculadorProximaJogada.setMensagemConfigurador(probaDeGanharEmI);
+
         }
 
         setEspaco(analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(melhorPosicao).doJogo(getJogoDaVelha()).recalcularEspaco());
@@ -266,7 +287,7 @@ public class Jogador {
 
         setVezDeJogar(Boolean.FALSE);
         getOponente().setVezDeJogar(Boolean.TRUE);
-        
+
         return melhorPosicao;
     }
 
@@ -346,9 +367,9 @@ public class Jogador {
 
     public boolean jogaContraComputador(int posicao) {
 
-        List<JogoDaVelha> espacoRecalc = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(posicao).doJogo(getJogoDaVelha()).recalcularEspaco();
-        
-        if ( espacoRecalc == null) {
+        List<JogoDaVelhaWrapped> espacoRecalc = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(posicao).doJogo(getJogoDaVelha()).recalcularEspaco();
+
+        if (espacoRecalc == null) {
             return false;
         } else {
             setEspaco(espacoRecalc);

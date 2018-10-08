@@ -46,6 +46,12 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
         this.elemento = elemento;
     }
 
+    /**
+     * Retorna string representando o ultimo estado<br>
+     * apos jogar valor=atual em alguma posicao valida;<br>
+     * A string tem a forma atual,elemento
+     * @return 
+     */
     public String getUltimoEstadoAposJogar() {
         return ultimoEstadoAposJogar;
     }
@@ -148,7 +154,6 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
 
         getJogo().getUltimosAJogar().add(this);
 
-//        System.out.println(getNome() + " jogou");
         setJogou(true);
 
         ultimoEstadoAposJogar = atual + "," + elemento;
@@ -172,9 +177,6 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
         getJogadas().add(linha + "," + coluna + "," + elemento);
 
         getJogo().getUltimosAJogar().add(this);
-
-//        System.out.println(getNome() + " jogou " + elemento + " na posicao " + linha + "," + coluna);
-//        System.out.println(getNome() + " jogou");
 
         setJogou(true);
 

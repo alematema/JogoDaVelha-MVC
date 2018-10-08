@@ -1,7 +1,9 @@
 package br.edu.undra.modelo.versoes;
 
+import br.edu.undra.modelo.JogadorJogoDaVelha;
 import br.edu.undra.modelo.JogoDaVelha;
 import br.edu.undra.modelo.jogo.Jogador;
+import br.undra.calculadorproximajogada.CalculadorProximaJogadaIA;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +16,7 @@ import java.util.logging.Logger;
 public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogoVelha {
 
     private int velocidade = 50;
-    
+
     @Override
     public void jogar(JogoDaVelha jogo) {
 
@@ -24,7 +26,7 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         jogo.updateView(jogador);
 
         int sleep = (int) (200 * (int) 100 * (1.0 / velocidade));
-        
+
         try {
             Thread.sleep(sleep);
         } catch (InterruptedException ex) {
@@ -51,6 +53,25 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
     @Override
     public void setVelocity(int newValeu) {
         velocidade = newValeu;
+    }
+
+    @Override
+    public int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA) {
+        
+        jogador = (JogadorJogoDaVelha) jogador;
+        
+        int linha;
+        int coluna;
+        int posicao = 0;
+
+        if (calculadorProximaJogadaIA.jogoTerminou()) {
+            calculadorProximaJogadaIA.reconfigurar();
+        }else{
+        }
+
+        posicao = calculadorProximaJogadaIA.getMelhorJogadaAlternandoEntreJogadores();
+
+        return posicao;
     }
 
 }

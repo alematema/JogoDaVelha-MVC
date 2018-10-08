@@ -11,13 +11,21 @@ public class GeradorDeJogosDaVelha {
 
     private Map<String, List<Integer>> bases;
     private List<Integer> base;
-    private Map<String, JogoDaVelha> jogos;
+    private Map<String, JogoDaVelhaWrapped> jogos;
     private boolean verbose = false;
+
+    public GeradorDeJogosDaVelha() {
+    }
+
+    private CalculadorProximaJogadaIA calculadorProximaJogada;
+    GeradorDeJogosDaVelha(CalculadorProximaJogadaIA calculadorProximaJogada) {
+        this.calculadorProximaJogada = calculadorProximaJogada;
+    }
 
     /**
      * @return the jogos
      */
-    public Map<String, JogoDaVelha> getJogos() {
+    public Map<String, JogoDaVelhaWrapped> getJogos() {
         return jogos;
     }
 
@@ -25,7 +33,7 @@ public class GeradorDeJogosDaVelha {
         this.verbose = verbose;
     }
     
-     public JogoDaVelha getJogoById(String base) {
+     public JogoDaVelhaWrapped getJogoById(String base) {
         if (getJogos() == null) {
             throw new RuntimeException("Erro! Crie os jogos antes de recuperar algum !!!");
         }
@@ -60,6 +68,7 @@ public class GeradorDeJogosDaVelha {
     public Map<String, List<Integer>> gerarBases() {
 
         if(verbose)System.out.println("\t\tCriando bases");
+        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Criando bases");
 
         while (true) {
 
@@ -69,12 +78,15 @@ public class GeradorDeJogosDaVelha {
             if (getBases().put(getBase().toString(), new ArrayList<>(getBase())) == null) {
                 if (getBases().keySet().size() == 362880 / 4) {
                     if(verbose)System.out.println("\t\t\t25% bases criadas");
+                    if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("25% bases criadas");
                 }
                 if (getBases().keySet().size() == 362880 / 2) {
                    if(verbose) System.out.println("\t\t\t50% bases criadas");
+                   if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("50% bases criadas");
                 }
                 if (getBases().keySet().size() == 3 * 362880 / 4) {
                     if(verbose)System.out.println("\t\t\t75% bases criadas");
+                    if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("75% bases criadas");
                 }
                 //System.out.println(getBase() + ","+getBases().keySet().size());
             }
@@ -87,6 +99,7 @@ public class GeradorDeJogosDaVelha {
         }
 
         if(verbose)System.out.println("\t\t100% bases criadas");
+        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("100% bases criadas");
 
         return getBases();
 
@@ -101,10 +114,11 @@ public class GeradorDeJogosDaVelha {
             gerarBases();
 
             for (String base : getBases().keySet()) {
-                jogos.put(base, new JogoDaVelha(new Tabuleiro(getBases().get(base))));
+                jogos.put(base, new JogoDaVelhaWrapped(new Tabuleiro(getBases().get(base))));
                 if (i++ % (getBases().keySet().size() / 10) == 0) {
 
                     if (centos % 3 == 0) {
+                        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Criados " + (centos * 1f / 10f) * 100 + " % do banco de jogos ");
                         if(verbose)System.err.println("\tCriados " + (centos * 1f / 10f) * 100 + " % do banco de jogos ");
                     }
                     centos++;

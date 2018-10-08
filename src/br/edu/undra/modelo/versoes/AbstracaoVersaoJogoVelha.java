@@ -1,6 +1,8 @@
 package br.edu.undra.modelo.versoes;
 
 import br.edu.undra.modelo.JogoDaVelha;
+import br.edu.undra.modelo.jogo.Jogador;
+import br.undra.calculadorproximajogada.CalculadorProximaJogadaIA;
 
 /**
  * Uma abstração das versoes do jogo da velha. <br>
@@ -16,4 +18,5 @@ public interface AbstracaoVersaoJogoVelha {
     void SetUp(JogoDaVelha jogo);
     void liberarJogada();
     void setVelocity(int newValeu);
+    int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA);
 }

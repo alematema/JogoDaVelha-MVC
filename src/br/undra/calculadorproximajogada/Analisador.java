@@ -1,55 +1,54 @@
 package br.undra.calculadorproximajogada;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import br.undra.calculadorproximajogada.Jogador;
-import br.undra.calculadorproximajogada.JogadorComecaOJogo;
-import br.undra.calculadorproximajogada.JogoDaVelha;
-import br.undra.calculadorproximajogada.Tabuleiro;
-import br.undra.calculadorproximajogada.GeradorDeJogosDaVelha;
 
 public class Analisador {
 
     private GeradorDeJogosDaVelha geradorDeJogosDaVelha;
     private List<String> bases;
     List<Integer> ultimasJogadasAnalisadas = new ArrayList<>();
-    List<JogoDaVelha> possibilidades;
+    List<JogoDaVelhaWrapped> possibilidades;
     List<Integer> ultimasJogadassAnalisadasFake = new ArrayList<>();
     List<Integer> baseCorrenteFake = new ArrayList<>();
     private int jogandoNaPosicao;
     private int proximaJogada;
-    private List<JogoDaVelha> possibilidadesRemanescentes;
-    private List<JogoDaVelha> espaco;
-    private List<JogoDaVelha> espacoTotal;
+    private List<JogoDaVelhaWrapped> possibilidadesRemanescentes;
+    private List<JogoDaVelhaWrapped> espaco;
+    private List<JogoDaVelhaWrapped> espacoTotal;
     private Jogador jogador;
     private int posicao;
-    private JogoDaVelha jogoDaVelha;
+    private JogoDaVelhaWrapped jogoDaVelha;
     private double maiorProbabilidade = 0.0;
     private int melhorPosicao = 0;
     private Boolean verbose = Boolean.FALSE;
     private List<Integer> ondePerderia = new ArrayList<>();
     private List<Integer> ondeNaoPerderia = new ArrayList<>();
 
+
     /**
      * @return the espacoTotal
      */
-    public List<JogoDaVelha> getEspacoTotal() {
+    public List<JogoDaVelhaWrapped> getEspacoTotal() {
         return espacoTotal;
     }
 
-    public Analisador(boolean verbose) {
-        geradorDeJogosDaVelha = new GeradorDeJogosDaVelha();
+    public Analisador(boolean verbose, CalculadorProximaJogadaIA calculadorProximaJogada) {
+        geradorDeJogosDaVelha = new GeradorDeJogosDaVelha(calculadorProximaJogada);
         setVerbose(verbose);
         geradorDeJogosDaVelha.setVerbose(verbose);
         geradorDeJogosDaVelha.gerarTodosJogos();
         System.err.println("Banco de jogos criado [ok]");
         System.err.println("Ordenando o Banco de jogos ...");
+        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Banco de jogos criado [ok]");
+        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Ordenando o Banco de jogos ...");
         bases = new ArrayList<>(geradorDeJogosDaVelha.getJogos().keySet());
         Collections.sort(bases);
         System.err.println("Banco de jogos ordenado [ok]");
+        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Banco de jogos ordenado [ok]");
+        
         this.espacoTotal = new ArrayList<>(geradorDeJogosDaVelha.getJogos().values());
 
     }
@@ -71,7 +70,8 @@ public class Analisador {
         // posicao
 
         if (!jogou) {
-            throw new RuntimeException("Não foi possível jogar na posição " + posicao);
+            System.out.println("Não foi possível jogar na posição " + posicao + "/ " + jogador.getClass().getName());
+            //throw new RuntimeException("Não foi possível jogar na posição " + posicao);
         }
 
         boolean perderia = false;
@@ -108,8 +108,8 @@ public class Analisador {
         return perderia;
     }
 
-    public boolean oponenteVenceriaNaProximaJogada(Jogador atual, Jogador oponente, JogoDaVelha jogoDaVelha,
-            int jogandoNaPosicao, int proximaJogada, List<JogoDaVelha> espaco) {
+    public boolean oponenteVenceriaNaProximaJogada(Jogador atual, Jogador oponente, JogoDaVelhaWrapped jogoDaVelha,
+            int jogandoNaPosicao, int proximaJogada, List<JogoDaVelhaWrapped> espaco) {
 
         boolean venceria = false;
 
@@ -119,8 +119,8 @@ public class Analisador {
 
     }
 
-    public double getProbabilidadeDeVencer(JogoDaVelha jogoDaVelha, int jogandoNaPosicao, int daProximaJogada,
-            List<JogoDaVelha> espaco) {
+    public double getProbabilidadeDeVencer(JogoDaVelhaWrapped jogoDaVelha, int jogandoNaPosicao, int daProximaJogada,
+            List<JogoDaVelhaWrapped> espaco) {
 
         this.setJogandoNaPosicao(jogandoNaPosicao);
         this.setProximaJogada(daProximaJogada);
@@ -132,7 +132,7 @@ public class Analisador {
                 this.getPossibilidades(jogoDaVelha, getEspaco(), getJogandoNaPosicao(), getProximaJogada()));
 
         int quantosJogosGanhamNoEspacoRemanascente = 0;
-        for (JogoDaVelha jogo : getPossibilidadesRemanescentes()) {
+        for (JogoDaVelhaWrapped jogo : getPossibilidadesRemanescentes()) {
             if (jogo.jogadorVenceriaComEssaJogada(getProximaJogada())) {
                 quantosJogosGanhamNoEspacoRemanascente++;
             }
@@ -144,7 +144,7 @@ public class Analisador {
         return probabilidade;
     }
 
-    public List<JogoDaVelha> getPossibilidades(JogoDaVelha jogoDaVelha, List<JogoDaVelha> jogos, int posicao,
+    public List<JogoDaVelhaWrapped> getPossibilidades(JogoDaVelhaWrapped jogoDaVelha, List<JogoDaVelhaWrapped> jogos, int posicao,
             int daProximaJogada) {
 
         setUpParaPrevisao(jogoDaVelha, jogos, posicao, daProximaJogada);
@@ -159,9 +159,9 @@ public class Analisador {
 
         } else {// ha pelo menos uma jogada analisada
 
-            List<JogoDaVelha> jogosQueNaoSaoCaminho = new ArrayList<>();
+            List<JogoDaVelhaWrapped> jogosQueNaoSaoCaminho = new ArrayList<>();
 
-            for (JogoDaVelha jogo : possibilidades) {
+            for (JogoDaVelhaWrapped jogo : possibilidades) {
 
                 selecionarImpossibilidadesParaPrevisao(baseCorrente, i, jogosQueNaoSaoCaminho, jogo);
 
@@ -180,7 +180,7 @@ public class Analisador {
      * @param posicao
      * @param daProximaJogada
      */
-    private void setUpParaPrevisao(JogoDaVelha jogoDaVelha, List<JogoDaVelha> jogos, int posicao, int daProximaJogada) {
+    private void setUpParaPrevisao(JogoDaVelhaWrapped jogoDaVelha, List<JogoDaVelhaWrapped> jogos, int posicao, int daProximaJogada) {
 
 //        if (verbose) {
 //            System.out.println("\n" + daProximaJogada);
@@ -207,7 +207,7 @@ public class Analisador {
      * @param jogo
      */
     private void selecionarImpossibilidadesParaPrevisao(List<Integer> baseCorrente, int i,
-            List<JogoDaVelha> osQueNaoFazemMatch, JogoDaVelha jogo) {
+            List<JogoDaVelhaWrapped> osQueNaoFazemMatch, JogoDaVelhaWrapped jogo) {
         boolean matches = true;
         int j = 0;
         for (j = 0; j < ultimasJogadassAnalisadasFake.size(); j++) {
@@ -263,7 +263,7 @@ public class Analisador {
      * futuros POSSÍVEIS, <br>
      * ou as únicas possibilidades para as quais o jogo EVOLUIRÁ.
      */
-    private List<JogoDaVelha> getEspacoRecalculado(JogoDaVelha jogoAtual) {
+    private List<JogoDaVelhaWrapped> getEspacoRecalculado(JogoDaVelhaWrapped jogoAtual) {
 
         if (isPrimeiraJogada(espaco)) {
             selecionarPossibilidades(espaco, jogoAtual.getBaseCorrente(), posicao);
@@ -279,9 +279,9 @@ public class Analisador {
         if (verbose) {
             System.out.print("\tRECALCULADO ESPAÇO : #" + tamanhoEspacoAtual);
         }
-        List<JogoDaVelha> jogosFuturosPossiveis = new ArrayList<>();
+        List<JogoDaVelhaWrapped> jogosFuturosPossiveis = new ArrayList<>();
 
-        for (JogoDaVelha jogo : espaco) {
+        for (JogoDaVelhaWrapped jogo : espaco) {
 
             boolean isJogoPossivel = true;
 
@@ -313,7 +313,7 @@ public class Analisador {
 
     }
 
-    public List<JogoDaVelha> getPossibilidades(JogoDaVelha jogoDaVelha, List<JogoDaVelha> possibilidades) {
+    public List<JogoDaVelhaWrapped> getPossibilidades(JogoDaVelhaWrapped jogoDaVelha, List<JogoDaVelhaWrapped> possibilidades) {
 
         List<Integer> baseCorrente = jogoDaVelha.getBaseCorrente();
         int i = 0;
@@ -326,9 +326,9 @@ public class Analisador {
 
         } else {// ha pelo menos uma jogada analisada
 
-            List<JogoDaVelha> jogosQueNaoSaoCaminho = new ArrayList<>();
+            List<JogoDaVelhaWrapped> jogosQueNaoSaoCaminho = new ArrayList<>();
 
-            for (JogoDaVelha jogo : possibilidades) {
+            for (JogoDaVelhaWrapped jogo : possibilidades) {
 
                 selecionarImpossibilidades(baseCorrente, i, jogosQueNaoSaoCaminho, jogo);
 
@@ -348,8 +348,8 @@ public class Analisador {
      * @param possibilidades
      * @param jogosQueNaoSaoCaminho
      */
-    private void selecionarPossibilidades(List<JogoDaVelha> possibilidades, List<JogoDaVelha> jogosQueNaoSaoCaminho) {
-        for (JogoDaVelha jogo : jogosQueNaoSaoCaminho) {
+    private void selecionarPossibilidades(List<JogoDaVelhaWrapped> possibilidades, List<JogoDaVelhaWrapped> jogosQueNaoSaoCaminho) {
+        for (JogoDaVelhaWrapped jogo : jogosQueNaoSaoCaminho) {
             possibilidades.remove(jogo);
             //System.out.println(" jogo removido "+ jogo.getTabuleiro().getBase().toString());
         }
@@ -361,8 +361,8 @@ public class Analisador {
      * @param jogosQueNaoSaoCaminho
      * @param jogo
      */
-    private void selecionarImpossibilidades(List<Integer> baseCorrente, int i, List<JogoDaVelha> jogosQueNaoSaoCaminho,
-            JogoDaVelha jogo) {
+    private void selecionarImpossibilidades(List<Integer> baseCorrente, int i, List<JogoDaVelhaWrapped> jogosQueNaoSaoCaminho,
+            JogoDaVelhaWrapped jogo) {
         boolean matches = true;
 
         matches = isJogoUmCaminho(baseCorrente, jogo, matches);
@@ -378,7 +378,7 @@ public class Analisador {
      * @param baseCorrente
      * @param i
      */
-    private void selecionarPossibilidades(List<JogoDaVelha> possibilidades, List<Integer> baseCorrente, int i) {
+    private void selecionarPossibilidades(List<JogoDaVelhaWrapped> possibilidades, List<Integer> baseCorrente, int i) {
         for (String base : bases) {
 
             if (isUmCaminhoPossivel(baseCorrente, i, base)) {
@@ -393,7 +393,7 @@ public class Analisador {
      * @param possibilidades
      * @return
      */
-    private boolean isPrimeiraJogada(List<JogoDaVelha> possibilidades) {
+    private boolean isPrimeiraJogada(List<JogoDaVelhaWrapped> possibilidades) {
         return possibilidades.isEmpty();
     }
 
@@ -404,7 +404,7 @@ public class Analisador {
      * @param matches
      * @return
      */
-    private boolean isJogoUmCaminho(List<Integer> baseCorrente, int i, JogoDaVelha jogo, boolean matches) {
+    private boolean isJogoUmCaminho(List<Integer> baseCorrente, int i, JogoDaVelhaWrapped jogo, boolean matches) {
         return jogo.getTabuleiro().getBase().get(i) == baseCorrente.get(i) && matches;
     }
 
@@ -414,7 +414,7 @@ public class Analisador {
      * @param matches
      * @return
      */
-    private boolean isJogoUmCaminho(List<Integer> baseCorrente, JogoDaVelha jogo, boolean matches) {
+    private boolean isJogoUmCaminho(List<Integer> baseCorrente, JogoDaVelhaWrapped jogo, boolean matches) {
         int j;
         //System.err.println("jogo? "+ jogo.getTabuleiro().getBase() + " base corrente do jogo? " + jogo.getTabuleiro().getBaseCorrente()+ " base corrente " + baseCorrente);
         for (j = 0; j < ultimasJogadasAnalisadas.size(); j++) {
@@ -459,7 +459,7 @@ public class Analisador {
         return baseCorrente.get(i) != 0 && !ultimasJogadasAnalisadas.contains(baseCorrente.get(i));
     }
 
-    public Analisador noEspaco(List<JogoDaVelha> espaco) {
+    public Analisador noEspaco(List<JogoDaVelhaWrapped> espaco) {
         this.espaco = espaco;
         return this;
     }
@@ -479,12 +479,12 @@ public class Analisador {
                 this.espaco);
     }
 
-    public Analisador doJogo(JogoDaVelha jogoDaVelha) {
+    public Analisador doJogo(JogoDaVelhaWrapped jogoDaVelha) {
         this.jogoDaVelha = jogoDaVelha;
         return this;
     }
 
-    public List<JogoDaVelha> recalcularEspaco() {
+    public List<JogoDaVelhaWrapped> recalcularEspaco() {
 
         if (this.jogador.jogaNaPosicao(this.posicao)) {
 
@@ -527,19 +527,19 @@ public class Analisador {
 
     }
 
-    public List<JogoDaVelha> getEspaco() {
+    public List<JogoDaVelhaWrapped> getEspaco() {
         return espaco;
     }
 
-    public void setEspaco(List<JogoDaVelha> espaco) {
+    public void setEspaco(List<JogoDaVelhaWrapped> espaco) {
         this.espaco = espaco;
     }
 
-    public List<JogoDaVelha> getPossibilidadesRemanescentes() {
+    public List<JogoDaVelhaWrapped> getPossibilidadesRemanescentes() {
         return possibilidadesRemanescentes;
     }
 
-    public void setPossibilidadesRemanescentes(List<JogoDaVelha> possibilidadesRemanescentes) {
+    public void setPossibilidadesRemanescentes(List<JogoDaVelhaWrapped> possibilidadesRemanescentes) {
         this.possibilidadesRemanescentes = possibilidadesRemanescentes;
     }
 
@@ -581,12 +581,12 @@ public class Analisador {
         this.verbose = Boolean.TRUE;
     }
 
-    private List<JogoDaVelha> getEspaco(int posicao, int valor) {
+    private List<JogoDaVelhaWrapped> getEspaco(int posicao, int valor) {
 
         // if(getEspaco()!=null&&getEspaco().isEmpty())setEspaco(espacoTotal);
-        List<JogoDaVelha> espacoRestrito = new ArrayList<>();
+        List<JogoDaVelhaWrapped> espacoRestrito = new ArrayList<>();
 
-        for (JogoDaVelha jogo : getEspacoTotal()) {
+        for (JogoDaVelhaWrapped jogo : getEspacoTotal()) {
             if (jogo.getBaseCorrente().get(posicao) == valor) {
                 espacoRestrito.add(jogo);
             }
@@ -595,12 +595,12 @@ public class Analisador {
         return espacoRestrito;
     }
 
-    public List<JogoDaVelha> getSubEspaco(int posicao, int valor) {
+    public List<JogoDaVelhaWrapped> getSubEspaco(int posicao, int valor) {
 
         // if(getEspaco()!=null&&getEspaco().isEmpty())setEspaco(espacoTotal);
-        List<JogoDaVelha> espacoRestrito = new ArrayList<>();
+        List<JogoDaVelhaWrapped> espacoRestrito = new ArrayList<>();
 
-        for (JogoDaVelha jogo : getEspaco()) {
+        for (JogoDaVelhaWrapped jogo : getEspaco()) {
             if (jogo.getBaseCorrente().get(posicao) == valor) {
                 espacoRestrito.add(jogo);
             }
@@ -696,19 +696,5 @@ public class Analisador {
         geradorDeJogosDaVelha.setVerbose(verbose);
     }
 
-    public static void main(String[] args) throws IOException {
-
-        Analisador analisador = new Analisador(true);
-        JogoDaVelha jogoDaVelha = new JogoDaVelha(new Tabuleiro());
-
-        Jogador jogador1 = new Jogador(jogoDaVelha, JogadorComecaOJogo.SIM);
-        Jogador jogador2 = new Jogador(jogoDaVelha, JogadorComecaOJogo.NAO);
-
-        jogador1.setOponente(jogador2);
-        jogador2.setOponente(jogador1);
-
-        System.out.println(jogador1);
-
-    }
 
 }

@@ -423,6 +423,20 @@ public class Tabuleiro {
 
         return coluna;
     }
+    
+    /**
+     * Transforma em posicao que corresponde à linha e à coluna.
+     *
+     * @param linha linha válida : maior ou igual que 1 e menor ou igual que dimensao.
+     * @param coluna coluna válida : maior ou igual que 1 e menor ou igual que dimensao.
+     * @return a posicao correspondente à linha válida e coluna válida.<br>
+     * POSICAO_INVALIDA, caso contrário
+     */
+    public int transformarEmPosicao(int linha, int coluna) {
+
+        if( ! validar(linha, coluna) ) return (int)POSICAO_INVALIDA;
+        return ((linha - 1) * dimensao + (coluna - 1)) + 1;
+    }
 
     /**
      * Valida se linha e coluna estao dentro dos limites.

@@ -2,7 +2,7 @@ package br.undra.calculadorproximajogada;
 
 import java.util.List;
 
-public class JogoDaVelha {
+public class JogoDaVelhaWrapped {
 
 	private Tabuleiro tabuleiro;
 	private int valor;
@@ -61,17 +61,17 @@ public class JogoDaVelha {
 		return false;
 	}
 
-	public JogoDaVelha(Tabuleiro tabuleiro) {
+	public JogoDaVelhaWrapped(Tabuleiro tabuleiro) {
 		this.tabuleiro = tabuleiro;
 		this.id = tabuleiro.getBase().toString();
 	}
 
-	public JogoDaVelha comMascara() {
+	public JogoDaVelhaWrapped comMascara() {
 		this.setComMascara(Boolean.TRUE);
 		return this;
 	}
 
-	public JogoDaVelha semMascara() {
+	public JogoDaVelhaWrapped semMascara() {
 		this.setComMascara(Boolean.FALSE);
 		return this;
 	}
@@ -84,12 +84,12 @@ public class JogoDaVelha {
 		return this.tabuleiro.getBaseCorrente();
 	}
 
-	public JogoDaVelha setValor(int valor) {
+	public JogoDaVelhaWrapped setValor(int valor) {
 		this.valor = valor;
 		return this;
 	}
 
-	public JogoDaVelha naPosicao(int posicao) {
+	public JogoDaVelhaWrapped naPosicao(int posicao) {
 		this.posicao = posicao;
 		return this;
 	}
@@ -214,10 +214,10 @@ public class JogoDaVelha {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof JogoDaVelha)) {
+		if (!(obj instanceof JogoDaVelhaWrapped)) {
 			return false;
 		}
-		JogoDaVelha other = (JogoDaVelha) obj;
+		JogoDaVelhaWrapped other = (JogoDaVelhaWrapped) obj;
 		if (id == null) {
 			if (other.id != null) {
 				return false;

@@ -9,7 +9,9 @@ import br.edu.undra.modelo.jogo.Tabuleiro;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.modelo.versoes.VersaoComputadorVersusComputadorImpl;
 import br.edu.undra.modelo.versoes.VersaoHumanoVersusComputadorImpl;
-import br.edu.undra.modelo.versoes.VersaoHumanoVersusHumanoImpl;
+import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaIAParaJogoVelhaImpl;
+import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaSimplesParaJogoVelhaImpl;
+import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.CharBuffer;
@@ -45,25 +47,41 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     private Set<T> ultimosAJogar = new HashSet<>();
 
     private AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha;
+
+    private String posicaoClicada = "0";
+
+    private CalculadorProximaJogada calculadorProximaJogada;
     
-    private String posicaoClicada="0";
+    private Jogador ultimoAJogar;
 
     public JogoDaVelha(String nome) {
 
         super();
 
+        setUp(nome);
+
+        Tabuleiro tabuleiro = new Tabuleiro(3);
+        setTabuleiro(tabuleiro);
+        
+        
+        abstracaoVersaoJogoVelha = new VersaoHumanoVersusComputadorImpl();
+        
+        calculadorProximaJogada = new CalculadorProximaJogadaSimplesParaJogoVelhaImpl();
+        
+    }
+
+    private void setUp(String nome) {
+        
         jogador1 = new JogadorJogoDaVelha("jogador 1");
         jogador2 = new JogadorJogoDaVelha("jogador 2");
-        Tabuleiro tabuleiro = new Tabuleiro(3);
+        
 
         List<JogadorJogoDaVelha> jogadores = Arrays.asList(jogador1, jogador2);
         setNome(nome);
         setJogadores(jogadores);
-        setTabuleiro(tabuleiro);
-
+        
+        
         setUpJogadores();
-
-        abstracaoVersaoJogoVelha = new VersaoHumanoVersusComputadorImpl();
     }
 
     public JogoDaVelha(String nome, List<T> jogadores, Tabuleiro tabuleiro) {
@@ -122,6 +140,14 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         this.id = id;
     }
 
+    public CalculadorProximaJogada getCalculadorProximaJogada() {
+        return calculadorProximaJogada;
+    }
+
+    public void setCalculadorProximaJogada(CalculadorProximaJogada calculadorProximaJogada) {
+        this.calculadorProximaJogada = calculadorProximaJogada;
+    }
+    
     @Override
     public String toString() {
 
@@ -241,6 +267,16 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
     }
 
+    /**
+     * Devolve proxima jogada para um jogador.<br>
+     * A String devolvida está no formato linha,coluna<br>
+     * Por exemplo, uma proxima jogada pode ser a string  "2,1". Nela,
+     * <br>o primeiro valor, 2, corresponde à linha;
+     * <br>o segundo valor, 1, corresponde à coluna;
+     *
+     * @param jogador o jogador
+     * @return Uma string representando uma posição LIVRE do tabuleiro.
+     */
     @Override
     public String getProximaJogadaParaJogador(Jogador jogador) {
 
@@ -248,26 +284,9 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
             return null;
         }
 
-        List<Object> posicoesLivres = getTabuleiro().getPosicoesLivres();
+        int[] proximaJogada = getCalculadorProximaJogada().calcularLinhaEColuna(jogador);
 
-        byte[] seed = new byte[6];
-        seed[0] = 2;
-        seed[1] = -1;
-        seed[2] = 12;
-        seed[3] = 11;
-        seed[4] = -25;
-        seed[5] = 30;
-
-        SecureRandom r = new SecureRandom(seed);
-
-        int posicao = r.nextInt(posicoesLivres.size() >= 1 ? posicoesLivres.size() : 1);
-
-        String posicaoLivre = (String) posicoesLivres.get(posicao);
-
-        String[] p = posicaoLivre.split(",");
-
-        //System.out.println("pegando proxima jogada " + p[0] + "," + p[1] + " para " + jogador.getNome() + ", " + System.nanoTime());
-        return p[0] + "," + p[1];
+        return Integer.toString(proximaJogada[0]) + "," + Integer.toString(proximaJogada[1]);
 
     }
 
@@ -407,7 +426,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
             getAbstracaoVersaoJogoVelha().jogar(this);
 
         }
-        
+
         args = new Object[2];
 
         Object[] args2 = new Object[1];
@@ -419,7 +438,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
             controller.updateView("marcarOndeVenceu", args);
 
             args2[0] = (getJogador1().getNome() + " VENCEU na " + getOndeVenceu()).toUpperCase();
-            
 
         } else if (getJogador2().venceu()) {
 
@@ -434,7 +452,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
             args2[0] = " >>>>>>>>>>>>>> EMPATOU <<<<<<<<<<<<<<<";
 
         }
-        
+
         controller.updateView("setMensagem", args2);
 
         try {
@@ -446,8 +464,8 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         reiniciar();
 
     }
+
     
-    private Jogador ultimoAJogar;
 
     public Jogador getUltimoAJogar() {
         return ultimoAJogar;
@@ -456,7 +474,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     public void updateView(Jogador jogador) {
 
         ultimoAJogar = jogador;
-        
+
         Object[] args = new Object[2];
 
         Object[] args2 = new Object[1];
@@ -495,7 +513,11 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         new Thread(new Runnable() {
             @Override
             public void run() {
-
+                
+                setUp(getNome());
+                
+                ultimoAJogar = null;
+                
                 Object[] args = new Object[1];
 
                 args[0] = "REINICIANDO O JOGO... " + new Date();
@@ -515,17 +537,17 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
                 args[0] = jogador1.getNome() + " reconficurado";
                 controller.updateView("setMensagem", args);
-                
+
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
                 jogador2.reconfigurar();
                 args[0] = jogador2.getNome() + " reconficurado";
                 controller.updateView("setMensagem", args);
-                
+
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
@@ -614,7 +636,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         return cb.length();
     }
 
-    public  String getPosicaoClicada() {
+    public String getPosicaoClicada() {
         return posicaoClicada;
     }
 

@@ -302,48 +302,43 @@ public class TabuleiroTest {
     @Test
     public void testGetLinha() {
         System.out.println("getLinha");
-        
+
         int linha = 0;
         int dimensao = 5;
         Tabuleiro tabuleiro = new Tabuleiro(dimensao);
 
-        Map<Integer,List<Object>> lineMap = new HashMap<>();
-        
+        Map<Integer, List<Object>> lineMap = new HashMap<>();
+
         for (int i = 1; i <= dimensao; i++) {
 
             List<Object> line = new ArrayList();
             lineMap.put(i, line);
-            
+
             for (int j = 1; j <= dimensao; j++) {
-                
+
                 String elemento = i + "" + j;
 
                 tabuleiro.set(elemento, i, j);
-                
+
                 line.add(elemento);
 
             }
 
         }
-        
+
         List<Object> expResult = Arrays.asList("11", "12", "13", "14", "15");
         assertEquals(expResult, tabuleiro.getLinha(1));
 
-        
         // testa DENTRO dos limites 1 <= linha <= dimensao
         for (int i = 1; i <= dimensao; i++) {
             assertEquals(lineMap.get(i), tabuleiro.getLinha(i));
         }
-        
+
         // testa FORA dos limites : linha <= 0 e linha >= dimensao + 1 <= linha <= dimensao
         assertEquals(null, tabuleiro.getLinha(0));
-        assertEquals(null, tabuleiro.getLinha(dimensao+1));
-        
-        
-        
-    }
+        assertEquals(null, tabuleiro.getLinha(dimensao + 1));
 
-    
+    }
 
     /**
      * Test of getColuna method, of class Tabuleiro.
@@ -354,33 +349,31 @@ public class TabuleiroTest {
         int coluna = 0;
         int dimensao = 5;
         Tabuleiro tabuleiro = new Tabuleiro(dimensao);
-        
-        
+
         //cria um tabuleiro NxN
         for (int i = 1; i <= dimensao; i++) {
-                       
+
             for (int j = 1; j <= dimensao; j++) {
-                
+
                 String elemento = i + "" + j;
 
                 tabuleiro.set(elemento, i, j);
-                
+
             }
 
         }
 
-        
         //mapeia as colunas do tabuleiro
-        Map<Integer,List<Object>> colunaMap = new HashMap<>();
+        Map<Integer, List<Object>> colunaMap = new HashMap<>();
         for (int col = 1; col <= dimensao; col++) {
 
             List<Object> columm = new ArrayList();
             colunaMap.put(col, columm);
-            
+
             for (int linha = 1; linha <= dimensao; linha++) {
-                
-                columm.add(tabuleiro.get(linha,col));
-                
+
+                columm.add(tabuleiro.get(linha, col));
+
             }
 
         }
@@ -389,11 +382,11 @@ public class TabuleiroTest {
         for (int col = 1; col <= dimensao; col++) {
             assertEquals(colunaMap.get(col), tabuleiro.getColuna(col));
         }
-        
+
         // testa FORA dos limites : coluna <= 0 e coluna >= dimensao + 1 
         assertEquals(null, tabuleiro.getColuna(0));
-        assertEquals(null, tabuleiro.getColuna(dimensao+1));
-        
+        assertEquals(null, tabuleiro.getColuna(dimensao + 1));
+
         System.err.println(tabuleiro);
 //        System.err.println(tabuleiro.getDiagonalPrincipal());
 //        System.err.println(tabuleiro.getDiagonalSecundaria());
@@ -403,19 +396,19 @@ public class TabuleiroTest {
 
         System.err.println(tabuleiro.getPosicoesLivres());
         System.err.println(tabuleiro.get(10));
-        
+
         tabuleiro.set(Tabuleiro.POSICAO_LIVRE, 11);
         System.err.println(tabuleiro);
 
         System.err.println(tabuleiro.getPosicoesLivres());
         System.err.println(tabuleiro.get(11));
-        
+
         tabuleiro = new Tabuleiro(dimensao);
         System.err.println(tabuleiro);
 
         System.err.println(tabuleiro.getPosicoesLivres());
         System.err.println(tabuleiro.get(10));
-        
+
     }
 
     /**
@@ -424,7 +417,7 @@ public class TabuleiroTest {
     @Test
     public void testSet_3args() {
         System.out.println("set_3args");
-       
+
     }
 
     /**
@@ -433,7 +426,7 @@ public class TabuleiroTest {
     @Test
     public void testGet_int_int() {
         System.out.println("get_int_int");
-        
+
     }
 
     /**
@@ -451,7 +444,7 @@ public class TabuleiroTest {
     @Test
     public void testGetDiagonalPrincipal() {
         System.out.println("getDiagonalPrincipal");
-        
+
     }
 
     /**
@@ -460,7 +453,7 @@ public class TabuleiroTest {
     @Test
     public void testGetDiagonalSecundaria() {
         System.out.println("getDiagonalSecundaria");
-        
+
     }
 
     /**
@@ -469,17 +462,16 @@ public class TabuleiroTest {
     @Test
     public void testGetPosicoesLivres() {
         System.out.println("getPosicoesLivres");
-        
+
     }
 
-    
     /**
      * Test of toString method, of class Tabuleiro.
      */
     @Test
     public void testToString() {
         System.out.println("toString");
-        
+
     }
 
     /**
@@ -494,62 +486,61 @@ public class TabuleiroTest {
         Tabuleiro instance = new Tabuleiro(dimensao);
         boolean expResult = false;
         boolean result = instance.isPosicaoLivre(linha, coluna);
-        
+
         //testa linhaXcoluna inválidas (linha ou coluna < 1  e linha ou coluna > dimensao)
         linha = 0;//linha invalida
         coluna = 3;
-        
+
         expResult = false;
         result = instance.isPosicaoLivre(linha, coluna);
-        
+
         assertEquals(expResult, result);
-        
+
         linha = 2;
         coluna = 0; //coluna invalida
-        
+
         expResult = false;
         result = instance.isPosicaoLivre(linha, coluna);
-        
+
         assertEquals(expResult, result);
-        
+
         linha = dimensao + 2;//linha invalida
         coluna = 3;
-        
+
         expResult = false;
         result = instance.isPosicaoLivre(linha, coluna);
-        
+
         assertEquals(expResult, result);
-        
+
         linha = 2;
         coluna = dimensao + 1; //coluna invalida
-        
+
         expResult = false;
         result = instance.isPosicaoLivre(linha, coluna);
-        
+
         assertEquals(expResult, result);
-        
+
         //testa posicao valida desocupada
         linha = 1;//linha ialida
         coluna = 3;//coluna valida
-        
+
         expResult = true;
         result = instance.isPosicaoLivre(linha, coluna);
-        
+
         assertEquals(expResult, result);
-        System.out.println(instance.get(linha,coluna));
-        
-        
+        System.out.println(instance.get(linha, coluna));
+
         //testa posicao valida OCUPADA
         linha = 1;//linha ialida
         coluna = 3;//coluna valida
-        
+
         expResult = false;
-        instance.set(9,linha,coluna);
+        instance.set(9, linha, coluna);
         System.out.println(instance);
         result = instance.isPosicaoLivre(linha, coluna);
-        
+
         assertEquals(expResult, result);
-        System.out.println(instance.get(linha,coluna));
+        System.out.println(instance.get(linha, coluna));
     }
 
     /**
@@ -557,52 +548,99 @@ public class TabuleiroTest {
      */
     @Test
     public void testIsPosicaoLivre_int() {
-        
+
         System.out.println("isPosicaoLivre_int");
         int posicao = 0;
         int dimensao = 5;
         Tabuleiro instance = new Tabuleiro(dimensao);
         boolean expResult = false;
         boolean result = instance.isPosicaoLivre(posicao);
-        
+
         //testa posicao inválidas (posicao < 1  e posicao > dimensao*dimensao)
         posicao = 0; //posicao abaixo limite
         expResult = false;
         result = instance.isPosicaoLivre(posicao);
-        
+
         assertEquals(expResult, result);
-        
-        posicao = dimensao*dimensao + 1;//posicao acima limite
-        
+
+        posicao = dimensao * dimensao + 1;//posicao acima limite
+
         expResult = false;
         result = instance.isPosicaoLivre(posicao);
-        
+
         assertEquals(expResult, result);
-               
+
         //testa posicao valida desocupada
         posicao = dimensao - 1;//posicao valida
-        
+
         expResult = true;
         result = instance.isPosicaoLivre(posicao);
-        
+
         assertEquals(expResult, result);
         System.out.println(instance.get(posicao));
-        
-        
+
         //testa posicao valida OCUPADA
         posicao = dimensao - 1;//posicao valida    
         expResult = false;
-        instance.set(9,posicao);
+        instance.set(9, posicao);
         System.out.println(instance);
         result = instance.isPosicaoLivre(posicao);
-        
+
         assertEquals(expResult, result);
         System.out.println(instance.get(posicao));
+
+    }
+
+    /**
+     * Test of transformarEmPosicao method, of class Tabuleiro.
+     */
+    @Test
+    public void transformarEmPosicao() {
+        
+        System.out.println("transformarEmPosicao_int_int");
+
+        int linha = 0;
+        int coluna = 0;
+        int dimensao = 5;
+        Tabuleiro tabuleiro = new Tabuleiro(dimensao);
+
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmPosicao(linha, coluna));
+
+        linha = 1;
+        coluna = 0;
+        
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmPosicao(linha, coluna));
+        
+        linha = 0;
+        coluna = 1;
+        
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmPosicao(linha, coluna));
+        
+        //posicao 1
+        linha = 1;
+        coluna = 1;
+        
+        assertEquals(1,tabuleiro.transformarEmPosicao(linha, coluna));
+        
+        //posicao 25
+        linha = 5;
+        coluna = 5;
+        
+        assertEquals(25,tabuleiro.transformarEmPosicao(linha, coluna));
         
         
+        //posicao 5
+        linha = 1;
+        coluna = 5;
+        
+        assertEquals(5,tabuleiro.transformarEmPosicao(linha, coluna));
+        
+        //posicao 6
+        linha = 2;
+        coluna = 1;
+        
+        assertEquals(6,tabuleiro.transformarEmPosicao(linha, coluna));
         
     }
 
-    
-    
 }

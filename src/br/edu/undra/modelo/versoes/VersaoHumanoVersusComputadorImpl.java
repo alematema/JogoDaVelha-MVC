@@ -2,6 +2,7 @@ package br.edu.undra.modelo.versoes;
 
 import br.edu.undra.modelo.JogoDaVelha;
 import br.edu.undra.modelo.jogo.Jogador;
+import br.undra.calculadorproximajogada.CalculadorProximaJogadaIA;
 
 /**
  * Uma implementação das versoes do jogo da velha. <br>
@@ -92,6 +93,41 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
     @Override
     public void setVelocity(int newValeu) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA) {
+
+        int linha;
+        int coluna;
+        int posicao = 0;
+
+        if(calculadorProximaJogadaIA.jogoTerminou()){
+            calculadorProximaJogadaIA.reconfigurar();
+        }
+        
+        //é primeira jogada
+        if (((JogoDaVelha) jogador.getJogo()).getUltimoAJogar() == null) {
+
+            posicao = calculadorProximaJogadaIA.getMelhorJogada();
+
+        } else {
+
+            Jogador ultimoAJogar = ((JogoDaVelha) jogador.getJogo()).getUltimoAJogar();
+            String ultimaJogada = (String) ultimoAJogar.getJogadas().get(ultimoAJogar.getJogadas().size() - 1);
+
+            linha = Integer.parseInt(ultimaJogada.split(",")[0]);
+            coluna = Integer.parseInt(ultimaJogada.split(",")[1]);
+
+            posicao = jogador.getJogo().getTabuleiro().transformarEmPosicao(linha, coluna);
+            calculadorProximaJogadaIA.avancaUmaJogada(posicao);
+
+            posicao = calculadorProximaJogadaIA.getMelhorJogada();
+
+        }
+
+        return posicao;
+
     }
 
 }
