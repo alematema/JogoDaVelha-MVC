@@ -15,4 +15,5 @@ public interface AbstracaoVersaoJogoVelha {
     String getVersao();
     void SetUp(JogoDaVelha jogo);
     void liberarJogada();
+    void setVelocity(int newValeu);
 }

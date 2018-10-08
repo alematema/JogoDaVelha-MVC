@@ -28,7 +28,10 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSlider;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * O window do jogo da velha.
@@ -65,9 +68,9 @@ public class JogoVelhaWindow extends JFrame {
     private int y;
     private int numeroDaInstancia;
 
-    public static void main(String[] args) {
-        new JogoVelhaWindow().configureAndShow();
-    }
+    private JSlider velocidadeCompVsCompJSlider = new JSlider(JSlider.HORIZONTAL);
+    
+    
 
     public JogoVelhaWindow() throws HeadlessException {
         this.numeroDaInstancia = numeroDeInstancias.addAndGet(1);
@@ -207,8 +210,29 @@ public class JogoVelhaWindow extends JFrame {
         mensagem.setPreferredSize(new Dimension((int) view.getPreferredSize().getWidth(), (int) view.getPreferredSize().getHeight() / 8));
 
         getContentPane().add(mensagem, gridConstraints);
-
+        
+        gridConstraints.gridx = 0;
+        gridConstraints.gridy = 4;
+        getContentPane().add(velocidadeCompVsCompJSlider,gridConstraints);
+        velocidadeCompVsCompJSlider.setPreferredSize(new Dimension((int) view.getPreferredSize().getWidth(), (int) view.getPreferredSize().getHeight() / 16));
+        velocidadeCompVsCompJSlider.setEnabled(false);
+        velocidadeCompVsCompJSlider.addChangeListener(this::computadorVsComputadorJSliderChangePerformed);
+        velocidadeCompVsCompJSlider.setMinimum(1);
+        velocidadeCompVsCompJSlider.setMaximum(500);
+        velocidadeCompVsCompJSlider.setValue(velocidadeCompVsCompJSlider.getMaximum()/2);
+        
     }
+    
+    private void computadorVsComputadorJSliderChangePerformed(ChangeEvent e){
+        
+        Object[] args1 = {Integer.toString((Integer)((JSlider)e.getSource()).getValue())+"/"+velocidadeCompVsCompJSlider.getMaximum()};
+        view.getController().updateView("setMensagem", args1);
+        
+        Object[] args = {((JSlider)e.getSource()).getValue()};
+        view.getController().updateModel("setVelocity", args); 
+        
+    }
+    
 
     private void computadorVsComputadorMenuItemActionPerformed(ActionEvent e) {
 
@@ -218,7 +242,7 @@ public class JogoVelhaWindow extends JFrame {
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(compVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
-
+        velocidadeCompVsCompJSlider.setEnabled(true);
     }
 
     private void humanoVsComputadorMenuItemActionPerformed(ActionEvent e) {
@@ -229,6 +253,7 @@ public class JogoVelhaWindow extends JFrame {
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(humanoVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
+        velocidadeCompVsCompJSlider.setEnabled(false);
 
     }
 
@@ -239,6 +264,7 @@ public class JogoVelhaWindow extends JFrame {
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(humanoVxHumano.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+        velocidadeCompVsCompJSlider.setEnabled(false);
 
     }
 

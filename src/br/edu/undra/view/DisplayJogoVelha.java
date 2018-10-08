@@ -2,7 +2,6 @@ package br.edu.undra.view;
 
 import br.edu.undra.MVC.JogoVelhaView;
 import br.edu.undra.interfaces.MVC.Controller;
-import br.edu.undra.modelo.JogoDaVelha;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,11 +9,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.nio.CharBuffer;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**

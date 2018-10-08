@@ -585,7 +585,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
     @Override
     public void setVelocity(int novoValor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        abstracaoVersaoJogoVelha.setVelocity(novoValor);
     }
 
     @Override

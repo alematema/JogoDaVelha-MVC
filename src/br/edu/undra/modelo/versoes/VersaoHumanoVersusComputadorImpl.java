@@ -89,4 +89,9 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
         liberarJogada = true;
     }
 
+    @Override
+    public void setVelocity(int newValeu) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

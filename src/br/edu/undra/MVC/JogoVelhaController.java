@@ -63,6 +63,16 @@ public class JogoVelhaController implements Controller {
         } catch (InvocationTargetException ex) {
         }
         
+        try {
+            Class<?>[] paramTypes = {int.class};
+            model.getClass().getMethod(methodName, paramTypes).invoke(model, args[0]);
+        } catch (NoSuchMethodException ex) {
+        } catch (SecurityException ex) {
+        } catch (IllegalAccessException ex) {
+        } catch (IllegalArgumentException ex) {
+        } catch (InvocationTargetException ex) {
+        }
+        
         
         return updated;
     }

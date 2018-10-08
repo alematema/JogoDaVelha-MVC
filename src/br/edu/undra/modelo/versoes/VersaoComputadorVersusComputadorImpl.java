@@ -13,6 +13,8 @@ import java.util.logging.Logger;
  */
 public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogoVelha {
 
+    private int velocidade = 50;
+    
     @Override
     public void jogar(JogoDaVelha jogo) {
 
@@ -21,8 +23,10 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         jogo.getProximoAJogar().joga();
         jogo.updateView(jogador);
 
+        int sleep = (int) (200 * (int) 100 * (1.0 / velocidade));
+        
         try {
-            Thread.sleep(300);
+            Thread.sleep(sleep);
         } catch (InterruptedException ex) {
             Logger.getLogger(VersaoComputadorVersusComputadorImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -42,6 +46,11 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
     @Override
     public void liberarJogada() {
 
+    }
+
+    @Override
+    public void setVelocity(int newValeu) {
+        velocidade = newValeu;
     }
 
 }
