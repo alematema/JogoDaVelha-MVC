@@ -446,9 +446,17 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         reiniciar();
 
     }
+    
+    private Jogador ultimoAJogar;
+
+    public Jogador getUltimoAJogar() {
+        return ultimoAJogar;
+    }
 
     public void updateView(Jogador jogador) {
 
+        ultimoAJogar = jogador;
+        
         Object[] args = new Object[2];
 
         Object[] args2 = new Object[1];
@@ -613,6 +621,11 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     @Override
     public void setPosicaoClicada(String posicao) {
         this.posicaoClicada = posicao;
+    }
+
+    @Override
+    public void liberarJogada() {
+        abstracaoVersaoJogoVelha.liberarJogada();
     }
 
 }

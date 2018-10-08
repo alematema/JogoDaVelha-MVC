@@ -13,5 +13,5 @@ public interface JogoVelhaModel extends Model {
     void play(Object[] args);
     void setPosicaoClicada(String posicao);
     void setAbstracaoVersaoJogoVelha(AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha);
-    
+    void liberarJogada();
 }

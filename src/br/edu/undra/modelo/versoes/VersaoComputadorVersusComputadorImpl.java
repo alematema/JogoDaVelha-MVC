@@ -15,15 +15,14 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
 
     @Override
     public void jogar(JogoDaVelha jogo) {
-        
+
         Jogador jogador = jogo.getProximoAJogar();
-        
+
         jogo.getProximoAJogar().joga();
-        
         jogo.updateView(jogador);
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException ex) {
             Logger.getLogger(VersaoComputadorVersusComputadorImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -38,6 +37,11 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
     public void SetUp(JogoDaVelha jogo) {
         jogo.getJogador1().setNome("Comp1");
         jogo.getJogador2().setNome("Comp2");
+    }
+
+    @Override
+    public void liberarJogada() {
+
     }
 
 }

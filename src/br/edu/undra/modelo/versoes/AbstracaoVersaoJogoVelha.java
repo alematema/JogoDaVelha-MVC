@@ -14,4 +14,5 @@ public interface AbstracaoVersaoJogoVelha {
     void jogar(JogoDaVelha jogo);
     String getVersao();
     void SetUp(JogoDaVelha jogo);
+    void liberarJogada();
 }

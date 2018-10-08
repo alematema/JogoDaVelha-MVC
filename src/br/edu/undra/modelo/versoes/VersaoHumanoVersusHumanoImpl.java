@@ -11,6 +11,8 @@ import br.edu.undra.modelo.jogo.Jogador;
  */
 public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
 
+    private boolean liberarJogada = false;
+    
     Object[] args = new Object[1];
     
     @Override
@@ -31,6 +33,11 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
                 Thread.sleep(300);
 
                 posicao = Integer.parseInt(jogo.getPosicaoClicada());
+                
+                if(liberarJogada){
+                    liberarJogada = false;
+                    return;
+                }
 
             }
 
@@ -54,6 +61,11 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
         jogo.getJogador1().setNome("Joao");
         jogo.getJogador2().setNome("Kamila");
 
+    }
+
+    @Override
+    public void liberarJogada() {
+        liberarJogada = true;
     }
 
 }

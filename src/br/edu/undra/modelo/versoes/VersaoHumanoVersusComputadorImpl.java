@@ -11,6 +11,8 @@ import br.edu.undra.modelo.jogo.Jogador;
  */
 public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelha {
 
+    private boolean liberarJogada = false;
+
     Object[] args = new Object[1];
 
     @Override
@@ -18,25 +20,32 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
 
         Jogador jogador = jogo.getProximoAJogar();
 
-        jogo.getProximoAJogar().joga();
+        if (jogador.isPrimeiroAJogar()) {
 
-        if (jogo.terminou()) {
+            jogo.getProximoAJogar().joga();
+
+            if (jogo.terminou()) {
+                jogo.updateView(jogador);
+                return;
+            }
+
             jogo.updateView(jogador);
-            return;
+
         }
-
-        jogo.updateView(jogador);
-
-        jogador = jogo.getProximoAJogar();
 
         try {
 
             int posicao = Integer.parseInt(getPosicao(jogo));
 
+            jogador = jogo.getProximoAJogar();
+
             while (!jogo.getProximoAJogar().joga(posicao)) {
 
-                // System.err.println("\n" + posicao + " É POSIÇÃO INVÁLIDA! VÁLIDAS SÃO ENTRE 1 e 9 E DESOCUPADAS...");
-                //System.out.println("\nSUA VEZ DE JOGAR... digite a posicao (1 a 9) ");
+                if (liberarJogada) {
+                    liberarJogada = false;
+                    return;
+                }
+
                 args[0] = "É a sua vez de jogar !!! ".toUpperCase();
 
                 jogo.getController().updateView("setMensagem", args);
@@ -67,10 +76,17 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
         jogo.getJogador1().setNome("Computador");
         jogo.getJogador2().setNome("Humano");
 
+        jogo.getJogador1().setPrimeiroAJogar(true);
+
     }
 
     private String getPosicao(JogoDaVelha jogo) {
         return jogo.getPosicaoClicada();
+    }
+
+    @Override
+    public void liberarJogada() {
+        liberarJogada = true;
     }
 
 }

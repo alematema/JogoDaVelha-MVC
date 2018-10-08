@@ -214,6 +214,7 @@ public class JogoVelhaWindow extends JFrame {
 
         Object[] args = new Object[1];
         args[0] = compVxComp;
+        view.getController().updateModel("liberarJogada", null);
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(compVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
@@ -224,6 +225,7 @@ public class JogoVelhaWindow extends JFrame {
 
         Object[] args = new Object[1];
         args[0] = humanoVxComp;
+        view.getController().updateModel("liberarJogada", null);
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(humanoVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
