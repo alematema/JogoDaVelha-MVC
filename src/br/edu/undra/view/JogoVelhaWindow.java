@@ -294,10 +294,10 @@ public class JogoVelhaWindow extends JFrame {
 
         abstracaoVersaoJogoVelha = compVxComp;
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
-        
+
         Object[] args = new Object[1];
         args[0] = compVxComp;
-        
+
         view.getController().updateModel("liberarJogada", null);
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(compVxComp.getVersao());
@@ -308,7 +308,7 @@ public class JogoVelhaWindow extends JFrame {
 
         abstracaoVersaoJogoVelha = humanoVxComp;
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
-        
+
         Object[] args = new Object[1];
         args[0] = humanoVxComp;
         view.getController().updateModel("liberarJogada", null);
@@ -319,7 +319,7 @@ public class JogoVelhaWindow extends JFrame {
     }
 
     private void humanoVsHumanoMenuItemActionPerformed(ActionEvent e) {
-        
+
         abstracaoVersaoJogoVelha = humanoVxHumano;
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
 
@@ -379,16 +379,14 @@ public class JogoVelhaWindow extends JFrame {
 
     public void habilitarDesabilitarItensVelocidadeENivelMenuJogo() {
 
-        if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
+        velocidadeBaixaMenuItem.setEnabled(false);
+        velocidadeMediaMenuItem.setEnabled(false);
+        velocidadeAltaMenuItem.setEnabled(false);
 
-            velocidadeBaixaMenuItem.setEnabled(false);
-            velocidadeMediaMenuItem.setEnabled(false);
-            velocidadeAltaMenuItem.setEnabled(false);
-            
-            nivelFacilMenuItem.setEnabled(false);
-            nivelDificilMenuItem.setEnabled(false);
+        nivelFacilMenuItem.setEnabled(false);
+        nivelDificilMenuItem.setEnabled(false);
 
-        } else {
+        if (abstracaoVersaoJogoVelha instanceof VersaoComputadorVersusComputadorImpl) {
 
             velocidadeBaixaMenuItem.setEnabled(true);
             velocidadeMediaMenuItem.setEnabled(true);
@@ -398,6 +396,33 @@ public class JogoVelhaWindow extends JFrame {
             nivelDificilMenuItem.setEnabled(true);
 
         }
+        
+        if ( abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl ){
+            
+            nivelFacilMenuItem.setEnabled(true);
+            nivelDificilMenuItem.setEnabled(true);
+            
+        }
+//
+//        if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
+//
+//            velocidadeBaixaMenuItem.setEnabled(false);
+//            velocidadeMediaMenuItem.setEnabled(false);
+//            velocidadeAltaMenuItem.setEnabled(false);
+//
+//            nivelFacilMenuItem.setEnabled(false);
+//            nivelDificilMenuItem.setEnabled(false);
+//
+//        } else {
+//
+//            velocidadeBaixaMenuItem.setEnabled(true);
+//            velocidadeMediaMenuItem.setEnabled(true);
+//            velocidadeAltaMenuItem.setEnabled(true);
+//
+//            nivelFacilMenuItem.setEnabled(true);
+//            nivelDificilMenuItem.setEnabled(true);
+//
+//        }
 
     }
 
