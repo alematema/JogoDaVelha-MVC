@@ -110,10 +110,6 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
         int coluna;
         int posicao = 0;
 
-        if (calculadorProximaJogadaIA.jogoTerminou()) {
-            calculadorProximaJogadaIA.reconfigurar();
-        }
-
         //é primeira jogada
         if (((JogoDaVelha) jogador.getJogo()).getUltimoAJogar() == null) {
 

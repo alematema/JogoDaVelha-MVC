@@ -26,7 +26,7 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
         }
 
         this.calculadorProximaJogada = calculadorProximaJogada;
-        
+
         analisador = new Analisador(verbose, calculadorProximaJogada);
 
         jogador1 = new Jogador(jogoDaVelha, JogadorComecaOJogo.SIM, analisador, calculadorProximaJogada);
@@ -51,15 +51,15 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
     public int getMelhorJogada() {
         return jogador1.getMelhorPosicaoEJogaNela() + 1;
     }
-    
-    public int getMelhorJogadaAlternandoEntreJogadores(){
-        
-        if( jogador1.isVezDeJogar() ){
+
+    public int getMelhorJogadaAlternandoEntreJogadores() {
+
+        if (jogador1.isVezDeJogar()) {
             return jogador1.getMelhorPosicaoEJogaNela() + 1;
-        }else{
+        } else {
             return jogador2.getMelhorPosicaoEJogaNela() + 1;
         }
-        
+
     }
 
     public void avancaUmaJogada(int posicao) {
@@ -68,24 +68,29 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
     }
 
     public void configura() {
-        jogoDaVelha = new JogoDaVelhaWrapped(new Tabuleiro());
-        jogador1 = new Jogador(jogoDaVelha, JogadorComecaOJogo.SIM, analisador,calculadorProximaJogada);
-        jogador2 = new Jogador(jogoDaVelha, JogadorComecaOJogo.NAO, analisador,calculadorProximaJogada);
-        jogador1.setOponente(jogador2);
-        jogador2.setOponente(jogador1);
-        analisador.clean();
-        analisador.verboseOff();
-        jogador1.setVezDeJogar(Boolean.TRUE);
-        jogador2.setVezDeJogar(Boolean.FALSE);
-        if (verbose) {
-            jogador1.verboseOn();
-            jogador2.verboseOn();
-            analisador.setVerbose(true);
-        } else {
-            jogador1.verboseOff();
-            jogador2.verboseOff();
-            analisador.setVerbose(false);
+        try {
+            jogoDaVelha = new JogoDaVelhaWrapped(new Tabuleiro());
+            jogador1 = new Jogador(jogoDaVelha, JogadorComecaOJogo.SIM, analisador, calculadorProximaJogada);
+            jogador2 = new Jogador(jogoDaVelha, JogadorComecaOJogo.NAO, analisador, calculadorProximaJogada);
+            jogador1.setOponente(jogador2);
+            jogador2.setOponente(jogador1);
+            analisador.clean();
+            analisador.verboseOff();
+            jogador1.setVezDeJogar(Boolean.TRUE);
+            jogador2.setVezDeJogar(Boolean.FALSE);
+            if (verbose) {
+                jogador1.verboseOn();
+                jogador2.verboseOn();
+                analisador.setVerbose(true);
+            } else {
+                jogador1.verboseOff();
+                jogador2.verboseOff();
+                analisador.setVerbose(false);
+            }
+        } catch (Exception e) {
+            System.out.println("EXCESAO EM JogoDaVelhaVersaoHumanoVersusMaquina.configura() " + e.getCause());
         }
+
     }
 
     public int getPosicaoLivre() {
@@ -122,7 +127,5 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
     public Jogador getJogador2() {
         return jogador2;
     }
-    
-    
 
 }

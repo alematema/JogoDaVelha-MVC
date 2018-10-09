@@ -64,12 +64,10 @@ public class CalculadorProximaJogadaIA {
     }
 
     public int getMelhorJogada() {
-
         return versusMaquina.getMelhorJogada();
     }
 
     public int getMelhorJogadaAlternandoEntreJogadores() {
-
         return versusMaquina.getMelhorJogadaAlternandoEntreJogadores();
     }
 
@@ -182,6 +180,11 @@ public class CalculadorProximaJogadaIA {
      * false, caso contrario.
      */
     public boolean isCalculadorSincronizado(br.edu.undra.modelo.jogo.Jogador jogador) {
+        
+        
+        if (jogoTerminou()) {
+             reconfigurar();
+        }
 
         jogador = (JogadorJogoDaVelha) jogador;
 

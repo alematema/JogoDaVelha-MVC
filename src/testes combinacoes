@@ -1,0 +1,29 @@
+TESTES REALIZADOS
+
+1. facil e hXC -> dificil e hXC
+
+    TODO Analisador.getEspacoRecalculado
+
+2. dificil e hXC -> facil e hXC 
+
+3. facil e hXC -> dificil e hXC -> dificil e hXC -> facil e hXC 
+
+4. facil e comXComp -> dificil e comXComp -> facil e comXComp
+
+5. facil e hXC -> facil e compXComp -> facil e hXC
+
+6. facil e hXC -> humanoXHumano
+
+7. humanoXHumano -> facil e hXC
+
+8. humanoXHumano -> facil e hXC -> humanoXHumano
+
+9. humanoXHumano - > dificil e hXC
+
+10. dificil e hXC -> humanoXHumano
+
+11. humanoXHumano - > dificil e hXC -> humanoXHumano
+
+12. humanoXHumano - > dificil e hXC -> facil e hXC
+
+13. humanoXHumano -> facil e compXComp 

@@ -151,7 +151,7 @@ public class JogoDaVelhaWrapped {
 	}
 	
 	public boolean terminou(){
-		return !this.getBaseCorrente().contains(0) || alguemVenceu();
+		return alguemVenceu() || !this.getBaseCorrente().contains(0);
 	}
 	
 

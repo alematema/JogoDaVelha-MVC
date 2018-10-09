@@ -8,12 +8,14 @@ import java.util.List;
 
 /**
  * Calcula proxima jogada apenas buscando posicoes livres.
+ * Torna o jogo mais FACIL de se jogar contra o computador.<br>
  *
  * @author alexandre
  */
 public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements CalculadorProximaJogada<Jogador> {
 
     /**
+     * Torna o jogo mais FACIL de se jogar contra o computador.<br>
      * Calcula a próxima jogada SEMPRE escolhendo ALEATORIAMENTE<br>
      * uma das posicoes LIVRES do jogo.<br>
      * INDEPENDENTEMENTE se for VERSAO CompVSComp OU VERSAOHumanoVSComp.
@@ -50,6 +52,7 @@ public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements Calculad
     }
 
     /**
+     * Torna o jogo mais FACIL de se jogar contra o computador.<br>
      * Calcula a próxima jogada SEMPRE escolhendo ALEATORIAMENTE<br>
      * uma das posicoes LIVRES do jogo.<br>
      * INDEPENDENTEMENTE se for VERSAO CompVSComp OU VERSAO HumanoVSComp.
@@ -70,8 +73,6 @@ public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements Calculad
 
         int[] posicaoLivre = {linha, coluna};
 
-        System.out.println(getClass().getName() + ".calcularLinhaEColuna(Object)");
-
         return posicaoLivre;
 
     }
@@ -79,5 +80,10 @@ public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements Calculad
     @Override
     public String getNomeSimples() {
        return "calculadorSimples";
+    }
+
+    @Override
+    public void reconfigurar() {
+        
     }
 }

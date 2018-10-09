@@ -11,11 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Classe modela uma IA. <br>Calcula proxima jogada usando algoritmo de
+ * Classe modela uma IA. Torna o jogo mais difícil jogar contra o computador.<br>Calcula proxima jogada usando algoritmo de
  * inteligencia natural.<br>
  * O algoritmo é baseado em análise combinatória.<br>
  * Todas evoluções possíveis do jogo são consideradas e, dai,<br>
- * calcula-se uma jogada com a maior probabilidade de se vencer o jogo.
+ * calcula-se uma jogada com a maior probabilidade de se vencer o jogo.<br>
+ 
  *
  *
  * @author alexandre
@@ -93,6 +94,7 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
     }
 
     /**
+     * Torna o jogo mais difícil de se jogar contra o computador.<br>
      * Nessa implementação, a logica de cálculo é determinada através das hook
      * classes:<br>
      * VersaoComputadorVersusComputadorImpl.<br>
@@ -107,8 +109,6 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
      */
     @Override
     public int[] calcularLinhaEColuna(Jogador jogador) {
-
-        System.out.println(getClass().getName() + ".calcularLinhaEColuna(Object)");
 
         jogador = (JogadorJogoDaVelha) jogador;
 
@@ -149,9 +149,18 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
         this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
     }
 
+    public AbstracaoVersaoJogoVelha getAbstracaoVersaoJogoVelha() {
+        return abstracaoVersaoJogoVelha;
+    }
+    
     @Override
     public String getNomeSimples() {
         return "calculadorIA";
+    }
+
+    @Override
+    public void reconfigurar() {
+        calculadorProximaJogadaIA.reconfigurar();
     }
    
 

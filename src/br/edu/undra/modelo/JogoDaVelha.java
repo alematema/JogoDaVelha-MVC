@@ -46,14 +46,10 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
     private Set<T> ultimosAJogar = new HashSet<>();
 
-    
-
     private String posicaoClicada = "0";
 
-    
-
     private Jogador ultimoAJogar;
-    
+
     //as tres versoes do jogo da velhas
     private AbstracaoVersaoJogoVelha compVSComp = new VersaoComputadorVersusComputadorImpl();
     private AbstracaoVersaoJogoVelha humanoVSComp = new VersaoHumanoVersusComputadorImpl();
@@ -65,7 +61,9 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     private CalculadorProximaJogada<Jogador> calculadorProximaJogadaIA;
 
     private CalculadorProximaJogada calculadorProximaJogada;
-    
+
+    public int numIns = 1;
+
     public JogoDaVelha(String nome) {
 
         super();
@@ -74,8 +72,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         Tabuleiro tabuleiro = new Tabuleiro(3);
         setTabuleiro(tabuleiro);
-        
-        
 
     }
 
@@ -89,18 +85,16 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         setJogadores(jogadores);
 
         setUpJogadores();
-        
-        abstracaoVersaoJogoVelha = humanoVSComp;
+
+        abstracaoVersaoJogoVelha = humanoVSHumano;
         calculadorProximaJogada = calculadorProximaJogadaSimples;
-        
+
         setUpAbstracaoVersaoJogo();
-        
-        
-        
+
     }
-    
+
     private void setUpAbstracaoVersaoJogo() {
-        calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(abstracaoVersaoJogoVelha,this);
+        calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(abstracaoVersaoJogoVelha, this);
     }
 
     public JogoDaVelha(String nome, List<T> jogadores, Tabuleiro tabuleiro) {
@@ -413,7 +407,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
     @Override
     public void iniciar() {
-        
+
         System.err.println(getAbstracaoVersaoJogoVelha().getVersao());
 
         Object[] args = new Object[1];
@@ -519,78 +513,72 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     @Override
     public void reiniciar() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        calculadorProximaJogadaIA.reconfigurar();
 
-                setUp(getNome());
+        ultimoAJogar = null;
+        proximoAJogar = null;
 
-                ultimoAJogar = null;
+        Object[] args = new Object[1];
 
-                Object[] args = new Object[1];
+        args[0] = "REINICIANDO O JOGO... " + new Date();
 
-                args[0] = "REINICIANDO O JOGO... " + new Date();
+        controller.updateView("setMensagem", args);
 
-                controller.updateView("setMensagem", args);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ondeVenceu = "";
+        posicoesOndeVenceu = new ArrayList<>();
+        ultimosAJogar = new HashSet<>();
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                ondeVenceu = "";
-                posicoesOndeVenceu = new ArrayList<>();
-                ultimosAJogar = new HashSet<>();
+        jogador1.reconfigurar();
 
-                jogador1.reconfigurar();
+        args[0] = jogador1.getNome() + " reconficurado";
+        controller.updateView("setMensagem", args);
 
-                args[0] = jogador1.getNome() + " reconficurado";
-                controller.updateView("setMensagem", args);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        jogador2.reconfigurar();
+        args[0] = jogador2.getNome() + " reconficurado";
+        controller.updateView("setMensagem", args);
 
-                jogador2.reconfigurar();
-                args[0] = jogador2.getNome() + " reconficurado";
-                controller.updateView("setMensagem", args);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        jogador1.setPrimeiroAJogar(true);
 
-                jogador1.setPrimeiroAJogar(true);
+        args = new Object[3];
 
-                args = new Object[3];
+        Object[] args2 = new Object[1];
 
-                Object[] args2 = new Object[1];
+        for (int i = 1; i <= getTabuleiro().getDimensao() * getTabuleiro().getDimensao(); i++) {
 
-                for (int i = 1; i <= getTabuleiro().getDimensao() * getTabuleiro().getDimensao(); i++) {
-
-                    getTabuleiro().set(Tabuleiro.POSICAO_LIVRE, i);
-                    args[0] = getTabuleiro().get(i);
-                    args[1] = i;
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    controller.updateView("set", args);
-                    args2[0] = ("setting " + args[0] + " at " + args[1]).toUpperCase();
-                    controller.updateView("setMensagem", args2);
-
-                }
-
-                controller.updateView("reconfigurar", null);
-
-                iniciar();
-
+            getTabuleiro().set(Tabuleiro.POSICAO_LIVRE, i);
+            args[0] = getTabuleiro().get(i);
+            args[1] = i;
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JogoDaVelha.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }).start();
+            controller.updateView("set", args);
+            args2[0] = ("setting " + args[0] + " at " + args[1]).toUpperCase();
+            controller.updateView("setMensagem", args2);
+
+        }
+
+        controller.updateView("reconfigurar", null);
+
+        iniciar();
 
     }
 
@@ -599,7 +587,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         return jogador1.venceu() || jogador2.venceu() || getTabuleiro().getPosicoesLivres().isEmpty();
     }
 
-    
     /**
      * Recupera uma implementacao da lógica de calculo de uma proxima
      * jogada.<br>
@@ -623,35 +610,34 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
      * CalculadorProximaJogadaIAParaJogoVelhaImpl<br>
      * CalculadorProximaJogadaSimplesParaJogoVelhaImpl
      *
-     * @param nomeCalculadorProximaJogada uma string representando instancia de CalculadorProximaJogada
+     * @param nomeCalculadorProximaJogada uma string representando instancia de
+     * CalculadorProximaJogada
      */
     @Override
     public void setCalculadorProximaJogada(String nomeCalculadorProximaJogada) {
-        
-        if( nomeCalculadorProximaJogada.equals(calculadorProximaJogadaSimples.getNomeSimples())){
-            
+
+        if (nomeCalculadorProximaJogada.equals(calculadorProximaJogadaSimples.getNomeSimples())) {
+
             lastCalculadorSetado = calculadorProximaJogadaSimples;
-            
-        }else if (nomeCalculadorProximaJogada.equals(calculadorProximaJogadaIA.getNomeSimples())){
-            
+
+        } else if (nomeCalculadorProximaJogada.equals(calculadorProximaJogadaIA.getNomeSimples())) {
+
             lastCalculadorSetado = calculadorProximaJogadaIA;
-            
+
         }
-        
-        
-        if ( this.calculadorProximaJogada != lastCalculadorSetado ){
-        
+
+        if (this.calculadorProximaJogada != lastCalculadorSetado) {
+
             this.calculadorProximaJogada = lastCalculadorSetado;
-            
-        }else{
-            
+
+        } else {
+
         }
-        
+
     }
-    
+
     private CalculadorProximaJogada lastCalculadorSetado = null;
 
-    
     public AbstracaoVersaoJogoVelha getAbstracaoVersaoJogoVelha() {
         return abstracaoVersaoJogoVelha;
     }
@@ -667,17 +653,22 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
      */
     @Override
     public void setVersaoJogoVelha(String versao) {
-        
-      
-        if(versao.equals(compVSComp.getNomeResumido())){
+
+        if (versao.equals(compVSComp.getNomeResumido())) {
             abstracaoVersaoJogoVelha = compVSComp;
-        }else if(versao.equals(humanoVSComp.getNomeResumido())){
+        } else if (versao.equals(humanoVSComp.getNomeResumido())) {
             abstracaoVersaoJogoVelha = humanoVSComp;
-        }else if(versao.equals(humanoVSHumano.getNomeResumido())){
+        } else if (versao.equals(humanoVSHumano.getNomeResumido())) {
             abstracaoVersaoJogoVelha = humanoVSHumano;
         }
-        
-        this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
+
+        try {
+            if (!(abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl)) {
+                ((CalculadorProximaJogadaIAParaJogoVelhaImpl) calculadorProximaJogadaIA).setAbstracaoVersaoJogoVelha(abstracaoVersaoJogoVelha);
+            }
+        } catch (Exception e) {
+        }
+
         abstracaoVersaoJogoVelha.SetUp(this);
 //        System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
     }
@@ -726,10 +717,9 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     public void liberarJogada() {
         abstracaoVersaoJogoVelha.liberarJogada();
     }
-    
-    public boolean isConficurado(){
-        return ((CalculadorProximaJogadaIAParaJogoVelhaImpl)calculadorProximaJogadaIA).isConfigurado;
+
+    public boolean isConficurado() {
+        return ((CalculadorProximaJogadaIAParaJogoVelhaImpl) calculadorProximaJogadaIA).isConfigurado;
     }
-            
 
 }
