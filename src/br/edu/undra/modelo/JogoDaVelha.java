@@ -90,7 +90,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         setUpJogadores();
         
-        abstracaoVersaoJogoVelha = compVSComp;
+        abstracaoVersaoJogoVelha = humanoVSComp;
         calculadorProximaJogada = calculadorProximaJogadaSimples;
         
         setUpAbstracaoVersaoJogo();
@@ -100,7 +100,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     }
     
     private void setUpAbstracaoVersaoJogo() {
-        calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(abstracaoVersaoJogoVelha);
+        calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(abstracaoVersaoJogoVelha,this);
     }
 
     public JogoDaVelha(String nome, List<T> jogadores, Tabuleiro tabuleiro) {
@@ -642,7 +642,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         if ( this.calculadorProximaJogada != lastCalculadorSetado ){
         
             this.calculadorProximaJogada = lastCalculadorSetado;
-            System.out.println("MODEL setting versao Calculador  " + nomeCalculadorProximaJogada + " @ " + getClass().getSimpleName());
             
         }else{
             
@@ -680,7 +679,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         
         this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
         abstracaoVersaoJogoVelha.SetUp(this);
-        System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
+//        System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
     }
 
     @Override
@@ -728,6 +727,9 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         abstracaoVersaoJogoVelha.liberarJogada();
     }
     
-    
+    public boolean isConficurado(){
+        return ((CalculadorProximaJogadaIAParaJogoVelhaImpl)calculadorProximaJogadaIA).isConfigurado;
+    }
+            
 
 }

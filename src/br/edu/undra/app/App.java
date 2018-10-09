@@ -44,6 +44,8 @@ public class App {
                     Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
+                while(!model.isConficurado()){};
+                
                 Object[] args = {model.getAbstracaoVersaoJogoVelha().getNomeResumido()};
                 model.getController().updateView("setVersaoJogo", args);
                         

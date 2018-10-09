@@ -18,4 +18,6 @@ public interface JogoVelhaView extends View{
     void habilitarBotoes();
     void setUpItensMenuJogo();
     void habilitarDesabilitarItensVelocidadeENivelMenuJogo();
+    void desabilitarMenuJogos();
+    void habilitarMenuJogos();
 }

@@ -406,26 +406,32 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
 
     @Override
     public void setVersaoJogo(String versao) {
-        System.out.println("view setting versao jogo " + versao + " @ " + window.getClass().getSimpleName());
         window.setVersaoJogo(versao);
     }
 
     @Override
     public void setVersaoCalculador(String versao) {
-        System.out.println("view setting versao Calculador " + versao + " @ " + window.getClass().getSimpleName());
         window.setVersaoCalculador(versao);
     }
 
     @Override
     public void setUpItensMenuJogo() {
-
-        System.out.println("setting up itens menu jogo ");
         window.setUpItensMenuJogo();
     }
 
     @Override
     public void habilitarDesabilitarItensVelocidadeENivelMenuJogo() {
         window.habilitarDesabilitarItensVelocidadeENivelMenuJogo();
+    }
+
+    @Override
+    public void desabilitarMenuJogos() {
+        window.desabilitarMenuJogos();
+    }
+
+    @Override
+    public void habilitarMenuJogos() {
+        window.habilitarMenuJogos();
     }
 
 }

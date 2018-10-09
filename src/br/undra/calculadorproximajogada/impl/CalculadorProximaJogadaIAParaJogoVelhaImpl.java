@@ -7,6 +7,8 @@ import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.undra.calculadorproximajogada.CalculadorProximaJogadaIA;
 import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe modela uma IA. <br>Calcula proxima jogada usando algoritmo de
@@ -23,6 +25,8 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
     private Integer[] ultimaJogada;
     private CalculadorProximaJogadaIA calculadorProximaJogadaIA = new CalculadorProximaJogadaIA();
     private AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha;
+    
+    public volatile boolean isConfigurado = false;
 
     public CalculadorProximaJogadaIAParaJogoVelhaImpl() {
     }
@@ -38,6 +42,47 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
                 String[] args = {"-v"};
 //                String[] args = {};
                 calculadorProximaJogadaIA.configura(args);
+                isConfigurado = true;
+            }
+        }).start();
+    }
+    
+    public CalculadorProximaJogadaIAParaJogoVelhaImpl(AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha, JogoDaVelha jogoDaVelha) {
+        
+        this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                boolean w = false;
+                while(!w){
+                    
+                    try {
+                        
+                        jogoDaVelha.getController().updateView("desabilitarMenuJogos", null);
+                        
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    
+                    w = true;
+                }
+                
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(CalculadorProximaJogadaIAParaJogoVelhaImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                jogoDaVelha.getController().updateView("desabilitarMenuJogos", null);
+                
+                //String[] args = {"-v"};
+                String[] args = {};
+                calculadorProximaJogadaIA.configura(args);
+                jogoDaVelha.getController().updateView("habilitarMenuJogos", null);
+                
+                isConfigurado = true;
+                
             }
         }).start();
     }

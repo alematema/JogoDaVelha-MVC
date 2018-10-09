@@ -165,9 +165,8 @@ public class JogoVelhaWindow extends JFrame {
 
         setVisible(true);
 
-        habilitarDesabilitarItensVelocidadeENivelMenuJogo();
-        setUpItensMenuJogo();
-
+        desabilitarMenuJogos();
+        
     }
 
     private void placeComponentsAtFrame() {
@@ -244,7 +243,6 @@ public class JogoVelhaWindow extends JFrame {
 
         gridConstraints.gridx = 0;
         gridConstraints.gridy = 0;
-        System.out.println(getTitle());
         tituloFake.setText(getTitle());
         // getContentPane().add(tituloFake, gridConstraints);
 
@@ -432,6 +430,38 @@ public class JogoVelhaWindow extends JFrame {
 
         }
 
+    }
+
+    void desabilitarMenuJogos() {
+
+        humanoVsHumanoMenuItem.setEnabled(false);
+        humanoVsComputadorMenuItem.setEnabled(false);
+        computadorVsComputadorMenuItem.setEnabled(false);
+        nivelFacilMenuItem.setEnabled(false);
+        nivelDificilMenuItem.setEnabled(false);
+        velocidadeBaixaMenuItem.setEnabled(false);
+        velocidadeMediaMenuItem.setEnabled(false);
+        velocidadeAltaMenuItem.setEnabled(false);
+        
+        exitMenuItem.setText("Configurando. Aguarde para obter opcoes... ");
+
+    }
+
+    void habilitarMenuJogos() {
+        
+        humanoVsHumanoMenuItem.setEnabled(true);
+        humanoVsComputadorMenuItem.setEnabled(true);
+        computadorVsComputadorMenuItem.setEnabled(true);
+        nivelFacilMenuItem.setEnabled(true);
+        nivelDificilMenuItem.setEnabled(true);
+        velocidadeBaixaMenuItem.setEnabled(true);
+        velocidadeMediaMenuItem.setEnabled(true);
+        velocidadeAltaMenuItem.setEnabled(true);
+        
+        exitMenuItem.setText("Sair");
+        
+        setUpItensMenuJogo();
+        habilitarDesabilitarItensVelocidadeENivelMenuJogo();
     }
 
 }
