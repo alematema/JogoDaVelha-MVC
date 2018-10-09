@@ -7,7 +7,6 @@ import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.jogo.Jogo;
 import br.edu.undra.modelo.jogo.Tabuleiro;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
-import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaSimplesParaJogoVelhaImpl;
 import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.io.IOException;
 import java.lang.reflect.Method;

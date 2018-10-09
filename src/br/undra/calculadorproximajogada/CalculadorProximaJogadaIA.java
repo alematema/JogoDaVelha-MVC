@@ -1,8 +1,6 @@
 package br.undra.calculadorproximajogada;
 
 import br.edu.undra.modelo.JogoDaVelha;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * CalculadorProximaJogadaIA para computadorXhumano.<br>
