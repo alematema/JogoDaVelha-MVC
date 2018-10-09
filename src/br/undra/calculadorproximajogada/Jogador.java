@@ -383,6 +383,25 @@ public class Jogador {
         }
 
     }
+    
+    public boolean joga(int posicao) {
+
+        List<JogoDaVelhaWrapped> espacoRecalc = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(posicao).doJogo(getJogoDaVelha()).recalcularEspaco();
+
+        if (espacoRecalc == null) {
+            return false;
+        } else {
+            setEspaco(espacoRecalc);
+
+            getOponente().setEspaco(getEspaco());
+
+            setVezDeJogar(Boolean.FALSE);
+            getOponente().setVezDeJogar(Boolean.TRUE);
+
+            return true;
+        }
+
+    }
 
     public boolean jogaNaPosicao(int posicao) {
         //do range check ... nao implementado por motivos de se querer generalizar o tabuleiro para NxN

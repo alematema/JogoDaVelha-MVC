@@ -57,7 +57,14 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
     public void setVelocity(int newValeu) {
         velocidade = newValeu;
     }
-
+    /**
+     * Calcula-se proxima jogada baseando em análise combinatória.<br>
+     * Todas evoluções possíveis do jogo são consideradas e, dai,<br>
+     * calcula-se uma jogada com a maior probabilidade de se vencer o jogo.
+     *
+     * @param jogador o jogador
+     * @return int representando a melhor posicao para se jogar.
+     */
     @Override
     public int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA) {
         

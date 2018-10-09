@@ -75,7 +75,7 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
     public void SetUp(JogoDaVelha jogo) {
 
         jogo.getJogador1().setNome("Computador");
-        jogo.getJogador2().setNome("Humano");
+        jogo.getJogador2().setNome("Você");
 
         jogo.getJogador1().setPrimeiroAJogar(true);
 
@@ -95,6 +95,14 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Calcula-se proxima jogada baseando em análise combinatória.<br>
+     * Todas evoluções possíveis do jogo são consideradas e, dai,<br>
+     * calcula-se uma jogada com a maior probabilidade de se vencer o jogo.
+     *
+     * @param jogador o jogador
+     * @return int representando a melhor posicao para se jogar.
+     */
     @Override
     public int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA) {
 
@@ -102,10 +110,10 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
         int coluna;
         int posicao = 0;
 
-        if(calculadorProximaJogadaIA.jogoTerminou()){
+        if (calculadorProximaJogadaIA.jogoTerminou()) {
             calculadorProximaJogadaIA.reconfigurar();
         }
-        
+
         //é primeira jogada
         if (((JogoDaVelha) jogador.getJogo()).getUltimoAJogar() == null) {
 

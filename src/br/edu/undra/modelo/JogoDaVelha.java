@@ -58,7 +58,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         Tabuleiro tabuleiro = new Tabuleiro(3);
         setTabuleiro(tabuleiro);
 
-
     }
 
     private void setUp(String nome) {
@@ -129,13 +128,46 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         this.id = id;
     }
 
+    /**
+     * Recupera uma implementacao da lógica de calculo de uma proxima
+     * jogada.<br>
+     * Ou se calcula aleatoriamente a proxima jogada, ou se usa analise
+     * combinatoria.<br>
+     * Podem ser uma das implementações:<br>
+     * CalculadorProximaJogadaIAParaJogoVelhaImpl<br>
+     * CalculadorProximaJogadaSimplesParaJogoVelhaImpl
+     *
+     * @return Uma implementacao da lógica de calculo de uma proxima jogada
+     */
     public CalculadorProximaJogada getCalculadorProximaJogada() {
         return calculadorProximaJogada;
     }
 
+    /**
+     * Seta uma implementacao da lógica de calculo de uma proxima jogada.<br>
+     * Ou se calcula aleatoriamente a proxima jogada, ou se usa analise
+     * combinatoria.<br>
+     * Podem ser uma das implementações:<br>
+     * CalculadorProximaJogadaIAParaJogoVelhaImpl<br>
+     * CalculadorProximaJogadaSimplesParaJogoVelhaImpl
+     *
+     * @param calculadorProximaJogada uma implementacao de CalculadorProximaJogada
+     */
+    @Override
     public void setCalculadorProximaJogada(CalculadorProximaJogada calculadorProximaJogada) {
-        this.calculadorProximaJogada = calculadorProximaJogada;
+        
+        if ( this.calculadorProximaJogada != calculadorProximaJogada ){
+        
+            this.calculadorProximaJogada = calculadorProximaJogada;
+            lastCalculadorSetado = this.calculadorProximaJogada;
+            
+        }else{
+            
+        }
+        
     }
+    
+    private CalculadorProximaJogada lastCalculadorSetado = null;
 
     @Override
     public String toString() {
@@ -582,7 +614,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     }
 
     /**
-     * Uma abstração das versoes do jogo da velha. <br>
+     * Uma implementacao da abstração das versoes do jogo da velha. <br>
      * Versões podem ser : <br>
      * Computador versus computador<br>
      * Humano versus computador.<br>
@@ -596,8 +628,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         abstracaoVersaoJogoVelha.SetUp(this);
         //System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
     }
-    
-    
 
     @Override
     public void setVelocity(int novoValor) {

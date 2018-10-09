@@ -6,14 +6,15 @@ import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.undra.calculadorproximajogada.CalculadorProximaJogadaIA;
 import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
+import java.util.List;
 
 /**
- * Classe modela uma IA. <br>Calcula proxima jogada usando algoritmo de inteligencia
- * natural.<br>
+ * Classe modela uma IA. <br>Calcula proxima jogada usando algoritmo de
+ * inteligencia natural.<br>
  * O algoritmo é baseado em análise combinatória.<br>
  * Todas evoluções possíveis do jogo são consideradas e, dai,<br>
  * calcula-se uma jogada com a maior probabilidade de se vencer o jogo.
- * 
+ *
  *
  * @author alexandre
  */
@@ -27,7 +28,18 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
     }
 
     public CalculadorProximaJogadaIAParaJogoVelhaImpl(AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha) {
+        
         this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                
+                
+                String[] args = {"-v"};
+//                String[] args = {};
+                calculadorProximaJogadaIA.configura(args);
+            }
+        }).start();
     }
 
     @Override
@@ -36,37 +48,50 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
     }
 
     /**
-     * Nessa implemantação, a logica de cálculo é determinada através das hook
+     * Nessa implementação, a logica de cálculo é determinada através das hook
      * classes:<br>
      * VersaoComputadorVersusComputadorImpl.<br>
      * VersaoHumanoVersusComputadorImpl.<br>
      * VersaoHumanoVersusHumanoImpl. <br>
-     * Calcula proxima jogada baseando em análise combinatória.<br>
+     * Calcula-se proxima jogada baseando em análise combinatória.<br>
      * Todas evoluções possíveis do jogo são consideradas e, dai,<br>
      * calcula-se uma jogada com a maior probabilidade de se vencer o jogo.
      *
      * @param jogador o jogador
-     * @return int[linha,coluna]
+     * @return int[linha,coluna] representando a melhor posicao pra se jogar.
      */
     @Override
     public int[] calcularLinhaEColuna(Jogador jogador) {
 
+        System.out.println(getClass().getName() + ".calcularLinhaEColuna(Object)");
+
         jogador = (JogadorJogoDaVelha) jogador;
 
         if (!calculadorProximaJogadaIA.isConfigurado()) {
-            calculadorProximaJogadaIA.setJogoDaVelha((JogoDaVelha) jogador.getJogo());
-            calculadorProximaJogadaIA.configura();
+
+//            String[] args = {"-v"};
+            String[] args = {};
+            calculadorProximaJogadaIA.configura(args);
+
         }
-        
-        int linha ;
-        int coluna ;
+        //É NECESSÁRIO ESSE SET AQUI, DEPOIS DE SE CONFIGURAR O CALCULADOR,
+        //SE SE QUISER QUE NAO SEJAM FEITOS LOGS NO START UP DO JOGO.
+        calculadorProximaJogadaIA.setJogoDaVelha((JogoDaVelha) jogador.getJogo());
+
+        if (!calculadorProximaJogadaIA.isCalculadorSincronizado(jogador)) {
+            calculadorProximaJogadaIA.sincronizarCalculador(jogador);
+        } else {
+        }
+
+        int linha;
+        int coluna;
         int posicao = abstracaoVersaoJogoVelha.calularProximaJogada(jogador, calculadorProximaJogadaIA);
 
         linha = jogador.getJogo().getTabuleiro().transformarEmLinha(posicao);
         coluna = jogador.getJogo().getTabuleiro().transformarEmColuna(posicao);
-        
-        int[] proximaJogada = {linha,coluna};
-        
+
+        int[] proximaJogada = {linha, coluna};
+
         return proximaJogada;
 
     }
@@ -78,5 +103,6 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
     public void setAbstracaoVersaoJogoVelha(AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha) {
         this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
     }
+   
 
 }

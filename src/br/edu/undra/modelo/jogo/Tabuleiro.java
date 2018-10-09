@@ -246,12 +246,13 @@ public class Tabuleiro {
     /**
      * Recupera posiçoes OCUPADAS do tabuleiro, retornando uma lista de
      * String.<br>
-     * Cada String está no formato linha,coluna,posicao.<br>
-     * Por exemplo, a lista conterá strings da forma 2,1,6
+     * Cada String está no formato linha,coluna,posicao.valor<br>
+     * Por exemplo, a lista conterá strings da forma 2,1,6,3
      * <br>onde o primeiro valor, 2, corresponde à linha;
      * <br>o segundo valor, 1, corresponde à coluna;
      * <br>o terceiro valor, 6, corresponde ao equivalente posicao de linha e
-     * coluna, para dimensão desse tabuleiro.
+     * coluna, para dimensão desse tabuleiro.<br>
+     * o quarto valor, 3, corresponde ao valor naquela posicao;
      * <br>Então, num tabuleiro 5X5, a string 2,1,6 informa que está OCUPADA a
      * posição 6 do tabuleiro, ou equivalentemente,
      * <br>que está OCUPADA a posição da linha 2 e coluna 1.
@@ -269,7 +270,7 @@ public class Tabuleiro {
 
                 if (!get(i, j).equals(POSICAO_LIVRE)) {
 
-                    posicoesOcupadas.add(i + "," + j + "," + (((i - 1) * dimensao + (j - 1)) + 1));
+                    posicoesOcupadas.add(i + "," + j + "," + (((i - 1) * dimensao + (j - 1)) + 1)+","+get(i,j));
 
                 }
 
@@ -471,6 +472,7 @@ public class Tabuleiro {
     /**
      * Recupera posiçoes correspondentes aos valores passados no argumento.<br>
      *
+     * @param valores
      * @return Lista das posições correspondentes aos valores passados.<br>
      */
     public List<Object> getPosicoesDestesValores(List<Object> valores) {
@@ -497,6 +499,37 @@ public class Tabuleiro {
         return posicoesDestesVAlores;
     }
 
+    
+    /**
+     * Recupera posiçoes correspondentes aos valores passados no argumento.<br>
+     *
+     * @param valores
+     * @return Lista das posições correspondentes aos valores passados.<br>
+     */
+    public List<Object> getPosicoesDestesValoresInteiros(List<Integer> valores) {
+
+        List<Object> posicoesDestesVAlores = new ArrayList<>();
+        
+        for (Object valor : valores) {
+
+            for (int i = 1; i <= dimensao * dimensao; i++) {
+                
+                if( get(i).equals(valor) ){
+                    
+                    if(! posicoesDestesVAlores.contains(i) ) {
+                        posicoesDestesVAlores.add(i);
+                        break;
+                    }
+                    
+                }
+                
+            }
+
+        }
+
+        return posicoesDestesVAlores;
+    }
+    
     @Override
     public String toString() {
 

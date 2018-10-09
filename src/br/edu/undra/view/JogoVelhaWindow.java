@@ -24,8 +24,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -34,9 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 
 /**
@@ -79,7 +75,7 @@ public class JogoVelhaWindow extends JFrame {
 
     //as duas impleentacoes do calculador da proxima jogada
     CalculadorProximaJogada<Jogador> calculadorProximaJogadaSimples = new CalculadorProximaJogadaSimplesParaJogoVelhaImpl();
-    CalculadorProximaJogada<Jogador> calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(humanoVxComp);
+    CalculadorProximaJogada<Jogador> calculadorProximaJogadaIA;
 
     CalculadorProximaJogada<Jogador> calculadorProximaJogada;
 
@@ -104,7 +100,7 @@ public class JogoVelhaWindow extends JFrame {
     public JogoVelhaWindow(View view) {
         this();
         this.view = (DisplayJogoVelha) view;
-        abstracaoVersaoJogoVelha = humanoVxComp;
+        abstracaoVersaoJogoVelha = compVxComp;
         calculadorProximaJogada = calculadorProximaJogadaSimples;
     }
 
@@ -176,6 +172,8 @@ public class JogoVelhaWindow extends JFrame {
         setVisible(true);
 
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
+        setUpItensMenuJogo();
+        setUpAbstracaoVersaoJogo();
 
     }
 
@@ -225,6 +223,8 @@ public class JogoVelhaWindow extends JFrame {
         nivelDificilMenuItem.setFont(menuFont);
         nivelGroup.add(nivelFacilMenuItem);
         nivelGroup.add(nivelDificilMenuItem);
+        nivelFacilMenuItem.addActionListener(this::nivelFacilMenuItemActionPerformed);
+        nivelDificilMenuItem.addActionListener(this::nivelDificilMenuItemActionPerformed);
         jogosMenu.addSeparator();
         jogosMenu.add(velocidadeBaixaMenuItem);
         jogosMenu.add(velocidadeMediaMenuItem);
@@ -247,15 +247,9 @@ public class JogoVelhaWindow extends JFrame {
         humanoVsHumanoMenuItem.addActionListener(this::humanoVsHumanoMenuItemActionPerformed);
         exitMenuItem.addActionListener(this::exitMenuItemActionPerformed);
 
-        //set item do menu com a versao do jogo correspondente 
-        if (abstracaoVersaoJogoVelha instanceof VersaoComputadorVersusComputadorImpl) {
-            computadorVsComputadorMenuItem.setSelected(true);
-        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl) {
-            humanoVsComputadorMenuItem.setSelected(true);
-        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
-            humanoVsHumanoMenuItem.setSelected(true);
-        }
-
+        
+        
+        
         GridBagConstraints gridConstraints = new GridBagConstraints();
 
         gridConstraints.gridx = 0;
@@ -280,6 +274,26 @@ public class JogoVelhaWindow extends JFrame {
 
     }
 
+    private void setUpItensMenuJogo(){
+        //set item do menu com a versao do jogo correspondente 
+        if (abstracaoVersaoJogoVelha instanceof VersaoComputadorVersusComputadorImpl) {
+            computadorVsComputadorMenuItem.setSelected(true);
+        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl) {
+            humanoVsComputadorMenuItem.setSelected(true);
+        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
+            humanoVsHumanoMenuItem.setSelected(true);
+        }
+
+        //set item do menu com a dificuldade do jogo correspondente 
+        if( calculadorProximaJogada instanceof CalculadorProximaJogadaSimplesParaJogoVelhaImpl ){
+            nivelFacilMenuItem.setSelected(true);
+            nivelDificilMenuItem.setSelected(false);
+        }else{
+            nivelFacilMenuItem.setSelected(false);
+            nivelDificilMenuItem.setSelected(true);
+        }
+    }
+    
     private void computadorVsComputadorJSliderChangePerformed(ChangeEvent e) {
 
         Object[] args1 = {Integer.toString((Integer) ((JSlider) e.getSource()).getValue()) + "/" + velocidadeCompVsCompJSlider.getMaximum()};
@@ -300,6 +314,7 @@ public class JogoVelhaWindow extends JFrame {
 
         view.getController().updateModel("liberarJogada", null);
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
+        
         tituloMenu.setText(compVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
     }
@@ -313,6 +328,7 @@ public class JogoVelhaWindow extends JFrame {
         args[0] = humanoVxComp;
         view.getController().updateModel("liberarJogada", null);
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
+        
         tituloMenu.setText(humanoVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
 
@@ -328,6 +344,23 @@ public class JogoVelhaWindow extends JFrame {
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(humanoVxHumano.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+
+    }
+    
+    private void nivelFacilMenuItemActionPerformed(ActionEvent e) {
+
+        calculadorProximaJogada = calculadorProximaJogadaSimples;
+        Object[] args = {calculadorProximaJogada};
+        view.getController().updateModel("setCalculadorProximaJogada", args);
+        
+
+    }
+    
+    private void nivelDificilMenuItemActionPerformed(ActionEvent e) {
+
+        calculadorProximaJogada = calculadorProximaJogadaIA;
+        Object[] args = {calculadorProximaJogada};
+        view.getController().updateModel("setCalculadorProximaJogada", args);
 
     }
 
@@ -391,39 +424,23 @@ public class JogoVelhaWindow extends JFrame {
             velocidadeBaixaMenuItem.setEnabled(true);
             velocidadeMediaMenuItem.setEnabled(true);
             velocidadeAltaMenuItem.setEnabled(true);
-            
+
             nivelFacilMenuItem.setEnabled(true);
             nivelDificilMenuItem.setEnabled(true);
 
         }
-        
-        if ( abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl ){
-            
+
+        if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl) {
+
             nivelFacilMenuItem.setEnabled(true);
             nivelDificilMenuItem.setEnabled(true);
-            
-        }
-//
-//        if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
-//
-//            velocidadeBaixaMenuItem.setEnabled(false);
-//            velocidadeMediaMenuItem.setEnabled(false);
-//            velocidadeAltaMenuItem.setEnabled(false);
-//
-//            nivelFacilMenuItem.setEnabled(false);
-//            nivelDificilMenuItem.setEnabled(false);
-//
-//        } else {
-//
-//            velocidadeBaixaMenuItem.setEnabled(true);
-//            velocidadeMediaMenuItem.setEnabled(true);
-//            velocidadeAltaMenuItem.setEnabled(true);
-//
-//            nivelFacilMenuItem.setEnabled(true);
-//            nivelDificilMenuItem.setEnabled(true);
-//
-//        }
 
+        }
+
+    }
+
+    private void setUpAbstracaoVersaoJogo() {
+        calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(abstracaoVersaoJogoVelha);
     }
 
 }

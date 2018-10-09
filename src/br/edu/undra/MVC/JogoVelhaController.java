@@ -3,6 +3,7 @@ package br.edu.undra.MVC;
 import br.edu.undra.interfaces.MVC.Controller;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.view.DisplayJogoVelha;
+import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -45,6 +46,15 @@ public class JogoVelhaController implements Controller {
 
         try {
             Class<?>[] paramTypes = {AbstracaoVersaoJogoVelha.class};
+            model.getClass().getMethod(methodName, paramTypes).invoke(model, args[0]);
+        } catch (NoSuchMethodException ex) {
+        } catch (SecurityException ex) {
+        } catch (IllegalAccessException ex) {
+        } catch (IllegalArgumentException ex) {
+        } catch (InvocationTargetException ex) {
+        }
+        try {
+            Class<?>[] paramTypes = {CalculadorProximaJogada.class};
             model.getClass().getMethod(methodName, paramTypes).invoke(model, args[0]);
         } catch (NoSuchMethodException ex) {
         } catch (SecurityException ex) {

@@ -17,6 +17,7 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
 
     public JogoDaVelhaVersaoHumanoVersusMaquina(String[] args, CalculadorProximaJogadaIA calculadorProximaJogada) {
 
+        verbose = false;
         try {
             if (args[0].toUpperCase().equals("-V")) {
                 verbose = true;
@@ -106,8 +107,22 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
         return jogoDaVelha.terminou();
     }
 
+    public JogoDaVelhaWrapped getJogoDaVelha() {
+        return jogoDaVelha;
+    }
+
     void reconfigurar() {
         configura();
     }
+
+    public Jogador getJogador1() {
+        return jogador1;
+    }
+
+    public Jogador getJogador2() {
+        return jogador2;
+    }
+    
+    
 
 }

@@ -13,6 +13,15 @@ import java.util.List;
  */
 public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements CalculadorProximaJogada<Jogador> {
 
+    /**
+     * Calcula a próxima jogada SEMPRE escolhendo ALEATORIAMENTE<br>
+     * uma das posicoes LIVRES do jogo.<br>
+     * INDEPENDENTEMENTE se for VERSAO CompVSComp OU VERSAOHumanoVSComp.
+     *
+     * @param jogador
+     * @return Um int , representando uma posição LIVRE escolhida
+     * ALEATÓRIAMENTE.
+     */
     @Override
     public int calcular(Jogador jogador) {
 
@@ -40,6 +49,15 @@ public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements Calculad
 
     }
 
+    /**
+     * Calcula a próxima jogada SEMPRE escolhendo ALEATORIAMENTE<br>
+     * uma das posicoes LIVRES do jogo.<br>
+     * INDEPENDENTEMENTE se for VERSAO CompVSComp OU VERSAO HumanoVSComp.
+     *
+     * @param jogador
+     * @return Um int[linha,coluna], representando posição LIVRE escolhida
+     * ALEATÓRIAMENTE, na forma de LINHAxCOLUNA
+     */
     @Override
     public int[] calcularLinhaEColuna(Jogador jogador) {
 
@@ -50,9 +68,11 @@ public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements Calculad
         int linha = jogador.getJogo().getTabuleiro().transformarEmLinha(posicao);
         int coluna = jogador.getJogo().getTabuleiro().transformarEmColuna(posicao);
 
-        int[] posicaoLivre = {linha,coluna};
+        int[] posicaoLivre = {linha, coluna};
+
+        System.out.println(getClass().getName() + ".calcularLinhaEColuna(Object)");
 
         return posicaoLivre;
-        
+
     }
 }
