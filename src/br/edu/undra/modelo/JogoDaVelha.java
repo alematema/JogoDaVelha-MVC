@@ -7,15 +7,11 @@ import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.jogo.Jogo;
 import br.edu.undra.modelo.jogo.Tabuleiro;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
-import br.edu.undra.modelo.versoes.VersaoComputadorVersusComputadorImpl;
-import br.edu.undra.modelo.versoes.VersaoHumanoVersusComputadorImpl;
-import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaIAParaJogoVelhaImpl;
 import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaSimplesParaJogoVelhaImpl;
 import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.CharBuffer;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -51,7 +47,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     private String posicaoClicada = "0";
 
     private CalculadorProximaJogada calculadorProximaJogada;
-    
+
     private Jogador ultimoAJogar;
 
     public JogoDaVelha(String nome) {
@@ -62,25 +58,19 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         Tabuleiro tabuleiro = new Tabuleiro(3);
         setTabuleiro(tabuleiro);
-        
-        
-        abstracaoVersaoJogoVelha = new VersaoHumanoVersusComputadorImpl();
-        
-        calculadorProximaJogada = new CalculadorProximaJogadaSimplesParaJogoVelhaImpl();
-        
+
+
     }
 
     private void setUp(String nome) {
-        
+
         jogador1 = new JogadorJogoDaVelha("jogador 1");
         jogador2 = new JogadorJogoDaVelha("jogador 2");
-        
 
         List<JogadorJogoDaVelha> jogadores = Arrays.asList(jogador1, jogador2);
         setNome(nome);
         setJogadores(jogadores);
-        
-        
+
         setUpJogadores();
     }
 
@@ -147,7 +137,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     public void setCalculadorProximaJogada(CalculadorProximaJogada calculadorProximaJogada) {
         this.calculadorProximaJogada = calculadorProximaJogada;
     }
-    
+
     @Override
     public String toString() {
 
@@ -270,7 +260,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     /**
      * Devolve proxima jogada para um jogador.<br>
      * A String devolvida está no formato linha,coluna<br>
-     * Por exemplo, uma proxima jogada pode ser a string  "2,1". Nela,
+     * Por exemplo, uma proxima jogada pode ser a string "2,1". Nela,
      * <br>o primeiro valor, 2, corresponde à linha;
      * <br>o segundo valor, 1, corresponde à coluna;
      *
@@ -465,8 +455,6 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
     }
 
-    
-
     public Jogador getUltimoAJogar() {
         return ultimoAJogar;
     }
@@ -513,11 +501,11 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         new Thread(new Runnable() {
             @Override
             public void run() {
-                
+
                 setUp(getNome());
-                
+
                 ultimoAJogar = null;
-                
+
                 Object[] args = new Object[1];
 
                 args[0] = "REINICIANDO O JOGO... " + new Date();
@@ -595,6 +583,11 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
     }
 
     /**
+     * Uma abstração das versoes do jogo da velha. <br>
+     * Versões podem ser : <br>
+     * Computador versus computador<br>
+     * Humano versus computador.<br>
+     * Humano versus humano.
      *
      * @param abstracaoVersaoJogoVelha
      */
@@ -604,6 +597,8 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         abstracaoVersaoJogoVelha.SetUp(this);
         //System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
     }
+    
+    
 
     @Override
     public void setVelocity(int novoValor) {

@@ -26,6 +26,9 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         jogo.updateView(jogador);
 
         int sleep = (int) (200 * (int) 100 * (1.0 / velocidade));
+        if(velocidade>=95){
+            sleep = (int) (2 * (int) 100 * (1.0 / velocidade));
+        }
 
         try {
             Thread.sleep(sleep);

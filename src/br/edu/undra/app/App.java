@@ -4,6 +4,7 @@ import br.edu.undra.MVC.JogoVelhaController;
 import br.edu.undra.modelo.JogoDaVelha;
 import br.edu.undra.view.DisplayJogoVelha;
 import br.edu.undra.view.JogoVelhaWindow;
+import javax.swing.JFrame;
 
 /**
  *
@@ -16,12 +17,6 @@ public class App {
         new Thread(() -> {
             new App().start(args);
         }).start();
-//        new Thread(() -> {
-//            new App().start(args);
-//        }).start();
-//        new Thread(() -> {
-//            new App().start(args);
-//        }).start();
 
         
     }
@@ -34,9 +29,12 @@ public class App {
         
         JogoVelhaController controller = new JogoVelhaController(model, view);
         
-        String tituloJanela = model.getAbstracaoVersaoJogoVelha().getVersao();
+        JogoVelhaWindow window = new JogoVelhaWindow(view);
         
-        new JogoVelhaWindow(view).configureAndShow(tituloJanela);
+        window.configureAndShow();
+        
+        model.setAbstracaoVersaoJogoVelha(window.getAbstracaoVersaoJogoVelha());
+        model.setCalculadorProximaJogada(window.getCalculadorProximaJogada());
         
         model.iniciar();
         

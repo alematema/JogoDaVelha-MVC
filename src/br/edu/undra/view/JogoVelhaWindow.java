@@ -1,10 +1,14 @@
 package br.edu.undra.view;
 
 import br.edu.undra.interfaces.MVC.View;
+import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.modelo.versoes.VersaoComputadorVersusComputadorImpl;
 import br.edu.undra.modelo.versoes.VersaoHumanoVersusComputadorImpl;
 import br.edu.undra.modelo.versoes.VersaoHumanoVersusHumanoImpl;
+import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaIAParaJogoVelhaImpl;
+import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaSimplesParaJogoVelhaImpl;
+import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,16 +26,18 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * O window do jogo da velha.
@@ -44,9 +50,21 @@ public class JogoVelhaWindow extends JFrame {
     JMenuBar mainMenuBar = new JMenuBar();
     JMenu jogosMenu = new JMenu("JOGOS");
     JMenu tituloMenu = new JMenu(getTitle());
-    JMenuItem computadorVsComputadorMenuItem = new JMenuItem("Jogar Computador versus computador");
-    JMenuItem humanoVsComputadorMenuItem = new JMenuItem("Jogar Humano versus computador");
-    JMenuItem humanoVsHumanoMenuItem = new JMenuItem("Jogar Humano versus humano");
+    JCheckBox computadorVsComputadorMenuItem = new JCheckBox("Jogar Computador versus computador");
+    JCheckBox humanoVsComputadorMenuItem = new JCheckBox("Jogar Humano versus computador");
+    JCheckBox humanoVsHumanoMenuItem = new JCheckBox("Jogar Humano versus humano");
+    //separacao de menu de configuracoes
+    JCheckBox nivelFacilMenuItem = new JCheckBox("Fácil Vencer Computador", true);
+    JCheckBox nivelDificilMenuItem = new JCheckBox("Difícil Vencer Computador", false);
+    JCheckBox velocidadeBaixaMenuItem = new JCheckBox("Computador Joga Devagar", false);
+    JCheckBox velocidadeMediaMenuItem = new JCheckBox("Computador Joga Não Tão Rápido", true);
+    JCheckBox velocidadeAltaMenuItem = new JCheckBox("Computador Joga Rapidíssimo", false);
+
+    ButtonGroup versaoJogoGroup = new ButtonGroup();
+    ButtonGroup nivelGroup = new ButtonGroup();
+    ButtonGroup velocidadeGroup = new ButtonGroup();
+    //fim menu configuracoes
+
     JMenuItem exitMenuItem = new JMenuItem("Sair");
 
     Font menuFont = new Font("Ubuntu", Font.PLAIN, 15);
@@ -57,6 +75,15 @@ public class JogoVelhaWindow extends JFrame {
     AbstracaoVersaoJogoVelha compVxComp = new VersaoComputadorVersusComputadorImpl();
     AbstracaoVersaoJogoVelha humanoVxComp = new VersaoHumanoVersusComputadorImpl();
     AbstracaoVersaoJogoVelha humanoVxHumano = new VersaoHumanoVersusHumanoImpl();
+    AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha;
+
+    //as duas impleentacoes do calculador da proxima jogada
+    CalculadorProximaJogada<Jogador> calculadorProximaJogadaSimples = new CalculadorProximaJogadaSimplesParaJogoVelhaImpl();
+    CalculadorProximaJogada<Jogador> calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(humanoVxComp);
+
+    CalculadorProximaJogada<Jogador> calculadorProximaJogada;
+
+    private JCheckBox nivelFacilDificil = new JCheckBox("Nível Difícil");
 
     //a comunicacao com usuario
     private JButton mensagem;
@@ -69,8 +96,6 @@ public class JogoVelhaWindow extends JFrame {
     private int numeroDaInstancia;
 
     private JSlider velocidadeCompVsCompJSlider = new JSlider(JSlider.HORIZONTAL);
-    
-    
 
     public JogoVelhaWindow() throws HeadlessException {
         this.numeroDaInstancia = numeroDeInstancias.addAndGet(1);
@@ -79,26 +104,28 @@ public class JogoVelhaWindow extends JFrame {
     public JogoVelhaWindow(View view) {
         this();
         this.view = (DisplayJogoVelha) view;
+        abstracaoVersaoJogoVelha = humanoVxComp;
+        calculadorProximaJogada = calculadorProximaJogadaSimples;
     }
 
-    public void configureAndShow(String title) {
-        setTitle(title);
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("GTK+".equals(info.getName())) {
-                try {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (InstantiationException ex) {
-                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IllegalAccessException ex) {
-                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (UnsupportedLookAndFeelException ex) {
-                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
-            }
-        }
+    public void configureAndShow() {
+        setTitle(abstracaoVersaoJogoVelha.getVersao());
+//        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//            if ("GTK+".equals(info.getName())) {
+//                try {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                } catch (ClassNotFoundException ex) {
+//                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (InstantiationException ex) {
+//                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (IllegalAccessException ex) {
+//                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (UnsupportedLookAndFeelException ex) {
+//                    Logger.getLogger(JogoVelhaWindow.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                break;
+//            }
+//        }
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -150,10 +177,6 @@ public class JogoVelhaWindow extends JFrame {
 
     }
 
-    public void configureAndShow() {
-        configureAndShow(getClass().getSimpleName() + " " + this.numeroDaInstancia + " App");
-    }
-
     private void placeComponentsAtFrame() {
 
         getContentPane().setLayout(new GridBagLayout());
@@ -172,14 +195,48 @@ public class JogoVelhaWindow extends JFrame {
         jogosMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/configuration.png")));
 
         jogosMenu.add(computadorVsComputadorMenuItem);
-        computadorVsComputadorMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/abrir.png")));
+//        computadorVsComputadorMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/abrir.png")));
+        computadorVsComputadorMenuItem.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/switch-on-icon.png")));
+        computadorVsComputadorMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/switch-off-icon.png")));
+        computadorVsComputadorMenuItem.setIconTextGap(0);
         computadorVsComputadorMenuItem.setFont(menuFont);
         jogosMenu.add(humanoVsComputadorMenuItem);
-        humanoVsComputadorMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/abrir.png")));
+        //humanoVsComputadorMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/abrir.png")));
+        humanoVsComputadorMenuItem.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/switch-on-icon.png")));
+        humanoVsComputadorMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/switch-off-icon.png")));
+        humanoVsComputadorMenuItem.setIconTextGap(0);
         humanoVsComputadorMenuItem.setFont(menuFont);
         jogosMenu.add(humanoVsHumanoMenuItem);
-        humanoVsHumanoMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/abrir.png")));
+        //humanoVsHumanoMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/abrir.png")));
+        humanoVsHumanoMenuItem.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/switch-on-icon.png")));
+        humanoVsHumanoMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/switch-off-icon.png")));
+        humanoVsHumanoMenuItem.setIconTextGap(0);
         humanoVsHumanoMenuItem.setFont(menuFont);
+        versaoJogoGroup.add(computadorVsComputadorMenuItem);
+        versaoJogoGroup.add(humanoVsComputadorMenuItem);
+        versaoJogoGroup.add(humanoVsHumanoMenuItem);
+
+        jogosMenu.addSeparator();
+        jogosMenu.add(nivelFacilMenuItem);
+        jogosMenu.add(nivelDificilMenuItem);
+        nivelFacilMenuItem.setFont(menuFont);
+        nivelDificilMenuItem.setFont(menuFont);
+        nivelGroup.add(nivelFacilMenuItem);
+        nivelGroup.add(nivelDificilMenuItem);
+        
+        jogosMenu.addSeparator();
+        jogosMenu.add(velocidadeBaixaMenuItem);
+        jogosMenu.add(velocidadeMediaMenuItem);
+        jogosMenu.add(velocidadeAltaMenuItem);
+        velocidadeBaixaMenuItem.setFont(menuFont);
+        velocidadeMediaMenuItem.setFont(menuFont);
+        velocidadeAltaMenuItem.setFont(menuFont);
+        velocidadeGroup.add(velocidadeBaixaMenuItem);
+        velocidadeGroup.add(velocidadeMediaMenuItem);
+        velocidadeGroup.add(velocidadeAltaMenuItem);
+        velocidadeBaixaMenuItem.addActionListener(this::velocidadeBaixaMenuItemActionPerformed);
+        velocidadeMediaMenuItem.addActionListener(this::velocidadeMediaMenuItemActionPerformed);
+        velocidadeAltaMenuItem.addActionListener(this::velocidadeAltaMenuItemActionPerformed);
         jogosMenu.addSeparator();
         exitMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/closepreto.png")));
         jogosMenu.add(exitMenuItem);
@@ -188,6 +245,15 @@ public class JogoVelhaWindow extends JFrame {
         humanoVsComputadorMenuItem.addActionListener(this::humanoVsComputadorMenuItemActionPerformed);
         humanoVsHumanoMenuItem.addActionListener(this::humanoVsHumanoMenuItemActionPerformed);
         exitMenuItem.addActionListener(this::exitMenuItemActionPerformed);
+
+        //set item do menu com a versao do jogo correspondente 
+        if (abstracaoVersaoJogoVelha instanceof VersaoComputadorVersusComputadorImpl) {
+            computadorVsComputadorMenuItem.setSelected(true);
+        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl) {
+            humanoVsComputadorMenuItem.setSelected(true);
+        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
+            humanoVsHumanoMenuItem.setSelected(true);
+        }
 
         GridBagConstraints gridConstraints = new GridBagConstraints();
 
@@ -198,11 +264,11 @@ public class JogoVelhaWindow extends JFrame {
         // getContentPane().add(tituloFake, gridConstraints);
 
         gridConstraints.gridx = 0;
-        gridConstraints.gridy = 2;
+        gridConstraints.gridy = 1;
         getContentPane().add(view, gridConstraints);
 
         gridConstraints.gridx = 0;
-        gridConstraints.gridy = 3;
+        gridConstraints.gridy = 2;
 
         mensagem = view.getMensagem();
 
@@ -210,29 +276,34 @@ public class JogoVelhaWindow extends JFrame {
         mensagem.setPreferredSize(new Dimension((int) view.getPreferredSize().getWidth(), (int) view.getPreferredSize().getHeight() / 8));
 
         getContentPane().add(mensagem, gridConstraints);
-        
+
         gridConstraints.gridx = 0;
-        gridConstraints.gridy = 4;
-        getContentPane().add(velocidadeCompVsCompJSlider,gridConstraints);
-        velocidadeCompVsCompJSlider.setPreferredSize(new Dimension((int) view.getPreferredSize().getWidth(), (int) view.getPreferredSize().getHeight() / 16));
+        gridConstraints.gridy = 3;
+        //getContentPane().add(velocidadeCompVsCompJSlider,gridConstraints);
+        velocidadeCompVsCompJSlider.setPreferredSize(new Dimension((int) view.getPreferredSize().getWidth() / 4, (int) view.getPreferredSize().getHeight() / 16));
         velocidadeCompVsCompJSlider.setEnabled(false);
         velocidadeCompVsCompJSlider.addChangeListener(this::computadorVsComputadorJSliderChangePerformed);
         velocidadeCompVsCompJSlider.setMinimum(1);
         velocidadeCompVsCompJSlider.setMaximum(500);
-        velocidadeCompVsCompJSlider.setValue(velocidadeCompVsCompJSlider.getMaximum()/2);
-        
+        velocidadeCompVsCompJSlider.setValue(velocidadeCompVsCompJSlider.getMaximum() / 2);
+
+        nivelFacilDificil.setFont(new Font("Ubuntu", Font.BOLD, 14));
+
+        gridConstraints.gridx = 0;
+        gridConstraints.gridy = 2;
+        getContentPane().add(nivelFacilDificil, gridConstraints);
+
     }
-    
-    private void computadorVsComputadorJSliderChangePerformed(ChangeEvent e){
-        
-        Object[] args1 = {Integer.toString((Integer)((JSlider)e.getSource()).getValue())+"/"+velocidadeCompVsCompJSlider.getMaximum()};
+
+    private void computadorVsComputadorJSliderChangePerformed(ChangeEvent e) {
+
+        Object[] args1 = {Integer.toString((Integer) ((JSlider) e.getSource()).getValue()) + "/" + velocidadeCompVsCompJSlider.getMaximum()};
         view.getController().updateView("setMensagem", args1);
-        
-        Object[] args = {((JSlider)e.getSource()).getValue()};
-        view.getController().updateModel("setVelocity", args); 
-        
+
+        Object[] args = {((JSlider) e.getSource()).getValue()};
+        view.getController().updateModel("setVelocity", args);
+
     }
-    
 
     private void computadorVsComputadorMenuItemActionPerformed(ActionEvent e) {
 
@@ -268,12 +339,50 @@ public class JogoVelhaWindow extends JFrame {
 
     }
 
+    private void velocidadeBaixaMenuItemActionPerformed(ActionEvent e) {
+
+        Object[] args1 = {"1/100"};
+        view.getController().updateView("setMensagem", args1);
+
+        Object[] args = {10};
+        view.getController().updateModel("setVelocity", args);
+
+    }
+
+    private void velocidadeMediaMenuItemActionPerformed(ActionEvent e) {
+
+        Object[] args1 = {"50/100"};
+        view.getController().updateView("setMensagem", args1);
+
+        Object[] args = {50};
+        view.getController().updateModel("setVelocity", args);
+
+    }
+
+    private void velocidadeAltaMenuItemActionPerformed(ActionEvent e) {
+
+        Object[] args1 = {"100/100"};
+        view.getController().updateView("setMensagem", args1);
+
+        Object[] args = {100};
+        view.getController().updateModel("setVelocity", args);
+
+    }
+
     private void exitMenuItemActionPerformed(ActionEvent e) {
         System.exit(JFrame.NORMAL);
     }
 
     private void exitForm(WindowEvent evt) {
         System.exit(JFrame.NORMAL);
+    }
+
+    public AbstracaoVersaoJogoVelha getAbstracaoVersaoJogoVelha() {
+        return abstracaoVersaoJogoVelha;
+    }
+
+    public CalculadorProximaJogada<Jogador> getCalculadorProximaJogada() {
+        return calculadorProximaJogada;
     }
 
 }
