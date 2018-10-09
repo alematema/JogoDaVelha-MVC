@@ -75,4 +75,9 @@ public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements Calculad
         return posicaoLivre;
 
     }
+
+    @Override
+    public String getNomeSimples() {
+       return "calculadorSimples";
+    }
 }

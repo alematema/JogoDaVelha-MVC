@@ -138,4 +138,9 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
 
     }
 
+    @Override
+    public String getNomeResumido() {
+        return "humanoVSComp";
+    }
+
 }

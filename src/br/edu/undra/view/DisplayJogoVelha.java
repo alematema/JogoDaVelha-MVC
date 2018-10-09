@@ -61,6 +61,8 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     //a cor de fundo dos botoes
     private final Color botaoBackground = Color.WHITE;
 
+    private JogoVelhaWindow window;
+
     public DisplayJogoVelha() {
         configure();
     }
@@ -393,9 +395,37 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
 
     }
 
+    public void setWindow(JogoVelhaWindow window) {
+        this.window = window;
+    }
+
     @Override
     public void setMensagem(String mensagem) {
         this.mensagem.setText(mensagem);
+    }
+
+    @Override
+    public void setVersaoJogo(String versao) {
+        System.out.println("view setting versao jogo " + versao + " @ " + window.getClass().getSimpleName());
+        window.setVersaoJogo(versao);
+    }
+
+    @Override
+    public void setVersaoCalculador(String versao) {
+        System.out.println("view setting versao Calculador " + versao + " @ " + window.getClass().getSimpleName());
+        window.setVersaoCalculador(versao);
+    }
+
+    @Override
+    public void setUpItensMenuJogo() {
+
+        System.out.println("setting up itens menu jogo ");
+        window.setUpItensMenuJogo();
+    }
+
+    @Override
+    public void habilitarDesabilitarItensVelocidadeENivelMenuJogo() {
+        window.habilitarDesabilitarItensVelocidadeENivelMenuJogo();
     }
 
 }

@@ -1,14 +1,6 @@
 package br.edu.undra.view;
 
 import br.edu.undra.interfaces.MVC.View;
-import br.edu.undra.modelo.jogo.Jogador;
-import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
-import br.edu.undra.modelo.versoes.VersaoComputadorVersusComputadorImpl;
-import br.edu.undra.modelo.versoes.VersaoHumanoVersusComputadorImpl;
-import br.edu.undra.modelo.versoes.VersaoHumanoVersusHumanoImpl;
-import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaIAParaJogoVelhaImpl;
-import br.undra.calculadorproximajogada.impl.CalculadorProximaJogadaSimplesParaJogoVelhaImpl;
-import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -50,8 +42,8 @@ public class JogoVelhaWindow extends JFrame {
     JCheckBox humanoVsComputadorMenuItem = new JCheckBox("Jogar Humano versus computador");
     JCheckBox humanoVsHumanoMenuItem = new JCheckBox("Jogar Humano versus humano");
     //separacao de menu de configuracoes
-    JCheckBox nivelFacilMenuItem = new JCheckBox("Fácil Vencer Computador", true);
-    JCheckBox nivelDificilMenuItem = new JCheckBox("Difícil Vencer Computador", false);
+    JCheckBox nivelFacilMenuItem = new JCheckBox("Fácil De Vencer O Computador", true);
+    JCheckBox nivelDificilMenuItem = new JCheckBox("Difícil De Vencer O Computador", false);
     JCheckBox velocidadeBaixaMenuItem = new JCheckBox("Computador Joga Devagar", false);
     JCheckBox velocidadeMediaMenuItem = new JCheckBox("Computador Joga Não Tão Rápido", true);
     JCheckBox velocidadeAltaMenuItem = new JCheckBox("Computador Joga Rapidíssimo", false);
@@ -68,16 +60,16 @@ public class JogoVelhaWindow extends JFrame {
     JLabel tituloFake = new JLabel(getTitle());
 
     //as tres versoes do jogo da velhas
-    AbstracaoVersaoJogoVelha compVxComp = new VersaoComputadorVersusComputadorImpl();
-    AbstracaoVersaoJogoVelha humanoVxComp = new VersaoHumanoVersusComputadorImpl();
-    AbstracaoVersaoJogoVelha humanoVxHumano = new VersaoHumanoVersusHumanoImpl();
-    AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha;
+    String compVSComp = "compVSComp";
+    String humanoVSComp = "humanoVSComp";
+    String humanoVSHumano = "humanoVSHumano";
+    String versaoJogo;
 
     //as duas impleentacoes do calculador da proxima jogada
-    CalculadorProximaJogada<Jogador> calculadorProximaJogadaSimples = new CalculadorProximaJogadaSimplesParaJogoVelhaImpl();
-    CalculadorProximaJogada<Jogador> calculadorProximaJogadaIA;
+    String calculadorProximaJogadaSimples = "calculadorSimples";
+    String calculadorProximaJogadaIA = "calculadorIA";
 
-    CalculadorProximaJogada<Jogador> calculadorProximaJogada;
+    String versaoCalculadorProximaJogada;
 
     private JCheckBox nivelFacilDificil = new JCheckBox("Nível Difícil");
 
@@ -100,12 +92,14 @@ public class JogoVelhaWindow extends JFrame {
     public JogoVelhaWindow(View view) {
         this();
         this.view = (DisplayJogoVelha) view;
-        abstracaoVersaoJogoVelha = compVxComp;
-        calculadorProximaJogada = calculadorProximaJogadaSimples;
+        versaoJogo = "compVSComp";
+        versaoCalculadorProximaJogada = calculadorProximaJogadaSimples;
+        this.view.setWindow(this);
+
     }
 
-    public void configureAndShow() {
-        setTitle(abstracaoVersaoJogoVelha.getVersao());
+    public void configureAndShow(String titulo) {
+        setTitle(titulo);
 //        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 //            if ("GTK+".equals(info.getName())) {
 //                try {
@@ -173,7 +167,6 @@ public class JogoVelhaWindow extends JFrame {
 
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
         setUpItensMenuJogo();
-        setUpAbstracaoVersaoJogo();
 
     }
 
@@ -247,9 +240,6 @@ public class JogoVelhaWindow extends JFrame {
         humanoVsHumanoMenuItem.addActionListener(this::humanoVsHumanoMenuItemActionPerformed);
         exitMenuItem.addActionListener(this::exitMenuItemActionPerformed);
 
-        
-        
-        
         GridBagConstraints gridConstraints = new GridBagConstraints();
 
         gridConstraints.gridx = 0;
@@ -274,26 +264,35 @@ public class JogoVelhaWindow extends JFrame {
 
     }
 
-    private void setUpItensMenuJogo(){
+    public void setVersaoJogo(String versaoJogo) {
+        this.versaoJogo = versaoJogo;
+    }
+
+    public void setVersaoCalculador(String versao) {
+        this.versaoCalculadorProximaJogada = versao;
+    }
+
+    public void setUpItensMenuJogo() {
         //set item do menu com a versao do jogo correspondente 
-        if (abstracaoVersaoJogoVelha instanceof VersaoComputadorVersusComputadorImpl) {
+
+        if (versaoJogo.equals("compVSComp")) {
             computadorVsComputadorMenuItem.setSelected(true);
-        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl) {
+        } else if (versaoJogo.equals("humanoVSComp")) {
             humanoVsComputadorMenuItem.setSelected(true);
-        } else if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
+        } else if (versaoJogo.equals("humanoVSHumano")) {
             humanoVsHumanoMenuItem.setSelected(true);
         }
 
         //set item do menu com a dificuldade do jogo correspondente 
-        if( calculadorProximaJogada instanceof CalculadorProximaJogadaSimplesParaJogoVelhaImpl ){
+        if (versaoCalculadorProximaJogada.equals("calculadorSimples")) {
             nivelFacilMenuItem.setSelected(true);
             nivelDificilMenuItem.setSelected(false);
-        }else{
+        } else {
             nivelFacilMenuItem.setSelected(false);
             nivelDificilMenuItem.setSelected(true);
         }
     }
-    
+
     private void computadorVsComputadorJSliderChangePerformed(ChangeEvent e) {
 
         Object[] args1 = {Integer.toString((Integer) ((JSlider) e.getSource()).getValue()) + "/" + velocidadeCompVsCompJSlider.getMaximum()};
@@ -306,60 +305,64 @@ public class JogoVelhaWindow extends JFrame {
 
     private void computadorVsComputadorMenuItemActionPerformed(ActionEvent e) {
 
-        abstracaoVersaoJogoVelha = compVxComp;
+        versaoJogo = "compVSComp";
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
 
         Object[] args = new Object[1];
-        args[0] = compVxComp;
+        args[0] = "compVSComp";
 
         view.getController().updateModel("liberarJogada", null);
-        view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
-        
-        tituloMenu.setText(compVxComp.getVersao());
+        view.getController().updateModel("setVersaoJogoVelha", args);
+
+        //humanoVSHumano;humanoVSComp;
+        //TODO usar REFLEXION para recuperar do MODEL o nome da versao
+        tituloMenu.setText("Jogo da Velha : Computador X computador");
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
     }
 
     private void humanoVsComputadorMenuItemActionPerformed(ActionEvent e) {
 
-        abstracaoVersaoJogoVelha = humanoVxComp;
+        versaoJogo = humanoVSComp;
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
 
         Object[] args = new Object[1];
-        args[0] = humanoVxComp;
+        args[0] = humanoVSComp;
         view.getController().updateModel("liberarJogada", null);
-        view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
-        
-        tituloMenu.setText(humanoVxComp.getVersao());
+        view.getController().updateModel("setVersaoJogoVelha", args);
+
+        //TODO usar REFLEXION para recuperar do MODEL o nome da versao
+        tituloMenu.setText("Jogo da Velha : Humano X computador");
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
 
     }
 
     private void humanoVsHumanoMenuItemActionPerformed(ActionEvent e) {
 
-        abstracaoVersaoJogoVelha = humanoVxHumano;
+        versaoJogo = humanoVSHumano;
         habilitarDesabilitarItensVelocidadeENivelMenuJogo();
 
         Object[] args = new Object[1];
-        args[0] = humanoVxHumano;
-        view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
-        tituloMenu.setText(humanoVxHumano.getVersao());
+        args[0] = humanoVSHumano;
+        view.getController().updateModel("setVersaoJogoVelha", args);
+
+        //TODO usar REFLEXION para recuperar do MODEL o nome da versao
+        tituloMenu.setText("Jogo da Velha : Humano X humano");
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 15));
 
     }
-    
+
     private void nivelFacilMenuItemActionPerformed(ActionEvent e) {
 
-        calculadorProximaJogada = calculadorProximaJogadaSimples;
-        Object[] args = {calculadorProximaJogada};
+        versaoCalculadorProximaJogada = calculadorProximaJogadaSimples;
+        Object[] args = {versaoCalculadorProximaJogada};
         view.getController().updateModel("setCalculadorProximaJogada", args);
-        
 
     }
-    
+
     private void nivelDificilMenuItemActionPerformed(ActionEvent e) {
 
-        calculadorProximaJogada = calculadorProximaJogadaIA;
-        Object[] args = {calculadorProximaJogada};
+        versaoCalculadorProximaJogada = calculadorProximaJogadaIA;
+        Object[] args = {versaoCalculadorProximaJogada};
         view.getController().updateModel("setCalculadorProximaJogada", args);
 
     }
@@ -402,14 +405,6 @@ public class JogoVelhaWindow extends JFrame {
         System.exit(JFrame.NORMAL);
     }
 
-    public AbstracaoVersaoJogoVelha getAbstracaoVersaoJogoVelha() {
-        return abstracaoVersaoJogoVelha;
-    }
-
-    public CalculadorProximaJogada<Jogador> getCalculadorProximaJogada() {
-        return calculadorProximaJogada;
-    }
-
     public void habilitarDesabilitarItensVelocidadeENivelMenuJogo() {
 
         velocidadeBaixaMenuItem.setEnabled(false);
@@ -419,7 +414,7 @@ public class JogoVelhaWindow extends JFrame {
         nivelFacilMenuItem.setEnabled(false);
         nivelDificilMenuItem.setEnabled(false);
 
-        if (abstracaoVersaoJogoVelha instanceof VersaoComputadorVersusComputadorImpl) {
+        if (versaoJogo.equals("compVSComp")) {
 
             velocidadeBaixaMenuItem.setEnabled(true);
             velocidadeMediaMenuItem.setEnabled(true);
@@ -430,17 +425,13 @@ public class JogoVelhaWindow extends JFrame {
 
         }
 
-        if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusComputadorImpl) {
+        if (versaoJogo.equals("humanoVSComp")) {
 
             nivelFacilMenuItem.setEnabled(true);
             nivelDificilMenuItem.setEnabled(true);
 
         }
 
-    }
-
-    private void setUpAbstracaoVersaoJogo() {
-        calculadorProximaJogadaIA = new CalculadorProximaJogadaIAParaJogoVelhaImpl(abstracaoVersaoJogoVelha);
     }
 
 }

@@ -15,6 +15,7 @@ import br.undra.calculadorproximajogada.CalculadorProximaJogadaIA;
 public interface AbstracaoVersaoJogoVelha {
     void jogar(JogoDaVelha jogo);
     String getVersao();
+    String getNomeResumido();
     void SetUp(JogoDaVelha jogo);
     void liberarJogada();
     void setVelocity(int newValeu);

@@ -84,4 +84,9 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         return posicao;
     }
 
+    @Override
+    public String getNomeResumido() {
+        return "compVSComp";
+    }
+
 }

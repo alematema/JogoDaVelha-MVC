@@ -13,7 +13,7 @@ public interface JogoVelhaModel extends Model {
     void setVelocity(int novoValor);
     void play(Object[] args);
     void setPosicaoClicada(String posicao);
-    void setAbstracaoVersaoJogoVelha(AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha);
-    void setCalculadorProximaJogada(CalculadorProximaJogada calculadorProximaJogada);
+    void setVersaoJogoVelha(String versao);
+    void setCalculadorProximaJogada(String nomeCalculadorProximaJogada);
     void liberarJogada();
 }

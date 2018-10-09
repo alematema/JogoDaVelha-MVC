@@ -4,6 +4,8 @@ import br.edu.undra.MVC.JogoVelhaController;
 import br.edu.undra.modelo.JogoDaVelha;
 import br.edu.undra.view.DisplayJogoVelha;
 import br.edu.undra.view.JogoVelhaWindow;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -11,33 +13,51 @@ import javax.swing.JFrame;
  * @author alexandre
  */
 public class App {
-    
+
     public static void main(String[] args) {
-        
+
         new Thread(() -> {
             new App().start(args);
         }).start();
 
-        
     }
-    
-    public void start(String[]args){
-        
+
+    public void start(String[] args) {
+
         JogoDaVelha model = new JogoDaVelha("Jogo da Velha");
-        
+
         DisplayJogoVelha view = new DisplayJogoVelha();
-        
+
         JogoVelhaController controller = new JogoVelhaController(model, view);
-        
+
         JogoVelhaWindow window = new JogoVelhaWindow(view);
-        
-        window.configureAndShow();
-        
-        model.setAbstracaoVersaoJogoVelha(window.getAbstracaoVersaoJogoVelha());
-        model.setCalculadorProximaJogada(window.getCalculadorProximaJogada());
-        
+
+        window.configureAndShow(model.getAbstracaoVersaoJogoVelha().getVersao());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                Object[] args = {model.getAbstracaoVersaoJogoVelha().getNomeResumido()};
+                model.getController().updateView("setVersaoJogo", args);
+                        
+                Object[] args1 = {model.getCalculadorProximaJogada().getNomeSimples()};
+                model.getController().updateView("setVersaoCalculador", args1);        
+                
+                model.getController().updateView("setUpItensMenuJogo", null);
+                model.getController().updateView("habilitarDesabilitarItensVelocidadeENivelMenuJogo", null);
+                
+            }
+        }).start();
+
         model.iniciar();
-        
+
     }
-    
+
 }

@@ -103,6 +103,11 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
     public void setAbstracaoVersaoJogoVelha(AbstracaoVersaoJogoVelha abstracaoVersaoJogoVelha) {
         this.abstracaoVersaoJogoVelha = abstracaoVersaoJogoVelha;
     }
+
+    @Override
+    public String getNomeSimples() {
+        return "calculadorIA";
+    }
    
 
 }

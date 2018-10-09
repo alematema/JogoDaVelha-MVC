@@ -11,5 +11,6 @@ public interface CalculadorProximaJogada<T extends Jogador> {
     
     int calcular( T jogador );
     int[] calcularLinhaEColuna( T jogador );
+    String getNomeSimples();
     
 }
