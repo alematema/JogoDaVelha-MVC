@@ -175,6 +175,8 @@ public class JogoVelhaWindow extends JFrame {
 
         setVisible(true);
 
+        habilitarDesabilitarItensVelocidadeENivelMenuJogo();
+
     }
 
     private void placeComponentsAtFrame() {
@@ -223,7 +225,6 @@ public class JogoVelhaWindow extends JFrame {
         nivelDificilMenuItem.setFont(menuFont);
         nivelGroup.add(nivelFacilMenuItem);
         nivelGroup.add(nivelDificilMenuItem);
-        
         jogosMenu.addSeparator();
         jogosMenu.add(velocidadeBaixaMenuItem);
         jogosMenu.add(velocidadeMediaMenuItem);
@@ -277,22 +278,6 @@ public class JogoVelhaWindow extends JFrame {
 
         getContentPane().add(mensagem, gridConstraints);
 
-        gridConstraints.gridx = 0;
-        gridConstraints.gridy = 3;
-        //getContentPane().add(velocidadeCompVsCompJSlider,gridConstraints);
-        velocidadeCompVsCompJSlider.setPreferredSize(new Dimension((int) view.getPreferredSize().getWidth() / 4, (int) view.getPreferredSize().getHeight() / 16));
-        velocidadeCompVsCompJSlider.setEnabled(false);
-        velocidadeCompVsCompJSlider.addChangeListener(this::computadorVsComputadorJSliderChangePerformed);
-        velocidadeCompVsCompJSlider.setMinimum(1);
-        velocidadeCompVsCompJSlider.setMaximum(500);
-        velocidadeCompVsCompJSlider.setValue(velocidadeCompVsCompJSlider.getMaximum() / 2);
-
-        nivelFacilDificil.setFont(new Font("Ubuntu", Font.BOLD, 14));
-
-        gridConstraints.gridx = 0;
-        gridConstraints.gridy = 2;
-        getContentPane().add(nivelFacilDificil, gridConstraints);
-
     }
 
     private void computadorVsComputadorJSliderChangePerformed(ChangeEvent e) {
@@ -307,35 +292,42 @@ public class JogoVelhaWindow extends JFrame {
 
     private void computadorVsComputadorMenuItemActionPerformed(ActionEvent e) {
 
+        abstracaoVersaoJogoVelha = compVxComp;
+        habilitarDesabilitarItensVelocidadeENivelMenuJogo();
+        
         Object[] args = new Object[1];
         args[0] = compVxComp;
+        
         view.getController().updateModel("liberarJogada", null);
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(compVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
-        velocidadeCompVsCompJSlider.setEnabled(true);
     }
 
     private void humanoVsComputadorMenuItemActionPerformed(ActionEvent e) {
 
+        abstracaoVersaoJogoVelha = humanoVxComp;
+        habilitarDesabilitarItensVelocidadeENivelMenuJogo();
+        
         Object[] args = new Object[1];
         args[0] = humanoVxComp;
         view.getController().updateModel("liberarJogada", null);
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(humanoVxComp.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 13));
-        velocidadeCompVsCompJSlider.setEnabled(false);
 
     }
 
     private void humanoVsHumanoMenuItemActionPerformed(ActionEvent e) {
+        
+        abstracaoVersaoJogoVelha = humanoVxHumano;
+        habilitarDesabilitarItensVelocidadeENivelMenuJogo();
 
         Object[] args = new Object[1];
         args[0] = humanoVxHumano;
         view.getController().updateModel("setAbstracaoVersaoJogoVelha", args);
         tituloMenu.setText(humanoVxHumano.getVersao());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 15));
-        velocidadeCompVsCompJSlider.setEnabled(false);
 
     }
 
@@ -383,6 +375,30 @@ public class JogoVelhaWindow extends JFrame {
 
     public CalculadorProximaJogada<Jogador> getCalculadorProximaJogada() {
         return calculadorProximaJogada;
+    }
+
+    public void habilitarDesabilitarItensVelocidadeENivelMenuJogo() {
+
+        if (abstracaoVersaoJogoVelha instanceof VersaoHumanoVersusHumanoImpl) {
+
+            velocidadeBaixaMenuItem.setEnabled(false);
+            velocidadeMediaMenuItem.setEnabled(false);
+            velocidadeAltaMenuItem.setEnabled(false);
+            
+            nivelFacilMenuItem.setEnabled(false);
+            nivelDificilMenuItem.setEnabled(false);
+
+        } else {
+
+            velocidadeBaixaMenuItem.setEnabled(true);
+            velocidadeMediaMenuItem.setEnabled(true);
+            velocidadeAltaMenuItem.setEnabled(true);
+            
+            nivelFacilMenuItem.setEnabled(true);
+            nivelDificilMenuItem.setEnabled(true);
+
+        }
+
     }
 
 }
