@@ -180,11 +180,12 @@ public class JogoVelhaWindow extends JFrame {
 
         tituloMenu.setText(getTitle());
         tituloMenu.setFont(new Font("Ubuntu", Font.PLAIN, 15));
+//        tituloMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rsz_1puzzle-512.png")));
 
         jogosMenu.setMnemonic(KeyEvent.VK_A);
         jogosMenu.setFont(new Font("Ubuntu", Font.BOLD, 16));
 
-        jogosMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/configuration.png")));
+        jogosMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/configuration.20.20.png")));
 
         jogosMenu.add(computadorVsComputadorMenuItem);
 //        computadorVsComputadorMenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/abrir.png")));

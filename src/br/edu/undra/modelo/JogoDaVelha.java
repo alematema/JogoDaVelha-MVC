@@ -86,7 +86,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
         setUpJogadores();
 
-        abstracaoVersaoJogoVelha = humanoVSHumano;
+        abstracaoVersaoJogoVelha = humanoVSComp;
         calculadorProximaJogada = calculadorProximaJogadaSimples;
 
         setUpAbstracaoVersaoJogo();
