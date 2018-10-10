@@ -1,7 +1,7 @@
-package br.edu.undra.view;
+package br.edu.undra.MVC.view.impl;
 
-import br.edu.undra.MVC.JogoVelhaView;
-import br.edu.undra.interfaces.MVC.Controller;
+import br.edu.undra.MVC.interfaces.JogoVelhaView;
+import br.edu.undra.MVC.interfaces.Controller;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

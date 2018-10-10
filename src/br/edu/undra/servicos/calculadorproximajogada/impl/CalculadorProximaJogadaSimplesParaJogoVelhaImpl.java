@@ -1,6 +1,6 @@
 package br.edu.undra.servicos.calculadorproximajogada.impl;
 
-import br.edu.undra.modelo.JogadorJogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogadorJogoDaVelha;
 import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.servicos.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.security.SecureRandom;

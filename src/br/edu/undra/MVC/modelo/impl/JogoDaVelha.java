@@ -1,8 +1,8 @@
-package br.edu.undra.modelo;
+package br.edu.undra.MVC.modelo.impl;
 
-import br.edu.undra.MVC.JogoVelhaController;
-import br.edu.undra.MVC.JogoVelhaModel;
-import br.edu.undra.interfaces.MVC.Controller;
+import br.edu.undra.MVC.interfaces.JogoVelhaController;
+import br.edu.undra.MVC.interfaces.JogoVelhaModel;
+import br.edu.undra.MVC.interfaces.Controller;
 import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.jogo.Jogo;
 import br.edu.undra.modelo.jogo.Tabuleiro;

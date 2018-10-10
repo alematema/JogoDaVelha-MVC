@@ -1,6 +1,6 @@
-package br.edu.undra.view;
+package br.edu.undra.MVC.view.impl;
 
-import br.edu.undra.interfaces.MVC.View;
+import br.edu.undra.MVC.interfaces.View;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

@@ -1,4 +1,4 @@
-package br.edu.undra.modelo;
+package br.edu.undra.MVC.modelo.impl;
 
 import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.jogo.Jogo;

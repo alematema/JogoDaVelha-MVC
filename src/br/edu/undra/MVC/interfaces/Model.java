@@ -1,4 +1,4 @@
-package br.edu.undra.interfaces.MVC;
+package br.edu.undra.MVC.interfaces;
 
 import java.lang.reflect.Method;
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package br.edu.undra.servicos.calculadorproximajogada.analisador;
 
-import br.edu.undra.modelo.JogadorJogoDaVelha;
-import br.edu.undra.modelo.JogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogadorJogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogoDaVelha;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

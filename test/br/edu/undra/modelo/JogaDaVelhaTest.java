@@ -1,5 +1,7 @@
 package br.edu.undra.modelo;
 
+import br.edu.undra.MVC.modelo.impl.JogadorJogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogoDaVelha;
 import br.edu.undra.modelo.jogo.Tabuleiro;
 import java.util.ArrayList;
 import java.util.Arrays;

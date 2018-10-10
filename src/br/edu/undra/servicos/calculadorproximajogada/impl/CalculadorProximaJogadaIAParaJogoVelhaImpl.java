@@ -1,7 +1,7 @@
 package br.edu.undra.servicos.calculadorproximajogada.impl;
 
-import br.edu.undra.modelo.JogadorJogoDaVelha;
-import br.edu.undra.modelo.JogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogadorJogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogoDaVelha;
 import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.servicos.calculadorproximajogada.analisador.CalculadorProximaJogadaIA;

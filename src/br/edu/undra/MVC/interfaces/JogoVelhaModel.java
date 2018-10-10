@@ -1,6 +1,6 @@
-package br.edu.undra.MVC;
+package br.edu.undra.MVC.interfaces;
 
-import br.edu.undra.interfaces.MVC.Model;
+import br.edu.undra.MVC.interfaces.Model;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.servicos.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 

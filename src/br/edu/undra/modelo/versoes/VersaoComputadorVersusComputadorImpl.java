@@ -1,7 +1,7 @@
 package br.edu.undra.modelo.versoes;
 
-import br.edu.undra.modelo.JogadorJogoDaVelha;
-import br.edu.undra.modelo.JogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogadorJogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogoDaVelha;
 import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.servicos.calculadorproximajogada.analisador.CalculadorProximaJogadaIA;
 import java.util.logging.Level;

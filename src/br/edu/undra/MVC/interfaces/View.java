@@ -1,4 +1,4 @@
-package br.edu.undra.interfaces.MVC;
+package br.edu.undra.MVC.interfaces;
 
 /**
  * A interface da view.

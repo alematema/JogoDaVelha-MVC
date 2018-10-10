@@ -1,9 +1,9 @@
 package br.edu.undra.app;
 
-import br.edu.undra.MVC.JogoVelhaController;
-import br.edu.undra.modelo.JogoDaVelha;
-import br.edu.undra.view.DisplayJogoVelha;
-import br.edu.undra.view.JogoVelhaWindow;
+import br.edu.undra.MVC.interfaces.JogoVelhaController;
+import br.edu.undra.MVC.modelo.impl.JogoDaVelha;
+import br.edu.undra.MVC.view.impl.DisplayJogoVelha;
+import br.edu.undra.MVC.view.impl.JogoVelhaWindow;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;

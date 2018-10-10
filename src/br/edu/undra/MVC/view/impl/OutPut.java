@@ -1,4 +1,4 @@
-package br.edu.undra.view;
+package br.edu.undra.MVC.view.impl;
 
 /**
  * Uma outPut para se escrever nela

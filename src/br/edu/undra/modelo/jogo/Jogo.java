@@ -1,6 +1,6 @@
 package br.edu.undra.modelo.jogo;
 
-import br.edu.undra.modelo.JogadorJogoDaVelha;
+import br.edu.undra.MVC.modelo.impl.JogadorJogoDaVelha;
 import java.util.List;
 import java.util.Set;
 

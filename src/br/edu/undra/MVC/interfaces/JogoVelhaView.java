@@ -1,6 +1,6 @@
-package br.edu.undra.MVC;
+package br.edu.undra.MVC.interfaces;
 
-import br.edu.undra.interfaces.MVC.View;
+import br.edu.undra.MVC.interfaces.View;
 import java.util.List;
 
 /**
