@@ -105,10 +105,21 @@ public class CalculadorProximaJogadaIA {
 
     public void configura(String[] args) {
 
+        if(args == null ){
+            args = new String[0];
+            args[0] = "";
+        }
+        
         if (!isConfigurado()) {
 
             versusMaquina = new JogoDaVelhaVersaoHumanoVersusMaquina(args, this);
-            versusMaquina.configura();
+            try {
+                versusMaquina.configura(args[0].toUpperCase().equals("-V"));
+            } catch (Exception e) {
+                boolean verbose = true;
+                versusMaquina.configura(verbose);
+            }
+            
 
         }
 
@@ -151,8 +162,8 @@ public class CalculadorProximaJogadaIA {
         return versusMaquina.jogoTerminou();
     }
 
-    public void reconfigurar() {
-        versusMaquina.reconfigurar();
+    public void reconfigurar(boolean verbose) {
+        versusMaquina.reconfigurar(verbose);
     }
 
     public boolean isOcupada(int posOcupada) {
@@ -183,7 +194,9 @@ public class CalculadorProximaJogadaIA {
         
         
         if (jogoTerminou()) {
-             reconfigurar();
+            
+            boolean verbose = true;
+             reconfigurar(true);
         }
 
         jogador = (JogadorJogoDaVelha) jogador;

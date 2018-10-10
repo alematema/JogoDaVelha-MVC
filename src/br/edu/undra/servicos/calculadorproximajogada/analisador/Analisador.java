@@ -1,9 +1,9 @@
 package br.edu.undra.servicos.calculadorproximajogada.analisador;
 
+import br.edu.undra.servicos.caching.JogadasJogoVelhaCache;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 
 public class Analisador {
 
@@ -27,6 +27,7 @@ public class Analisador {
     private List<Integer> ondePerderia = new ArrayList<>();
     private List<Integer> ondeNaoPerderia = new ArrayList<>();
 
+    private JogadasJogoVelhaCache cache = new JogadasJogoVelhaCache();
 
     /**
      * @return the espacoTotal
@@ -42,13 +43,19 @@ public class Analisador {
         geradorDeJogosDaVelha.gerarTodosJogos();
         System.err.println("Banco de jogos criado [ok]");
         System.err.println("Ordenando o Banco de jogos ...");
-        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Banco de jogos criado [ok]");
-        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Ordenando o Banco de jogos ...");
+        if (calculadorProximaJogada != null) {
+            calculadorProximaJogada.setMensagemConfigurador("Banco de jogos criado [ok]");
+        }
+        if (calculadorProximaJogada != null) {
+            calculadorProximaJogada.setMensagemConfigurador("Ordenando o Banco de jogos ...");
+        }
         bases = new ArrayList<>(geradorDeJogosDaVelha.getJogos().keySet());
         Collections.sort(bases);
         System.err.println("Banco de jogos ordenado [ok]");
-        if(calculadorProximaJogada!=null)calculadorProximaJogada.setMensagemConfigurador("Banco de jogos ordenado [ok]");
-        
+        if (calculadorProximaJogada != null) {
+            calculadorProximaJogada.setMensagemConfigurador("Banco de jogos ordenado [ok]");
+        }
+
         this.espacoTotal = new ArrayList<>(geradorDeJogosDaVelha.getJogos().values());
 
     }
@@ -122,6 +129,8 @@ public class Analisador {
     public double getProbabilidadeDeVencer(JogoDaVelhaWrapped jogoDaVelha, int jogandoNaPosicao, int daProximaJogada,
             List<JogoDaVelhaWrapped> espaco) {
 
+        long init = System.currentTimeMillis();
+        
         this.setJogandoNaPosicao(jogandoNaPosicao);
         this.setProximaJogada(daProximaJogada);
 
@@ -141,6 +150,8 @@ public class Analisador {
         double probabilidade = (double) quantosJogosGanhamNoEspacoRemanascente
                 / (double) getPossibilidadesRemanescentes().size();
 
+        System.out.println("Analisador.getProbabilidadeDeVencer levou " + (System.currentTimeMillis() - init) + " ms para analisar "+ getPossibilidadesRemanescentes().size() +" jogadas");
+        
         return probabilidade;
     }
 
@@ -187,7 +198,6 @@ public class Analisador {
 //            System.out.printf("\n\t%d JOGADO NA POSICAO  %d\n", daProximaJogada, posicao);
 //            // System.out.println("\tVALOR JOGADO " + daProximaJogada);
 //        }
-
         if (possibilidades == null) {
             possibilidades = new ArrayList<>(jogos);
         }
@@ -266,50 +276,87 @@ public class Analisador {
     private List<JogoDaVelhaWrapped> getEspacoRecalculado(JogoDaVelhaWrapped jogoAtual) {
 
         if (isPrimeiraJogada(espaco)) {
-            selecionarPossibilidades(espaco, jogoAtual.getBaseCorrente(), posicao);
-            if (verbose) {
-                System.out.print("\tCALCULANDO ESPAÇO INICIAL (tamanho do espaco # " + getEspaco().size() + " )");
-                System.out.println("");
+
+            if (cache.isCached(posicao + "," + 1)) {
+
+                return cache.get(posicao + "," + 1);
+
+            } else {
+
+                selecionarPossibilidades(espaco, jogoAtual.getBaseCorrente(), posicao);
+
+                if (verbose) {
+                    System.out.print("\tCALCULANDO ESPAÇO INICIAL (tamanho do espaco # " + getEspaco().size() + " )");
+                    System.out.println("");
+                }
+
+                cache.put(posicao + "," + 1, new ArrayList<>(espaco));
+
+                return espaco;
+
             }
-            return espaco;
+
         }
 
-        int tamanhoEspacoAtual = espaco.size();
+        //posicao,valor,posicao,valor,...,posicao,valor
+        String posicaoValorKey = "";
+        for (int i = 0; i < indiceUltimasJogadas.size(); i++) {
 
-        if (verbose) {
-            System.out.print("\tRECALCULADO ESPAÇO : #" + tamanhoEspacoAtual);
+            posicaoValorKey += indiceUltimasJogadas.get(i);
+            posicaoValorKey += ",";
+            posicaoValorKey += jogoAtual.getBaseCorrente().get(indiceUltimasJogadas.get(i));
+            posicaoValorKey += ",";
+
         }
-        List<JogoDaVelhaWrapped> jogosFuturosPossiveis = new ArrayList<>();
 
-        for (JogoDaVelhaWrapped jogo : espaco) {
+        posicaoValorKey = posicaoValorKey.substring(0, posicaoValorKey.length() - 1);
 
-            boolean isJogoPossivel = true;
+        if (cache.isCached(posicaoValorKey)) {
+            
+            return cache.get(posicaoValorKey);
+            
+        } else {
 
-            for (int i = 0; i < indiceUltimasJogadas.size(); i++) {
+            int tamanhoEspacoAtual = espaco.size();
 
-                int valorNoJogoAtual = jogoAtual.getBaseCorrente().get(indiceUltimasJogadas.get(i));
-                int valorNumJogo = jogo.getTabuleiro().getBase().get(indiceUltimasJogadas.get(i));
-                isJogoPossivel = isJogoPossivel && (valorNoJogoAtual == valorNumJogo);
-                if (!isJogoPossivel) {
-                    break;
+            if (verbose) {
+                System.out.print("\tRECALCULADO ESPAÇO : #" + tamanhoEspacoAtual);
+            }
+            List<JogoDaVelhaWrapped> jogosFuturosPossiveis = new ArrayList<>();
+
+            for (JogoDaVelhaWrapped jogo : espaco) {
+
+                boolean isJogoPossivel = true;
+
+                for (int i = 0; i < indiceUltimasJogadas.size(); i++) {
+
+                    int valorNoJogoAtual = jogoAtual.getBaseCorrente().get(indiceUltimasJogadas.get(i));
+                    int valorNumJogo = jogo.getTabuleiro().getBase().get(indiceUltimasJogadas.get(i));
+                    isJogoPossivel = isJogoPossivel && (valorNoJogoAtual == valorNumJogo);
+                    if (!isJogoPossivel) {
+                        break;
+                    }
+
+                }
+
+                if (isJogoPossivel) {
+                    jogosFuturosPossiveis.add(jogo);
                 }
 
             }
 
-            if (isJogoPossivel) {
-                jogosFuturosPossiveis.add(jogo);
+            if (verbose) {
+
+                System.out.print("  ->  #" + jogosFuturosPossiveis.size());
+                System.out.println("");
+
             }
 
-        }
-
-        if (verbose) {
-
-            System.out.print("  ->  #" + jogosFuturosPossiveis.size());
-            System.out.println("");
+            cache.put(posicaoValorKey, new ArrayList<>(jogosFuturosPossiveis));
+            
+            return jogosFuturosPossiveis;
 
         }
-
-        return jogosFuturosPossiveis;
 
     }
 
@@ -695,6 +742,5 @@ public class Analisador {
         this.verbose = verbose;
         geradorDeJogosDaVelha.setVerbose(verbose);
     }
-
 
 }

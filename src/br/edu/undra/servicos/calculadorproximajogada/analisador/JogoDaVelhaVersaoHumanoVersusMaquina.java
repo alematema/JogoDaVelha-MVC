@@ -67,8 +67,11 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
         jogador2.getJogoDaVelha().getTabuleiro().comMascara().descreve();
     }
 
-    public void configura() {
+    public void configura(boolean verbose) {
         try {
+            
+            this.verbose = verbose;
+            
             jogoDaVelha = new JogoDaVelhaWrapped(new Tabuleiro());
             jogador1 = new Jogador(jogoDaVelha, JogadorComecaOJogo.SIM, analisador, calculadorProximaJogada);
             jogador2 = new Jogador(jogoDaVelha, JogadorComecaOJogo.NAO, analisador, calculadorProximaJogada);
@@ -116,8 +119,8 @@ public class JogoDaVelhaVersaoHumanoVersusMaquina {
         return jogoDaVelha;
     }
 
-    void reconfigurar() {
-        configura();
+    void reconfigurar(boolean verbose) {
+        configura(verbose);
     }
 
     public Jogador getJogador1() {

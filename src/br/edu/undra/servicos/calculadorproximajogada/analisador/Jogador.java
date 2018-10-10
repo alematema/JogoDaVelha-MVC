@@ -247,6 +247,7 @@ public class Jogador {
                     } else {// calcula melhor posicao ... a que tera MAIOR PROBABILIDADE DE VENCER SE JOGAR NELA
 
                         double proba = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(this.posicoesLivres.get(i)).doJogo(getJogoDaVelha()).getProbabilidadeDeVencer();
+                        
                         if (verbose) {
                             calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
 
@@ -259,6 +260,7 @@ public class Jogador {
                             maiorProbabilidade = proba;
                             melhorPosicao = this.posicoesLivres.get(i);
                         }
+                        
                     }
                 }
             } else {

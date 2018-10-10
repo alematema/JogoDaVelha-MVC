@@ -160,7 +160,8 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
 
     @Override
     public void reconfigurar() {
-        calculadorProximaJogadaIA.reconfigurar();
+        boolean verbose = true;
+        calculadorProximaJogadaIA.reconfigurar(true);
     }
    
 
