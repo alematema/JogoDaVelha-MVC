@@ -3,7 +3,7 @@ package br.edu.undra.MVC;
 import br.edu.undra.interfaces.MVC.Controller;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.view.DisplayJogoVelha;
-import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
+import br.edu.undra.servicos.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 

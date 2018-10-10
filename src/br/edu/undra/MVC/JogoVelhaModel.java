@@ -2,7 +2,7 @@ package br.edu.undra.MVC;
 
 import br.edu.undra.interfaces.MVC.Model;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
-import br.undra.calculadorproximajogada.interfaces.CalculadorProximaJogada;
+import br.edu.undra.servicos.calculadorproximajogada.interfaces.CalculadorProximaJogada;
 
 /**
  * A interface do modelo do jogo da velha.
