@@ -1,6 +1,5 @@
 package br.edu.undra.modelo.jogo;
 
-import br.edu.undra.MVC.modelo.impl.JogadorJogoDaVelha;
 import java.util.List;
 import java.util.Set;
 
@@ -39,7 +38,7 @@ public abstract class Jogo<T extends Jogador> {
     
     public abstract Set<T> getUltimosAJogar();
     public abstract String getProximaJogadaParaJogador(Jogador jogador);
-    public abstract JogadorJogoDaVelha getProximoAJogar();
+    public abstract Jogador getProximoAJogar();
     public abstract void iniciar();
     public abstract boolean terminou();
     public abstract void reiniciar();

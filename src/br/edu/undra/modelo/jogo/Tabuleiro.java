@@ -63,7 +63,7 @@ public class Tabuleiro {
      * linha 1.
      * @param coluna a coluna em que se colocará o elemento; contada a partir da
      * coluna 1;
-     * @return o elemento que está em linhaXcoluna,<br>ou -1 caso linha ou
+     * @return o elemento que está em linhaXcoluna,<br>ou POSICAO_INVALIDA caso linha ou
      * coluna sejam inválidas.<br> ou -1 caso elemento seja -1;
      */
     public Object set(Object elemento, int linha, int coluna) {
@@ -95,7 +95,7 @@ public class Tabuleiro {
      * @param elemento o elemento a ser colocado em posicao;
      * @param posicao a posicao que será determinada usando divisao
      * modular.<br>Inicia contagem a partir de 1 e vai até NxN;
-     * @return o elemento que está em posicao<br>ou -1 caso posicão seja
+     * @return o elemento que está em posicao<br>ou POSICAO_INVALIDA caso posicão seja
      * inválida.<br> ou -1 caso elemento seja -1;
      */
     public Object set(Object elemento, int posicao) {
@@ -114,7 +114,7 @@ public class Tabuleiro {
      * @param coluna a coluna em que está o elemento; contada a partir da coluna
      * 1;
      * @return o elemento que está em linhaXcoluna, <br>ou zero (caso nada
-     * esteja na posicao linha,coluna) <br>ou -1 caso linha ou coluna sejam
+     * esteja na posicao linha,coluna) <br>ou POSICAO_INVALIDA caso linha ou coluna sejam
      * inválidas. (linha ou coluna < 1 ou linha/coluna > dimensao)
      */
     public Object get(int linha, int coluna) {
@@ -136,7 +136,7 @@ public class Tabuleiro {
      * @param posicao a posicao que será determinda usando divisao
      * modular.<br>Inicia contagem a partir de 1 e vai até NxN;
      * @return o elemento que está em posição, <br>ou zero (caso nada esteja na
-     * posicao ) <br>ou -1 caso posicao seja inválidas (posicao < 1 ou posicao >
+     * posicao ) <br>ou POSICAO_INVALIDA caso posicao seja inválidas (posicao < 1 ou posicao >
      * NxN)
      */
     public Object get(int posicao) {
@@ -151,8 +151,8 @@ public class Tabuleiro {
     /**
      * Recupera a linha do tabuleiro.
      *
-     * @param linha o numero da linha (1 <= linha e linha <= dimensao) @ret
-     * urn Lista dos elementos da linha<br>
+     * @param linha o numero da linha (1 <= linha e linha <= dimensao) 
+     * @return Lista dos elementos da linha<br>
      * ou null, caso linha seja invalida.<br>
      * (linha < 1 ou linha > dimensao)
      */
@@ -177,8 +177,8 @@ public class Tabuleiro {
     /**
      * Recupera a coluna do tabuleiro.
      *
-     * @param coluna o numero da coluna (1 <= coluna e coluna <= dimensao) @ret
-     * urn Lista dos elementos da coluna<br> ou null, caso coluna seja invalida.
+     * @param coluna o numero da coluna (1 <= coluna e coluna <= dimensao) 
+     * @return Lista dos elementos da coluna<br> ou null, caso coluna seja invalida.
      * (coluna < 1 ou coluna > dimensao)
      */
     public List<Object> getColuna(int coluna) {

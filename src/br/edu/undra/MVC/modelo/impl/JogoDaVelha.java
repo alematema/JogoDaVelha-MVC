@@ -77,14 +77,22 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
     private void setUp(String nome) {
 
-        jogador1 = new JogadorJogoDaVelha("jogador 1");
-        jogador2 = new JogadorJogoDaVelha("jogador 2");
+        if (getJogadores() == null) {
 
-        List<JogadorJogoDaVelha> jogadores = Arrays.asList(jogador1, jogador2);
-        setNome(nome);
-        setJogadores(jogadores);
+            jogador1 = new JogadorJogoDaVelha("jogador 1");
+            jogador2 = new JogadorJogoDaVelha("jogador 2");
 
-        setUpJogadores();
+            List<JogadorJogoDaVelha> jogadores = Arrays.asList(jogador1, jogador2);
+
+            setJogadores(jogadores);
+
+            setUpJogadores();
+
+        }
+
+        if (getNome() == null) {
+            setNome(nome);
+        }
 
         abstracaoVersaoJogoVelha = humanoVSComp;
         calculadorProximaJogada = calculadorProximaJogadaSimples;
@@ -103,23 +111,7 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
             throw new IllegalArgumentException("Devem haver EXATAMENTE 2 jogadores para o jogo da velha ok.");
         }
         setUpJogadores();
-    }
-
-    public JogoDaVelha(List<T> jogadores, Tabuleiro tabuleiro) {
-        super(jogadores, tabuleiro);
-        if (jogadores.size() != 2) {
-            throw new IllegalArgumentException("Devem haver EXATAMENTE 2 jogadores para o jogo da velha ok.");
-        }
-        setUpJogadores();
-    }
-
-    public JogoDaVelha(String nome, String id, List<T> jogadores, Tabuleiro tabuleiro) {
-        super(nome, jogadores, tabuleiro);
-        if (jogadores.size() != 2) {
-            throw new IllegalArgumentException("Devem haver EXATAMENTE 2 jogadores para o jogo da velha ok.");
-        }
-        this.id = id;
-        setUpJogadores();
+        setUp(getNome());
     }
 
     @Override
@@ -736,4 +728,4 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         return ((CalculadorProximaJogadaIAParaJogoVelhaImpl) calculadorProximaJogadaIA).isConfigurado;
     }
 
-    }
+}
