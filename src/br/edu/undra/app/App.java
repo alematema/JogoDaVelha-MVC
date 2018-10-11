@@ -6,7 +6,6 @@ import br.edu.undra.MVC.view.impl.DisplayJogoVelha;
 import br.edu.undra.MVC.view.impl.JogoVelhaWindow;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
 
 /**
  *
@@ -59,7 +58,7 @@ public class App {
         }).start();
 
         model.iniciar();
-
+        
     }
 
 }
