@@ -100,8 +100,8 @@ public class Tabuleiro {
      */
     public Object set(Object elemento, int posicao) {
 
-        int linha = transformarEmLinha(posicao);
-        int coluna = transformarEmColuna(posicao);
+        int linha = (int) transformarEmLinha(posicao);
+        int coluna = (int) transformarEmColuna(posicao);
 
         return set(elemento, linha, coluna);
 
@@ -141,8 +141,8 @@ public class Tabuleiro {
      */
     public Object get(int posicao) {
 
-        int linha = transformarEmLinha(posicao);
-        int coluna = transformarEmColuna(posicao);
+        int linha = (int) transformarEmLinha(posicao);
+        int coluna =(int)  transformarEmColuna(posicao);
 
         return get(linha, coluna);
 
@@ -359,8 +359,8 @@ public class Tabuleiro {
             return isPosicaoLivre(dimensao, dimensao);
         }
 
-        int linha = transformarEmLinha(posicao);
-        int coluna = transformarEmColuna(posicao);
+        int linha = (int) transformarEmLinha(posicao);
+        int coluna = (int) transformarEmColuna(posicao);
 
         return isPosicaoLivre(linha, coluna);
 
@@ -399,11 +399,11 @@ public class Tabuleiro {
      * @param posicao a posicao a se transformar
      * @return a linha correspondente à posicao
      */
-    public int transformarEmLinha(int posicao) {
-        if (posicao == 0) {
-            return 0;
-        }
+    public Object transformarEmLinha(int posicao) {
+
+        if( ! validar(posicao) ) return POSICAO_INVALIDA;
         return ((posicao - 1) / dimensao) + 1;
+
     }
 
     /**
@@ -415,7 +415,9 @@ public class Tabuleiro {
      * @param posicao a posicao a se transformar
      * @return a coluna correspondente à posicao
      */
-    public int transformarEmColuna(int posicao) {
+    public Object transformarEmColuna(int posicao) {
+        
+        if( ! validar(posicao) ) return POSICAO_INVALIDA;
 
         int coluna = posicao % dimensao;
         if (coluna == 0) {
@@ -467,6 +469,20 @@ public class Tabuleiro {
         }
 
         return true;
+    }
+    
+    /**
+     * Valida se linha e coluna estao dentro dos limites.
+     *
+     * @param posicao 1 menor ou igual que posicao E posicao menor ou igual que
+     * dimensao * dimensao
+     * @return true , 1 menor ou igual que posicao E posicao menor ou igual que
+     * dimensao * dimensao<br>
+     * false, caso contrario.
+     */
+    public boolean validar(int posicao) {
+
+        return 1<=posicao && posicao<=dimensao*dimensao;
     }
 
     /**

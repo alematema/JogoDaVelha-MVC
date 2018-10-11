@@ -68,8 +68,8 @@ public class CalculadorProximaJogadaSimplesParaJogoVelhaImpl implements Calculad
 
         jogador = (JogadorJogoDaVelha) jogador;
 
-        int linha = jogador.getJogo().getTabuleiro().transformarEmLinha(posicao);
-        int coluna = jogador.getJogo().getTabuleiro().transformarEmColuna(posicao);
+        int linha = (int)jogador.getJogo().getTabuleiro().transformarEmLinha(posicao);
+        int coluna =(int) jogador.getJogo().getTabuleiro().transformarEmColuna(posicao);
 
         int[] posicaoLivre = {linha, coluna};
 

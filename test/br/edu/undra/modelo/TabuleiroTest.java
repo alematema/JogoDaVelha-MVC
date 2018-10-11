@@ -647,5 +647,83 @@ public class TabuleiroTest {
         assertEquals(6,tabuleiro.transformarEmPosicao(linha, coluna));
         
     }
+    
+    /**
+     * Test of transformarEmLinha method, of class Tabuleiro.
+     */
+    @Test
+    public void testTransformarEmLinha_int() {
+        
+        System.out.println("transformarEmLinha_int");
+
+        int posicao = 0;
+        int dimensao = 5;
+        Tabuleiro tabuleiro = new Tabuleiro(dimensao);
+
+        //abaixo limite 
+        posicao = 0;
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmLinha(posicao));
+
+        //acima limite 
+        posicao = 26;
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmLinha(posicao));
+        
+        //no limite
+        posicao = 25;
+        assertNotEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmLinha(posicao));
+        assertEquals(5,(int)tabuleiro.transformarEmLinha(posicao));
+        
+        posicao = 1;
+        assertNotEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmLinha(posicao));
+        assertEquals(1,(int)tabuleiro.transformarEmLinha(posicao));
+        
+        posicao = 5;
+        assertEquals(1,(int)tabuleiro.transformarEmLinha(posicao));
+        posicao = 6;
+        assertEquals(2,(int)tabuleiro.transformarEmLinha(posicao));
+        posicao = 24;
+        assertEquals(5,(int)tabuleiro.transformarEmLinha(posicao));
+        
+        
+    }
+    
+    /**
+     * Test of transformarEmColuna method, of class Tabuleiro.
+     */
+    @Test
+    public void testTransformarEmColuna_int() {
+        
+        System.out.println("transformarEmColuna_int");
+
+        int posicao = 0;
+        int dimensao = 5;
+        Tabuleiro tabuleiro = new Tabuleiro(dimensao);
+
+        //abaixo limite 
+        posicao = 0;
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmColuna(posicao));
+
+        //acima limite 
+        posicao = 26;
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmColuna(posicao));
+        
+        //no limite
+        posicao = 25;
+        assertNotEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmColuna(posicao));
+        assertEquals(5,(int)tabuleiro.transformarEmColuna(posicao));
+        
+        posicao = 1;
+        assertNotEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmColuna(posicao));
+        assertEquals(1,(int)tabuleiro.transformarEmColuna(posicao));
+        
+        posicao = 5;
+        assertEquals(5,(int)tabuleiro.transformarEmColuna(posicao));
+        posicao = 6;
+        assertEquals(1,(int)tabuleiro.transformarEmColuna(posicao));
+        posicao = 24;
+        assertEquals(4,(int)tabuleiro.transformarEmColuna(posicao));
+        
+        
+    }
 
 }

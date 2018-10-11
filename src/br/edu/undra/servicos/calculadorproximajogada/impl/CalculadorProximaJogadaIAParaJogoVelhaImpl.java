@@ -6,7 +6,6 @@ import br.edu.undra.modelo.jogo.Jogador;
 import br.edu.undra.modelo.versoes.AbstracaoVersaoJogoVelha;
 import br.edu.undra.servicos.calculadorproximajogada.analisador.CalculadorProximaJogadaIA;
 import br.edu.undra.servicos.calculadorproximajogada.interfaces.CalculadorProximaJogada;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -132,8 +131,8 @@ public class CalculadorProximaJogadaIAParaJogoVelhaImpl implements CalculadorPro
         int coluna;
         int posicao = abstracaoVersaoJogoVelha.calularProximaJogada(jogador, calculadorProximaJogadaIA);
 
-        linha = jogador.getJogo().getTabuleiro().transformarEmLinha(posicao);
-        coluna = jogador.getJogo().getTabuleiro().transformarEmColuna(posicao);
+        linha = (int)jogador.getJogo().getTabuleiro().transformarEmLinha(posicao);
+        coluna = (int)jogador.getJogo().getTabuleiro().transformarEmColuna(posicao);
 
         int[] proximaJogada = {linha, coluna};
 

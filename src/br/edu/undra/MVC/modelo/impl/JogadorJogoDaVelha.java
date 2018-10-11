@@ -197,8 +197,8 @@ public class JogadorJogoDaVelha<J extends Jogo> extends Jogador {
     @Override
     public boolean joga(int posicao) {
 
-        int linha = getJogo().getTabuleiro().transformarEmLinha(posicao);
-        int coluna = getJogo().getTabuleiro().transformarEmColuna(posicao);
+        int linha = (int) getJogo().getTabuleiro().transformarEmLinha(posicao);
+        int coluna = (int) getJogo().getTabuleiro().transformarEmColuna(posicao);
 
         return joga(linha, coluna);
 
