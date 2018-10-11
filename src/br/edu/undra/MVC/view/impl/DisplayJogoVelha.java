@@ -77,13 +77,8 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
         ActionListener posicaoClicada = (ActionEvent e) -> {
 
             try {
-
-                Object[] args = new Object[1];
-                args[0] = ((JButton) e.getSource()).getName();
-
-                controller.updateModel("setPosicaoClicada", args);
-
-                this.posicaoClicada = Integer.parseInt(((JButton) e.getSource()).getName());
+                
+                joga(Integer.parseInt(((JButton) e.getSource()).getName()));
 
             } catch (Exception ex) {
                 System.err.println("Algo excepcional ocorreu em TecladoManualUI.actionListener " + ex.getLocalizedMessage());
@@ -432,6 +427,18 @@ public class DisplayJogoVelha extends JPanel implements JogoVelhaView {
     @Override
     public void habilitarMenuJogos() {
         window.habilitarMenuJogos();
+    }
+
+    @Override
+    public void joga(int posicao) {
+
+        Object[] args = new Object[1];
+
+        args[0] = "" + posicao;
+
+        controller.updateModel("setPosicaoClicada", args);
+
+        this.posicaoClicada = posicao;
     }
 
 }

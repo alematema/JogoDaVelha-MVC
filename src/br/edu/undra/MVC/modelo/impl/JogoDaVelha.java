@@ -470,6 +470,11 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 
     }
 
+    public void iniciar(String versaoJogo) {
+        setVersaoJogoVelha(versaoJogo);
+        iniciar();
+    }
+
     public Jogador getUltimoAJogar() {
         return ultimoAJogar;
     }
@@ -673,9 +678,18 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
 //        System.err.println("\n\nMUDANÇA DE VERSÃO PARA " + abstracaoVersaoJogoVelha.getVersao());
     }
 
+    public AbstracaoVersaoJogoVelha getVersaoJogoVelha() {
+        return abstracaoVersaoJogoVelha;
+    }
+
     @Override
     public void setVelocity(int novoValor) {
         abstracaoVersaoJogoVelha.setVelocity(novoValor);
+    }
+
+    @Override
+    public int getVelocity() {
+        return abstracaoVersaoJogoVelha.getVelocity();
     }
 
     @Override
@@ -722,4 +736,4 @@ public class JogoDaVelha<T extends Jogador> extends Jogo implements JogoVelhaMod
         return ((CalculadorProximaJogadaIAParaJogoVelhaImpl) calculadorProximaJogadaIA).isConfigurado;
     }
 
-}
+    }

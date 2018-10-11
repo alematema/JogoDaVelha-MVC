@@ -1,6 +1,5 @@
 package br.edu.undra.MVC.interfaces;
 
-import br.edu.undra.MVC.interfaces.View;
 import java.util.List;
 
 /**
@@ -9,6 +8,7 @@ import java.util.List;
  */
 public interface JogoVelhaView extends View{
     void set(String value, int posicao);
+    void joga(int posicao);
     void marcarOndeVenceu(List<Object> posicoes);
     void reconfigurar();
     void setMensagem(String mensagem);

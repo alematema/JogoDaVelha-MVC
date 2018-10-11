@@ -19,5 +19,6 @@ public interface AbstracaoVersaoJogoVelha {
     void SetUp(JogoDaVelha jogo);
     void liberarJogada();
     void setVelocity(int newValeu);
+    int getVelocity();
     int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA);
 }

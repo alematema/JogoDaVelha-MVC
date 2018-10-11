@@ -61,7 +61,7 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
             jogo.setPosicaoClicada("0");
 
         } catch (Exception e) {
-            System.out.println(e.getCause());;
+            System.out.println(e.getCause());
         }
 
     }
@@ -91,8 +91,7 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
     }
 
     @Override
-    public void setVelocity(int newValeu) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setVelocity(int newValeu)  {
     }
 
     /**
@@ -137,6 +136,11 @@ public class VersaoHumanoVersusComputadorImpl implements AbstracaoVersaoJogoVelh
     @Override
     public String getNomeResumido() {
         return "humanoVSComp";
+    }
+
+    @Override
+    public int getVelocity(){
+        return Integer.MIN_VALUE;
     }
 
 }

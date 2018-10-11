@@ -26,7 +26,7 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         jogo.updateView(jogador);
 
         int sleep = (int) (200 * (int) 100 * (1.0 / velocidade));
-        if(velocidade>=95){
+        if (velocidade >= 95) {
             sleep = (int) (2 * (int) 100 * (1.0 / velocidade));
         }
 
@@ -57,6 +57,12 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
     public void setVelocity(int newValeu) {
         velocidade = newValeu;
     }
+
+    @Override
+    public int getVelocity() {
+      return velocidade;
+    }
+
     /**
      * Calcula-se proxima jogada baseando em análise combinatória.<br>
      * Todas evoluções possíveis do jogo são consideradas e, dai,<br>
@@ -67,9 +73,9 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
      */
     @Override
     public int calularProximaJogada(Jogador jogador, CalculadorProximaJogadaIA calculadorProximaJogadaIA) {
-        
+
         jogador = (JogadorJogoDaVelha) jogador;
-        
+
         int linha;
         int coluna;
         int posicao = 0;
@@ -77,7 +83,7 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         if (calculadorProximaJogadaIA.jogoTerminou()) {
             boolean verbose = true;
             calculadorProximaJogadaIA.reconfigurar(verbose);
-        }else{
+        } else {
         }
 
         posicao = calculadorProximaJogadaIA.getMelhorJogadaAlternandoEntreJogadores();

@@ -13,15 +13,15 @@ import br.edu.undra.servicos.calculadorproximajogada.analisador.CalculadorProxim
 public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
 
     private boolean liberarJogada = false;
-    
+
     Object[] args = new Object[1];
-    
+
     @Override
     public void jogar(JogoDaVelha jogo) {
 
         Jogador jogador = jogo.getProximoAJogar();
-        
-        args[0] = ("Vez de "  + jogo.getProximoAJogar().getNome()+ " jogar.").toUpperCase();
+
+        args[0] = ("Vez de " + jogo.getProximoAJogar().getNome() + " jogar.").toUpperCase();
 
         jogo.getController().updateView("setMensagem", args);
 
@@ -34,8 +34,8 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
                 Thread.sleep(300);
 
                 posicao = Integer.parseInt(jogo.getPosicaoClicada());
-                
-                if(liberarJogada){
+
+                if (liberarJogada) {
                     liberarJogada = false;
                     return;
                 }
@@ -71,7 +71,6 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
 
     @Override
     public void setVelocity(int newValeu) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -82,6 +81,11 @@ public class VersaoHumanoVersusHumanoImpl implements AbstracaoVersaoJogoVelha {
     @Override
     public String getNomeResumido() {
         return "humanoVSHumano";
+    }
+
+    @Override
+    public int getVelocity() {
+        return Integer.MIN_VALUE;
     }
 
 }
