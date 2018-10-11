@@ -592,10 +592,10 @@ public class TabuleiroTest {
     }
 
     /**
-     * Test of transformarEmPosicao method, of class Tabuleiro.
+     * Test of transformarEmPosicaoTest method, of class Tabuleiro.
      */
     @Test
-    public void transformarEmPosicao() {
+    public void transformarEmPosicaoTest() {
         
         System.out.println("transformarEmPosicao_int_int");
 
@@ -613,6 +613,11 @@ public class TabuleiroTest {
         
         linha = 0;
         coluna = 1;
+        
+        assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmPosicao(linha, coluna));
+        
+        linha = 6;
+        coluna = 6;
         
         assertEquals(Tabuleiro.POSICAO_INVALIDA,tabuleiro.transformarEmPosicao(linha, coluna));
         
