@@ -124,7 +124,12 @@ public class JogoDaVelhaMVCTest {
         args[0] = 10;
         view.getController().updateModel("setVelocity", args);
 
-        assertEquals(model.getVelocity(), args[0]);
+        assertEquals(model.getVelocity(), 10);
+        
+        args[0] = 20;
+        view.getController().updateModel("setVelocity", args);
+        
+        assertEquals(model.getVelocity(),20);
 
     }
 
