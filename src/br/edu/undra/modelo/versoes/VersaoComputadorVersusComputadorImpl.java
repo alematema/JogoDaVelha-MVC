@@ -81,7 +81,7 @@ public class VersaoComputadorVersusComputadorImpl implements AbstracaoVersaoJogo
         int posicao = 0;
 
         if (calculadorProximaJogadaIA.jogoTerminou()) {
-            boolean verbose = true;
+            boolean verbose = false;
             calculadorProximaJogadaIA.reconfigurar(verbose);
         } else {
         }

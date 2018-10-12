@@ -116,7 +116,7 @@ public class CalculadorProximaJogadaIA {
             try {
                 versusMaquina.configura(args[0].toUpperCase().equals("-V"));
             } catch (Exception e) {
-                boolean verbose = true;
+                boolean verbose = false;
                 versusMaquina.configura(verbose);
             }
             
@@ -195,8 +195,8 @@ public class CalculadorProximaJogadaIA {
         
         if (jogoTerminou()) {
             
-            boolean verbose = true;
-             reconfigurar(true);
+            boolean verbose = false;
+             reconfigurar(verbose);
         }
 
         jogador = (JogadorJogoDaVelha) jogador;
