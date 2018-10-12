@@ -1,5 +1,6 @@
 package br.edu.undra.servicos.calculadorproximajogada.analisador;
 
+import br.edu.undra.servicos.caching.ProbabilidadesDeVencerCache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ public class Jogador {
     private List<JogoDaVelhaWrapped> espaco = new ArrayList<>();
     private Boolean verbose = Boolean.FALSE;
     private CalculadorProximaJogadaIA calculadorProximaJogada;
+    private ProbabilidadesDeVencerCache cache = new ProbabilidadesDeVencerCache("probabilidades.properties");
 
     /**
      * @return the posicoesLivres
@@ -188,83 +190,118 @@ public class Jogador {
 
         } else {
 
-            //conhece todas posicoes livres
-            updatePosicoesLivres();
+            String posicaoValorKey = cache.createKey(jogoDaVelha);
 
-            if (verbose) {
-                System.out.print("\tPOSICOES LIVRES ");
-                this.posicoesLivres.forEach(p -> System.out.print((p + 1) + ","));
-                String posicoesLivres = "";
+            if (cache.isCached(posicaoValorKey)) {
 
-                calculadorProximaJogada.setMensagemConfigurador("POSICOES LIVRES ");
-                System.out.println("");
-                System.out.println("");
-            }
+                String[] probas = cache.get(posicaoValorKey).split(";");
 
-            //conhece posicoes em que perde
-            atualizaPosicoesEmQuePerderiaSeJogasseNelas();
+                String[] melhorPosicaoEMaiorProba = probas[probas.length - 1].split(",");
 
-            if (verbose) {
-                System.out.print("\tPOSICOES EM QUE PERDERIA SE JOGASSE ");
-                calculadorProximaJogada.setMensagemConfigurador("POSICOES EM QUE PERDERIA SE JOGASSE ");
-                if (this.posicoesEmQuePerde.isEmpty()) {
-                    System.out.print(": NENHUMA");
-                    calculadorProximaJogada.setMensagemConfigurador(": NENHUMA ");
-                } else {
-                    this.posicoesEmQuePerde.forEach(p -> System.out.print((p + 1) + ","));
-                }
-                System.out.println("");
-                System.out.println("");
-            }
+                String melhorPos = melhorPosicaoEMaiorProba[0];
+                String maiorProba = melhorPosicaoEMaiorProba[1];
 
-            //conhece posicoes em que NAO perde E PODE ganhar
-            atualizaPosicoesLivresNasQuaisNaoPerderiaSeJogasseNelas();
+                melhorPosicao = Integer.parseInt(melhorPos);
+                maiorProbabilidade = Double.parseDouble(maiorProba);
+                
+                System.err.println("*********** JOGOU PELO APRENDIZADO EM " + melhorPosicao);
 
-            if (verbose) {
-                System.out.print("\tPOSICOES LIVRES EM QUE NÃO PERDE E PODE GANHAR SE JOGAR ");
-                this.posicoesLivres.forEach(p -> System.out.print((p + 1) + ","));
-                System.out.println("");
-                System.out.println("");
-            }
+            } else {
 
-            maiorProbabilidade = 0.0;
+                String probabilidades = "";
 
-            if (!this.posicoesLivres.isEmpty()) {
+                //conhece todas posicoes livres
+                updatePosicoesLivres();
 
                 if (verbose) {
-                    System.out.print("\tCALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " )");
+                    System.out.print("\tPOSICOES LIVRES ");
+                    this.posicoesLivres.forEach(p -> System.out.print((p + 1) + ","));
+                    String posicoesLivres = "";
+
+                    calculadorProximaJogada.setMensagemConfigurador("POSICOES LIVRES ");
                     System.out.println("");
                     System.out.println("");
-                    calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
                 }
 
-                for (int i = 0; i < this.posicoesLivres.size(); i++) {
+                //conhece posicoes em que perde
+                atualizaPosicoesEmQuePerderiaSeJogasseNelas();
 
-                    if (jogasseNessaPosicaoGanharia(this.posicoesLivres.get(i))) {
-                        melhorPosicao = this.posicoesLivres.get(i);
-                        maiorProbabilidade = 1.0;
-                        break;
-                    } else {// calcula melhor posicao ... a que tera MAIOR PROBABILIDADE DE VENCER SE JOGAR NELA
-
-                        double proba = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(this.posicoesLivres.get(i)).doJogo(getJogoDaVelha()).getProbabilidadeDeVencer();
-                        
-                        if (verbose) {
-                            calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
-
-                            String probaDeGanharEmI = "PROBABILIDADE  " + (100 * proba) + " DE GANHAR, JOGANDO NA POSIÇAO " + (this.posicoesLivres.get(i) + 1);
-                            calculadorProximaJogada.setMensagemConfigurador(probaDeGanharEmI);
-                            System.out.printf("\tPROBABILIDADE  %.2f  DE GANHAR, JOGANDO NA POSIÇAO %d \n", 100 * proba, this.posicoesLivres.get(i) + 1);
-                        }
-
-                        if (proba >= maiorProbabilidade) {
-                            maiorProbabilidade = proba;
-                            melhorPosicao = this.posicoesLivres.get(i);
-                        }
-                        
+                if (verbose) {
+                    System.out.print("\tPOSICOES EM QUE PERDERIA SE JOGASSE ");
+                    calculadorProximaJogada.setMensagemConfigurador("POSICOES EM QUE PERDERIA SE JOGASSE ");
+                    if (this.posicoesEmQuePerde.isEmpty()) {
+                        System.out.print(": NENHUMA");
+                        calculadorProximaJogada.setMensagemConfigurador(": NENHUMA ");
+                    } else {
+                        this.posicoesEmQuePerde.forEach(p -> System.out.print((p + 1) + ","));
                     }
+                    System.out.println("");
+                    System.out.println("");
                 }
-            } else {
-                melhorPosicao = posicoesEmQuePerde.get(0);
+
+                //conhece posicoes em que NAO perde E PODE ganhar
+                atualizaPosicoesLivresNasQuaisNaoPerderiaSeJogasseNelas();
+
+                if (verbose) {
+                    System.out.print("\tPOSICOES LIVRES EM QUE NÃO PERDE E PODE GANHAR SE JOGAR ");
+                    this.posicoesLivres.forEach(p -> System.out.print((p + 1) + ","));
+                    System.out.println("");
+                    System.out.println("");
+                }
+
+                maiorProbabilidade = 0.0;
+
+                if (!this.posicoesLivres.isEmpty()) {
+
+                    if (verbose) {
+                        System.out.print("\tCALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " )");
+                        System.out.println("");
+                        System.out.println("");
+                        calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
+                    }
+
+                    for (int i = 0; i < this.posicoesLivres.size(); i++) {
+
+                        if (jogasseNessaPosicaoGanharia(this.posicoesLivres.get(i))) {
+                            melhorPosicao = this.posicoesLivres.get(i);
+                            maiorProbabilidade = 1.0;
+                            break;
+                        } else {// calcula melhor posicao ... a que tera MAIOR PROBABILIDADE DE VENCER SE JOGAR NELA
+
+                            double proba = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(this.posicoesLivres.get(i)).doJogo(getJogoDaVelha()).getProbabilidadeDeVencer();
+
+                            probabilidades += Double.toString(proba);
+                            probabilidades += "-";
+                            probabilidades += this.posicoesLivres.get(i);
+                            probabilidades += ";";
+
+                            if (verbose) {
+                                calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
+
+                                String probaDeGanharEmI = "PROBABILIDADE  " + (100 * proba) + " DE GANHAR, JOGANDO NA POSIÇAO " + (this.posicoesLivres.get(i) + 1);
+                                calculadorProximaJogada.setMensagemConfigurador(probaDeGanharEmI);
+                                System.out.printf("\tPROBABILIDADE  %.2f  DE GANHAR, JOGANDO NA POSIÇAO %d \n", 100 * proba, this.posicoesLivres.get(i) + 1);
+                            }
+
+                            if (proba >= maiorProbabilidade) {
+                                maiorProbabilidade = proba;
+                                melhorPosicao = this.posicoesLivres.get(i);
+                            }
+
+                        }
+                    }
+                } else {
+                    melhorPosicao = posicoesEmQuePerde.get(0);
+                }
+
+                probabilidades += melhorPosicao;
+                probabilidades += ",";
+                probabilidades += maiorProbabilidade;
+
+               cache.put(posicaoValorKey, probabilidades);
+                
+                System.err.println("*********** APRENDEU EM " + melhorPosicao);
+
             }
 
         }
@@ -274,7 +311,7 @@ public class Jogador {
             System.out.printf("\tMAIOR PROBABILIDADE %.2f \n", 100 * maiorProbabilidade);
             System.out.println("\n\n--------------------------------------------------------");
 
-            calculadorProximaJogada.setMensagemConfigurador("MELHOR POSICAO  " +  (melhorPosicao + 1));
+            calculadorProximaJogada.setMensagemConfigurador("MELHOR POSICAO  " + (melhorPosicao + 1));
 
             String probaDeGanharEmI = "MAIOR PROBABILIDADE  " + (100 * maiorProbabilidade);
             calculadorProximaJogada.setMensagemConfigurador(probaDeGanharEmI);
@@ -385,7 +422,7 @@ public class Jogador {
         }
 
     }
-    
+
     public boolean joga(int posicao) {
 
         List<JogoDaVelhaWrapped> espacoRecalc = analisador.noEspaco(getEspaco()).depoisQueJogador(this).jogarNaPosicao(posicao).doJogo(getJogoDaVelha()).recalcularEspaco();
