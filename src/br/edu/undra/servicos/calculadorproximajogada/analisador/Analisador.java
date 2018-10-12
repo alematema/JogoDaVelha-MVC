@@ -150,7 +150,7 @@ public class Analisador {
         double probabilidade = (double) quantosJogosGanhamNoEspacoRemanascente
                 / (double) getPossibilidadesRemanescentes().size();
 
-        System.out.println("Analisador.getProbabilidadeDeVencer levou " + (System.currentTimeMillis() - init) + " ms para analisar "+ getPossibilidadesRemanescentes().size() +" jogadas");
+//        System.out.println("Analisador.getProbabilidadeDeVencer levou " + (System.currentTimeMillis() - init) + " ms para analisar "+ getPossibilidadesRemanescentes().size() +" jogadas");
         
         return probabilidade;
     }

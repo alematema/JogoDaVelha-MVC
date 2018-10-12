@@ -205,6 +205,7 @@ public class Jogador {
                 maiorProbabilidade = Double.parseDouble(maiorProba);
                 
                 System.err.println("*********** JOGOU PELO APRENDIZADO EM " + melhorPosicao);
+                calculadorProximaJogada.setMensagemConfigurador("JOGUEI PELO APRENDIZADO");
 
             } else {
 
@@ -253,11 +254,13 @@ public class Jogador {
 
                 if (!this.posicoesLivres.isEmpty()) {
 
+                    calculadorProximaJogada.setMensagemConfigurador("APRENDENDO...");
+                    
                     if (verbose) {
                         System.out.print("\tCALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " )");
                         System.out.println("");
                         System.out.println("");
-                        calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
+//                        calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
                     }
 
                     for (int i = 0; i < this.posicoesLivres.size(); i++) {
@@ -276,10 +279,10 @@ public class Jogador {
                             probabilidades += ";";
 
                             if (verbose) {
-                                calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
+//                                calculadorProximaJogada.setMensagemConfigurador("CALCULANDO PROBALIDADES (tamanho do espaco # " + getEspaco().size() + " ) ");
 
                                 String probaDeGanharEmI = "PROBABILIDADE  " + (100 * proba) + " DE GANHAR, JOGANDO NA POSIÇAO " + (this.posicoesLivres.get(i) + 1);
-                                calculadorProximaJogada.setMensagemConfigurador(probaDeGanharEmI);
+//                                calculadorProximaJogada.setMensagemConfigurador(probaDeGanharEmI);
                                 System.out.printf("\tPROBABILIDADE  %.2f  DE GANHAR, JOGANDO NA POSIÇAO %d \n", 100 * proba, this.posicoesLivres.get(i) + 1);
                             }
 
@@ -301,6 +304,7 @@ public class Jogador {
                cache.put(posicaoValorKey, probabilidades);
                 
                 System.err.println("*********** APRENDEU EM " + melhorPosicao);
+                calculadorProximaJogada.setMensagemConfigurador("APRENDI JOGAR EM " + melhorPosicao);
 
             }
 
